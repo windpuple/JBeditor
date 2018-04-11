@@ -1,3 +1,10 @@
+/* 
+ *  
+ * 208.04.10 JB.Jeon ITT(katherine) project start. 
+ * 
+ *  
+ */
+
 package window;
 
 import java.awt.FileDialog;
@@ -10,15 +17,15 @@ import java.util.*;
 
 public class DBEwindow extends JFrame {
 
-	public static String DBEarrary;
-	public static String DBEsumarrary;
+	public static String DBEarrary = "";
+	public static String DBEsumarrary = "";
 	String str1 = "Wafer_ID : ";
 	String str2 = "Flat_Notch : ";
 	String enter = "\n";
 	String hype = "-";
 
-	char[] cutmap = new char[JBeditormain.txtJBeditormainbuffer.length()];
-	char[] defbuffer = new char[JBeditormain.txtJBeditormainbuffer.length()];
+	char[] cutmap = new char[JBeditormain.Finalarray.length()];
+	char[] defbuffer = new char[JBeditormain.Finalarray.length()];
 
 	int flag = 0;
 	int j = 0;
@@ -33,20 +40,20 @@ public class DBEwindow extends JFrame {
 
 		// DBEarrary = "DBE test 중입니다.";
 		/*
-		int p1 = JBeditormain.txtJBeditormainbuffer.indexOf("WAFER ID");
-		int p2 = JBeditormain.txtJBeditormainbuffer.indexOf("FLAT ZONE");
-		int p3 = JBeditormain.txtJBeditormainbuffer.indexOf("LOT Number");
+		int p1 = JBeditormain.Finalarray.indexOf("WAFER ID");
+		int p2 = JBeditormain.Finalarray.indexOf("FLAT ZONE");
+		int p3 = JBeditormain.Finalarray.indexOf("LOT Number");
 		
-		waferid = JBeditormain.txtJBeditormainbuffer.substring(p1+11,);
-		flatzone = JBeditormain.txtJBeditormainbuffer.substring(p2+10);
-		lotnumber = JBeditormain.txtJBeditormainbuffer.substring(p3+10);
-		lotnumber = JBeditormain.txtJBeditormainbuffer.subs
+		waferid = JBeditormain.Finalarray.substring(p1+11,);
+		flatzone = JBeditormain.Finalarray.substring(p2+10);
+		lotnumber = JBeditormain.Finalarray.substring(p3+10);
+		lotnumber = JBeditormain.Finalarray.subs
 		System.out.println("wafer id : "+waferid);
 		System.out.println("flat zone : "+flatzone);
 		System.out.println("lot number : "+lotnumber);
 		*/
 		
-		String header[] = JBeditormain.txtJBeditormainbuffer.split(":");
+		String header[] = JBeditormain.Finalarray.split(":");
 		
 		
 		for(int i = 0; i < header.length; i++) {
@@ -61,9 +68,9 @@ public class DBEwindow extends JFrame {
         
 		
 		
-		for (int i = 0; i < JBeditormain.txtJBeditormainbuffer.length(); i++) {
+		for (int i = 0; i < JBeditormain.Finalarray.length(); i++) {
 
-			cutmap[i] = JBeditormain.txtJBeditormainbuffer.charAt(i);
+			cutmap[i] = JBeditormain.Finalarray.charAt(i);
 
 			// System.out.println("debug 0 "+firstflag+flag+BSflag+BEflag+cutmap[i]);
 
@@ -193,6 +200,9 @@ public class DBEwindow extends JFrame {
 			writer.close();
 
 			setTitle(dialog.getFile() + " - DBE save..");
+			DBEarrary ="";
+			DBEsumarrary ="";
+			
 		} catch (Exception e2) {
 			JOptionPane.showMessageDialog(this, "Save error");
 		}

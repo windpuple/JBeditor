@@ -1,3 +1,10 @@
+/* 
+ *  
+ * 2018.03.26 JB.Jeon ITT(katherine) project start. 
+ * 
+ *  
+ */
+
 package window;
 
 import java.awt.Color;
@@ -17,7 +24,9 @@ public class Sbinwindow extends JDialog implements ActionListener {
 	JButton btn = new JButton("확인");
 	JButton btncancel = new JButton("\uCDE8\uC18C");
 
-	public static String txtSbinbuffer;
+	JLabel notice = new JLabel("");
+
+	public static String txtSbinbuffer = "";;
 
 	public Sbinwindow(JFrame frame) {
 		super(frame);
@@ -25,7 +34,7 @@ public class Sbinwindow extends JDialog implements ActionListener {
 		setTitle("Sbin change input");
 		setModal(true);
 
-		btn.setBounds(23, 121, 98, 21);
+		btn.setBounds(23, 163, 98, 21);
 		btn.addActionListener(this);
 		getContentPane().setLayout(null);
 		getContentPane().add(btn);
@@ -48,11 +57,16 @@ public class Sbinwindow extends JDialog implements ActionListener {
 		getContentPane().add(af_textfiled);
 		af_textfiled.setColumns(3);
 
-		btncancel.setBounds(133, 120, 97, 23);
+		btncancel.setBounds(133, 162, 97, 23);
 		getContentPane().add(btncancel);
 
+		notice.setForeground(Color.RED);
+		notice.setBounds(23, 120, 207, 15);
+		getContentPane().add(notice);
+		btncancel.addActionListener(this);
+
 		setBackground(Color.LIGHT_GRAY);
-		setBounds(350, 250, 275, 191);
+		setBounds(350, 250, 275, 233);
 		setVisible(true);
 	}
 
@@ -61,215 +75,191 @@ public class Sbinwindow extends JDialog implements ActionListener {
 		// dispose(); // dialog 닫기
 		if (e.getSource() == btn) {
 
-			String chword;
-			String target;
-			String sub;
-			txtSbinbuffer ="";
+			if (bh_textfield.getText().isEmpty() || af_textfiled.getText().isEmpty()) {
+				notice.setText("");
+				notice.setText("pin,sample 값이 없습니다.");
 
-			chword = bh_textfield.getText();
-			target = af_textfiled.getText();
+			} else {
 
-			int j = 0;
-			int flag = 0;
+				String chword;
+				String target;
+				String sub;
 
-			// System.out.print("어레이 브로커 인쇄 : \n"+arraybroker);
+				chword = bh_textfield.getText();
+				target = af_textfiled.getText();
 
-			char[] read = new char[JBeditormain.Sbinarray.length()];
+				int j = 0;
+				int flag = 0;
 
-			// System.out.println("debug Sbin length : "+JBeditormain.Sbinarray.length());
-			// System.out.println("debug read length : "+read.length);
+				char[] read = new char[JBeditormain.Finalarray.length()];
 
-			// while (JBeditormain.Sbinarray != null) {
-			for (j = 0; j < JBeditormain.Sbinarray.length(); j++) {
+				for (j = 0; j < JBeditormain.Finalarray.length(); j++) {
 
-				read[j] = JBeditormain.Sbinarray.charAt(j);
-				// System.out.println("debug 어레이브로커 chartat["+j+"] "+
-				// JBeditormain.Sbinarray.charAt(j));
-				// System.out.println("debug read["+j+"] "+ read[j]);
+					read[j] = JBeditormain.Finalarray.charAt(j);
 
-				if (read[j] == '|') {
+					if (read[j] == '|' || read[j] == '+') {
 
-					flag = 1;
+						flag = 1;
 
-				} else if (read[j] == '-') {
+					} else if (read[j] == '-') {
 
-					flag = 0;
-
-				}
-
-				// System.out.println("debug1 : "+!(read[j] == '+' || read[j] == '|'));
-
-				if (!(read[j] == '+' || read[j] == '|')) {
-
-					// System.out.println("debug2 : "+!(read[j] == '+' || read[j] == '|'));
-
-					if (chword.length() == 3 && target.length() == 3) {
-
-						if (flag == 1 && read[j - 2] == chword.charAt(0) && read[j - 1] == chword.charAt(1)
-								&& read[j] == chword.charAt(2)) {
-
-							// System.out.println("length 3");
-
-							read[j - 2] = target.charAt(0);
-							read[j - 1] = target.charAt(1);
-							read[j] = target.charAt(2);
-
-						}
-					} else if (chword.length() == 3 && target.length() == 2) {
-
-						if (flag == 1 && read[j - 2] == chword.charAt(0) && read[j - 1] == chword.charAt(1)
-								&& read[j] == chword.charAt(2)) {
-
-							read[j - 2] = ' ';
-							read[j - 1] = target.charAt(0);
-							read[j] = target.charAt(1);
-
-						}
-
-					} else if (chword.length() == 3 && target.length() == 1) {
-
-						if (flag == 1 && read[j - 2] == chword.charAt(0) && read[j - 1] == chword.charAt(1)
-								&& read[j] == chword.charAt(2)) {
-							read[j - 2] = ' ';
-							read[j - 1] = ' ';
-							read[j] = target.charAt(0);
-
-						}
-
-					} else if (chword.length() == 2 && target.length() == 3) {
-
-						// System.out.println("read["+j+"]:"+read[j]);
-						if (flag == 1 && read[j - 1] == chword.charAt(0) && read[j] == chword.charAt(1)) {
-
-							// System.out.println("length 2");
-							read[j - 2] = target.charAt(0);
-							read[j - 1] = target.charAt(1);
-							read[j] = target.charAt(2);
-						}
-					} else if (chword.length() == 2 && target.length() == 2) {
-
-						if (flag == 1 && read[j - 1] == chword.charAt(0) && read[j] == chword.charAt(1)) {
-
-							read[j - 1] = target.charAt(0);
-							read[j] = target.charAt(1);
-
-						}
-
-					} else if (chword.length() == 2 && target.length() == 1) {
-
-						if (flag == 1 && read[j - 1] == chword.charAt(0) && read[j] == chword.charAt(1)) {
-
-							read[j - 1] = ' ';
-							read[j] = target.charAt(0);
-
-						}
-
-					} else if (chword.length() == 1 && target.length() == 3) {
-						if (flag == 1 && read[j] == chword.charAt(0)) {
-
-							// System.out.println("length 1");
-
-							read[j - 2] = target.charAt(0);
-							read[j - 1] = target.charAt(1);
-							read[j] = target.charAt(2);
-
-						}
-					} else if (chword.length() == 1 && target.length() == 2) {
-
-						if (flag == 1 && read[j] == chword.charAt(0)) {
-
-							read[j - 1] = target.charAt(0);
-							read[j] = target.charAt(1);
-
-						}
-
-					} else if (chword.length() == 1 && target.length() == 1) {
-
-						if (flag == 1 && read[j] == chword.charAt(0)) {
-
-							read[j] = target.charAt(0);
-
-						}
+						flag = 0;
 
 					}
 
-				} else {
+					if (!(read[j] == '+' || read[j] == '|')) {
 
-					if (chword.length() == 3) {
+						if (chword.length() == 3 && target.length() == 3) {
 
-						read[j - 3] = JBeditormain.Sbinarray.charAt(j - 4);
-						read[j - 2] = JBeditormain.Sbinarray.charAt(j - 3);
-						read[j - 1] = JBeditormain.Sbinarray.charAt(j - 1);
-						read[j] = JBeditormain.Sbinarray.charAt(j);
+							if (flag == 1 && read[j - 2] == chword.charAt(0) && read[j - 1] == chword.charAt(1)
+									&& read[j] == chword.charAt(2)) {
 
-					} else if (chword.length() == 2) {
+								read[j - 2] = target.charAt(0);
+								read[j - 1] = target.charAt(1);
+								read[j] = target.charAt(2);
 
-						read[j - 2] = JBeditormain.Sbinarray.charAt(j - 2);
-						read[j - 1] = JBeditormain.Sbinarray.charAt(j - 1);
-						read[j] = JBeditormain.Sbinarray.charAt(j);
+							}
+						} else if (chword.length() == 3 && target.length() == 2) {
 
-					} else if (chword.length() == 1) {
+							if (flag == 1 && read[j - 2] == chword.charAt(0) && read[j - 1] == chword.charAt(1)
+									&& read[j] == chword.charAt(2)) {
 
-						read[j - 1] = JBeditormain.Sbinarray.charAt(j - 1);
-						read[j] = JBeditormain.Sbinarray.charAt(j);
+								read[j - 2] = ' ';
+								read[j - 1] = target.charAt(0);
+								read[j] = target.charAt(1);
+
+							}
+
+						} else if (chword.length() == 3 && target.length() == 1) {
+
+							if (flag == 1 && read[j - 2] == chword.charAt(0) && read[j - 1] == chword.charAt(1)
+									&& read[j] == chword.charAt(2)) {
+								read[j - 2] = ' ';
+								read[j - 1] = ' ';
+								read[j] = target.charAt(0);
+
+							}
+
+						} else if (chword.length() == 2 && target.length() == 3) {
+
+							if (flag == 1 && read[j - 1] == chword.charAt(0) && read[j] == chword.charAt(1)) {
+
+								read[j - 2] = target.charAt(0);
+								read[j - 1] = target.charAt(1);
+								read[j] = target.charAt(2);
+							}
+						} else if (chword.length() == 2 && target.length() == 2) {
+
+							if (flag == 1 && read[j - 1] == chword.charAt(0) && read[j] == chword.charAt(1)) {
+
+								read[j - 1] = target.charAt(0);
+								read[j] = target.charAt(1);
+
+							}
+
+						} else if (chword.length() == 2 && target.length() == 1) {
+
+							if (flag == 1 && read[j - 1] == chword.charAt(0) && read[j] == chword.charAt(1)) {
+
+								read[j - 1] = ' ';
+								read[j] = target.charAt(0);
+
+							}
+
+						} else if (chword.length() == 1 && target.length() == 3) {
+							if (flag == 1 && read[j] == chword.charAt(0)) {
+
+								read[j - 2] = target.charAt(0);
+								read[j - 1] = target.charAt(1);
+								read[j] = target.charAt(2);
+
+							}
+						} else if (chword.length() == 1 && target.length() == 2) {
+
+							if (flag == 1 && read[j] == chword.charAt(0)) {
+
+								read[j - 1] = target.charAt(0);
+								read[j] = target.charAt(1);
+
+							}
+
+						} else if (chword.length() == 1 && target.length() == 1) {
+
+							if (flag == 1 && read[j] == chword.charAt(0)) {
+
+								read[j] = target.charAt(0);
+
+							}
+
+						}
+
+					} else if (flag == 1 && read[j] == '\n') {
+
+						read[j] = '\n';
+
+					}
+
+					if (read[j] == '\n') {
+
+						flag = 0;
 
 					}
 
 				}
 
+				for (int i = 0; i < read.length; i++) {
+					txtSbinbuffer += Character.toString(read[i]);
+				}
+
+				if (chword.length() == 3 && target.length() == 1) {
+
+					txtSbinbuffer = txtSbinbuffer.replace("null", "");
+					txtSbinbuffer = txtSbinbuffer.replace(chword + "(", "  " + target + "(");
+
+				} else if (chword.length() == 3 && target.length() == 2) {
+
+					txtSbinbuffer = txtSbinbuffer.replace("null", "");
+					txtSbinbuffer = txtSbinbuffer.replace(chword + "(", " " + target + "(");
+
+				} else if (chword.length() == 2 && target.length() == 1) {
+
+					txtSbinbuffer = txtSbinbuffer.replace("null", "");
+					txtSbinbuffer = txtSbinbuffer.replace(chword + "(", " " + target + "(");
+
+				} else if (chword.length() == 1 && target.length() == 3) {
+
+					txtSbinbuffer = txtSbinbuffer.replace("null", "");
+
+					int p1 = txtSbinbuffer.indexOf(chword + "(");
+					sub = txtSbinbuffer.substring(p1 - 3, p1 + 2);
+					txtSbinbuffer = txtSbinbuffer.replace(sub, target + "(");
+
+				} else if (chword.length() == 2 && target.length() == 3) {
+
+					txtSbinbuffer = txtSbinbuffer.replace("null", "");
+
+					int p1 = txtSbinbuffer.indexOf(chword + "(");
+					sub = txtSbinbuffer.substring(p1 - 2, p1 + 2);
+					txtSbinbuffer = txtSbinbuffer.replace(sub, target + "(");
+
+				} else if (chword.length() == 1 && target.length() == 2) {
+
+					txtSbinbuffer = txtSbinbuffer.replace("null", "");
+
+					int p1 = txtSbinbuffer.indexOf(chword + "(");
+					sub = txtSbinbuffer.substring(p1 - 1, p1 + 2);
+					txtSbinbuffer = txtSbinbuffer.replace(sub, target + "(");
+
+				} else if (chword.length() == target.length()) {
+
+					txtSbinbuffer = txtSbinbuffer.replace("null", "");
+					txtSbinbuffer = txtSbinbuffer.replace(chword + "(", target + "(");
+
+				}
+
+				dispose();
+
 			}
-
-			for (int i = 0; i < read.length; i++) {
-				txtSbinbuffer += Character.toString(read[i]);
-			}
-
-			if (chword.length() == 3 && target.length() == 1) {
-
-				txtSbinbuffer = txtSbinbuffer.replace("null", "");
-				txtSbinbuffer = txtSbinbuffer.replace(chword + "(","  "+target + "(");
-
-			}  else if(chword.length() == 3 && target.length() == 2) {
-				
-				txtSbinbuffer = txtSbinbuffer.replace("null", "");
-				txtSbinbuffer = txtSbinbuffer.replace(chword + "("," "+target + "(");
-				
-			} else if(chword.length() == 2 && target.length() == 1) {
-				
-				txtSbinbuffer = txtSbinbuffer.replace("null", "");
-				txtSbinbuffer = txtSbinbuffer.replace(chword + "("," "+target + "(");
-				
-			} else if(chword.length() == 1 && target.length() == 3) {
-				
-				txtSbinbuffer = txtSbinbuffer.replace("null", "");
-				
-				int p1 = txtSbinbuffer.indexOf(chword+"(");
-				sub = txtSbinbuffer.substring(p1-3,p1+2);
-				txtSbinbuffer = txtSbinbuffer.replace(sub, target + "(");		
-						
-			} else if(chword.length() == 2 && target.length() == 3) {
-				
-				txtSbinbuffer = txtSbinbuffer.replace("null", "");
-				
-				int p1 = txtSbinbuffer.indexOf(chword+"(");
-				sub = txtSbinbuffer.substring(p1-2,p1+2);
-				txtSbinbuffer = txtSbinbuffer.replace(sub, target + "(");		
-						
-			} else if(chword.length() == 1 && target.length() == 2) {
-				
-				txtSbinbuffer = txtSbinbuffer.replace("null", "");
-				
-				int p1 = txtSbinbuffer.indexOf(chword+"(");
-				sub = txtSbinbuffer.substring(p1-1,p1+2);
-				txtSbinbuffer = txtSbinbuffer.replace(sub, target + "(");		
-						
-			} else if(chword.length() == target.length()) {
-			
-				txtSbinbuffer = txtSbinbuffer.replace("null", "");
-				txtSbinbuffer = txtSbinbuffer.replace(chword + "(", target + "(");
-
-			}
-
-			dispose();
 
 		} else if (e.getSource() == btncancel) {
 			dispose();

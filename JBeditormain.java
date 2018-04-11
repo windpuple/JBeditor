@@ -1,3 +1,10 @@
+/* 
+ *  
+ * 2018.03.26 JB.Jeon ITT(katherine) project start.  
+ * 
+ *  
+ */
+
 package window;
 
 import java.awt.event.ActionEvent;
@@ -19,17 +26,18 @@ public class JBeditormain extends JFrame implements ActionListener {
 	// 그러므로 메뉴아이템을 여기다가 메뉴
 	JMenuItem mnuNew, mnuSave, mnuOpen, mnuDBE, mnuExit;
 	JMenuItem mnuCopy, mnuPaste, mnuCut, mnuDel, mnuSbinedit, mnurotation;
+	JMenuItem mnulinear, mnusine;
 	JMenuItem mnuAbout, mnuEtc1, mnuEtc2;
 
 	// 팝업 메뉴
 	JPopupMenu popup;
 	JMenuItem m_white, m_blue, m_yellow;
 
-	public static String Sbinarray = "";
+	public static String Finalarray = "";
 	public static String txtJBeditormainbuffer = "";
 
 	public JBeditormain() {
-		super("Untitled - JBeditor");
+		super("Intergrated Test Tool");
 
 		initLayout();
 		menuLayout();
@@ -89,18 +97,26 @@ public class JBeditormain extends JFrame implements ActionListener {
 		mnuEdit.add(mnuSbinedit);
 		mnuEdit.add(mnurotation);
 
+		JMenu mnuGeneration = new JMenu("Generate"); // 주메뉴
+		mnulinear = new JMenuItem("Linear");
+		mnusine = new JMenuItem("Sine");
+
+		mnuGeneration.add(mnulinear);
+		mnuGeneration.add(mnusine);
+
 		JMenu mnuHelp = new JMenu("help");
-		mnuAbout = new JMenuItem("JBeditor About...");
+		mnuAbout = new JMenuItem("ITT About...");
 		mnuHelp.add(mnuAbout);
 		JMenu mnuEtc = new JMenu("other"); // 부메뉴에 부메뉴
 		mnuEtc1 = new JMenuItem("calculator");
-		mnuEtc2 = new JMenuItem("freesell");
+		mnuEtc2 = new JMenuItem("notepad");
 		mnuEtc.add(mnuEtc1);
 		mnuEtc.add(mnuEtc2);
 		mnuHelp.add(mnuEtc);
 
 		menuBar.add(mnuFile);
 		menuBar.add(mnuEdit);
+		menuBar.add(mnuGeneration);
 		menuBar.add(mnuHelp);
 
 		setJMenuBar(menuBar); // Frame에 메뉴바 장착
@@ -116,6 +132,8 @@ public class JBeditormain extends JFrame implements ActionListener {
 		mnuDel.addActionListener(this);
 		mnuSbinedit.addActionListener(this);
 		mnurotation.addActionListener(this);
+		mnulinear.addActionListener(this);
+		mnusine.addActionListener(this);
 		mnuAbout.addActionListener(this);
 		mnuEtc1.addActionListener(this);
 		mnuEtc2.addActionListener(this);
@@ -183,29 +201,27 @@ public class JBeditormain extends JFrame implements ActionListener {
 			txtJBeditormain.setText(Sbinwindow.txtSbinbuffer);
 			System.out.print(Sbinwindow.txtSbinbuffer);
 
-			Sbinarray = "";
-			Sbinarray = Sbinwindow.txtSbinbuffer;
-			//Sbinwindow.txtSbinbuffer = ""; // no need initialize
-			//txtJBeditormainbuffer = "";
+			Finalarray = "";
+			Finalarray = Sbinwindow.txtSbinbuffer;
+			Sbinwindow.txtSbinbuffer = "";
 
-			
 		} else if (e.getSource() == mnurotation) {
 
 			new Rotationwindow(this);
 
 			txtJBeditormain.setText("");
-			txtJBeditormain.setText(Sbinwindow.txtSbinbuffer);
-			System.out.print(Sbinwindow.txtSbinbuffer);
+			txtJBeditormain.setText(Rotationwindow.rotationfinalbuffer);
+			System.out.print(Rotationwindow.rotationfinalbuffer);
 
-			Sbinarray = "";
-			Sbinarray = Sbinwindow.txtSbinbuffer;
-			
-		
+			Finalarray = "";
+			Finalarray = Rotationwindow.rotationfinalbuffer;
+			Rotationwindow.rotationfinalbuffer = "";
+
 		} else if (e.getSource() == mnuNew) { // 새문서
 			txtJBeditormain.setText("");
-			setTitle("untitled - JBeditor");
+			setTitle("ITT");
+			Finalarray = "";
 
-			
 		} else if (e.getSource() == mnuOpen) { // 열기
 			FileDialog dialog = new FileDialog(this, "open", FileDialog.LOAD);
 			dialog.setDirectory("."); // .은 지금폴더
@@ -225,7 +241,6 @@ public class JBeditormain extends JFrame implements ActionListener {
 				int line = 0;
 				int m = 0;
 
-
 				char[] origin = new char[fileSize];
 
 				while ((line = reader.read()) != -1) { // 읽어온 문서의 줄이 없어지면
@@ -239,18 +254,16 @@ public class JBeditormain extends JFrame implements ActionListener {
 					txtJBeditormainbuffer += Character.toString(origin[i]);
 				}
 
-				Sbinarray = "";
-				Sbinarray = txtJBeditormainbuffer;
-
 				txtJBeditormain.setText(txtJBeditormainbuffer);
 				System.out.print(txtJBeditormainbuffer);
-				// txtJBeditormain.append(txtJBeditormainbuffer+"\n");
 
-				
+				Finalarray = "";
+				Finalarray = txtJBeditormainbuffer;
+				txtJBeditormainbuffer = "";
 
 				reader.close();
 
-				setTitle(dialog.getFile() + " - JBeditor");
+				setTitle(dialog.getFile() + " - ITT");
 			} catch (Exception e2) {
 				JOptionPane.showMessageDialog(this, "Open Error");
 			}
@@ -271,41 +284,67 @@ public class JBeditormain extends JFrame implements ActionListener {
 				writer.write(txtJBeditormain.getText());
 				writer.close();
 
-				setTitle(dialog.getFile() + " - Map Save");
+				setTitle(dialog.getFile() + " - text Save");
 			} catch (Exception e2) {
 				JOptionPane.showMessageDialog(this, "Save error");
 			}
 
 			// 종료
 		} else if (e.getSource() == mnuDBE) {
-			
+
 			new DBEwindow();
-			
-			//txtJBeditormainbuffer = "";
-			
+
+			// txtJBeditormainbuffer = "";
+
+		} else if (e.getSource() == mnulinear) {
+
+			new linearwindow(this);
+
+			txtJBeditormain.setText("");
+			txtJBeditormain.setText(linearwindow.linearfinalbuffer);
+			System.out.print(linearwindow.linearfinalbuffer);
+
+			Finalarray = "";
+			Finalarray = linearwindow.linearfinalbuffer;
+			linearwindow.linearfinalbuffer = "";
+
+		} else if (e.getSource() == mnusine) {
+
+			new sinewindow(this);
+
+			txtJBeditormain.setText("");
+			txtJBeditormain.setText(sinewindow.sinefinalbuffer);
+			System.out.print(sinewindow.sinefinalbuffer);
+
+			Finalarray = "";
+			Finalarray = sinewindow.sinefinalbuffer;
+			sinewindow.sinefinalbuffer = "";
+
 		} else if (e.getSource() == mnuExit) {
 			System.exit(0);
 
-			// 메모장이란..
 		} else if (e.getSource() == mnuAbout) {
-			new JBeditorabout(this);
-			// System.out.println("다음 계속");
 
-			// 기타1 : 계산기열기
+			new JBeditorabout(this);
+
+			// 기타1 : calcul
 		} else if (e.getSource() == mnuEtc1) {
-			try { // 외부에 있는 파일을 읽을거기 때문에
+			try {
 				Runtime runtime = Runtime.getRuntime();
 				runtime.exec("calc.exe");
 			} catch (Exception e2) {
-				// TODO: handle exception
+
 			}
 
-			// 기타2 : 프리셀 열기
+			// 기타2 : notepad
 		} else if (e.getSource() == mnuEtc2) { // 기타2
-			try { // 외부에 있는 파일을 읽을거기 때문에
-				Runtime.getRuntime().exec("freesell.exe");
+			try {
+
+				Runtime runtime = Runtime.getRuntime();
+				runtime.exec("notepad.exe");
+
 			} catch (Exception e2) {
-				// TODO: handle exception
+
 			}
 
 			// 우클릭시에 나타나는 팝업메뉴에 대한 설정

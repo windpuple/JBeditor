@@ -1,3 +1,10 @@
+/* 
+ *  
+ * 2018.03.26 JB.Jeon ITT(katherine) project start.  
+ * 
+ *  
+ */
+
 package window;
 
 import java.awt.Color;
@@ -17,15 +24,24 @@ public class Rotationwindow extends JDialog implements ActionListener {
 	JButton btn = new JButton("확인");
 	JButton btncancel = new JButton("\uCDE8\uC18C");
 
-	public static String txtSbinbuffer;
+	JLabel notice = new JLabel("");
+
+	String cwbuffer;
+	String ccwbuffer;
+
+	public static String rotationfinalbuffer;
 
 	public Rotationwindow(JFrame frame) {
 		super(frame);
 
+		cwbuffer = "";
+		ccwbuffer = "";
+		rotationfinalbuffer = "";
+
 		setTitle("Map Rotaion Editor");
 		setModal(true);
 
-		btn.setBounds(23, 121, 98, 21);
+		btn.setBounds(23, 153, 98, 21);
 		btn.addActionListener(this);
 		getContentPane().setLayout(null);
 		getContentPane().add(btn);
@@ -38,41 +54,133 @@ public class Rotationwindow extends JDialog implements ActionListener {
 		counterclockwise.setBounds(23, 73, 120, 15);
 		getContentPane().add(counterclockwise);
 
-		btncancel.setBounds(133, 120, 97, 23);
+		btncancel.setBounds(133, 152, 97, 23);
 		getContentPane().add(btncancel);
-		
+		btncancel.addActionListener(this);
+
 		JComboBox cwcombo = new JComboBox();
-		cwcombo.setModel(new DefaultComboBoxModel(new String[] {"90", "180"}));
+		cwcombo.setModel(new DefaultComboBoxModel(new String[] { "", "90", "180", "270" }));
 		cwcombo.setBounds(155, 32, 75, 18);
 		getContentPane().add(cwcombo);
-		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"90", "180"}));
-		comboBox.setBounds(155, 70, 75, 18);
-		getContentPane().add(comboBox);
+
+		cwcombo.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				cwbuffer = cwcombo.getSelectedItem().toString();
+
+			}
+
+		});
+
+		JComboBox ccwcombo = new JComboBox();
+		ccwcombo.setModel(new DefaultComboBoxModel(new String[] { "", "90", "180", "270" }));
+		ccwcombo.setBounds(155, 70, 75, 18);
+		getContentPane().add(ccwcombo);
+
+		notice.setForeground(Color.RED);
+		notice.setBounds(26, 112, 204, 15);
+		getContentPane().add(notice);
+
+		ccwcombo.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				ccwbuffer = ccwcombo.getSelectedItem().toString();
+
+			}
+
+		});
 
 		setBackground(Color.LIGHT_GRAY);
-		setBounds(350, 250, 275, 191);
+		setBounds(350, 250, 275, 223);
 		setVisible(true);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// dispose(); // dialog 닫기
-		if (e.getSource() == btn) { 
-			
-			String rotationarray[] = JBeditormain.Sbinarray.split(" ");
-			
-			for(int i = 0; i < rotationarray.length; i++) {
-			
-				//System.out.println("ration arrary ["+i+"] : "+rotationarray[i]);
-				System.out.print(rotationarray[i]);
-				
-			}
-            
-			
 
-			dispose();
+		if (e.getSource() == btn) {
+
+			// System.out.println(cwbuffer);
+			// System.out.println(ccwbuffer);
+
+			if (cwbuffer == "90") {
+
+				new rotation90();
+
+				rotationfinalbuffer = rotation90.resultbuffer;
+
+				dispose();
+
+			} else if (cwbuffer == "180") {
+
+				new rotation90();
+				JBeditormain.Finalarray = "";
+				JBeditormain.Finalarray = rotation90.resultbuffer;
+				new rotation90();
+
+				rotationfinalbuffer = rotation90.resultbuffer;
+
+				dispose();
+
+			} else if (cwbuffer == "270") {
+
+				new rotation90();
+				JBeditormain.Finalarray = "";
+				JBeditormain.Finalarray = rotation90.resultbuffer;
+				new rotation90();
+				JBeditormain.Finalarray = "";
+				JBeditormain.Finalarray = rotation90.resultbuffer;
+				new rotation90();
+
+				rotationfinalbuffer = rotation90.resultbuffer;
+
+				dispose();
+
+			} else if (ccwbuffer == "90") {
+
+				// System.out.println("실행되니");
+
+				new rotationInverse90();
+
+				rotationfinalbuffer = rotationInverse90.resultbuffer;
+
+				dispose();
+
+			} else if (ccwbuffer == "180") {
+
+				new rotationInverse90();
+				JBeditormain.Finalarray = "";
+				JBeditormain.Finalarray = rotationInverse90.resultbuffer;
+				new rotationInverse90();
+
+				rotationfinalbuffer = rotationInverse90.resultbuffer;
+
+				dispose();
+
+			} else if (ccwbuffer == "270") {
+
+				new rotationInverse90();
+				JBeditormain.Finalarray = "";
+				JBeditormain.Finalarray = rotationInverse90.resultbuffer;
+				new rotationInverse90();
+				JBeditormain.Finalarray = "";
+				JBeditormain.Finalarray = rotationInverse90.resultbuffer;
+				new rotationInverse90();
+
+				rotationfinalbuffer = rotationInverse90.resultbuffer;
+
+				dispose();
+
+			} else {
+
+				notice.setText("");
+				notice.setText("degree 값이 없습니다.");
+
+			}
 
 		} else if (e.getSource() == btncancel) {
 			dispose();
