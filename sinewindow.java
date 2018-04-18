@@ -25,11 +25,12 @@ public class sinewindow extends JDialog implements ActionListener {
 
 	JButton btn = new JButton("\uC0DD\uC131");
 	JButton btncancel = new JButton("\uCDE8\uC18C");
-	JButton nbtn = new JButton("N\uACC4\uC0B0");
+	JButton nbtn = new JButton("M\uACC4\uC0B0");
 
 	JLabel notice = new JLabel("");
 
 	public static String sinefinalbuffer;
+	public static String samplecounttext;
 	public static int Mvalue;
 
 	private JTextField pintext;
@@ -42,6 +43,7 @@ public class sinewindow extends JDialog implements ActionListener {
 		super(frame);
 
 		sinefinalbuffer = "";
+		samplecounttext = "";
 
 		setTitle("sine vector generator");
 		setModal(true);
@@ -96,7 +98,7 @@ public class sinewindow extends JDialog implements ActionListener {
 		getContentPane().add(Fstext);
 		Fstext.setColumns(10);
 
-		JLabel lblMcycle = new JLabel("N(Cycle)");
+		JLabel lblMcycle = new JLabel("M(Cycle)");
 		lblMcycle.setBounds(215, 73, 57, 15);
 		getContentPane().add(lblMcycle);
 
@@ -112,7 +114,7 @@ public class sinewindow extends JDialog implements ActionListener {
 		Mcycletext.setText("1");
 
 		JLabel lblIfUWant = new JLabel(
-				"N\uAC12\uB9CC\uC744 \uC774\uC6A9\uD574\uC11C Sine vector\uB97C \uC0DD\uC131\uD558\uACE0\uC790 \uD55C\uB2E4\uBA74,");
+				"M\uAC12\uB9CC\uC744 \uC774\uC6A9\uD574\uC11C Sine vector\uB97C \uC0DD\uC131\uD558\uACE0\uC790 \uD55C\uB2E4\uBA74,");
 		lblIfUWant.setFont(new Font("굴림", Font.PLAIN, 12));
 		lblIfUWant.setBounds(79, 152, 293, 29);
 		getContentPane().add(lblIfUWant);
@@ -138,12 +140,11 @@ public class sinewindow extends JDialog implements ActionListener {
 
 			if (sampletext.getText().isEmpty() || pintext.getText().isEmpty() || Mcycletext.getText().isEmpty()) {
 				notice.setText("");
-				notice.setText("pin,,sample,M 값이 없습니다.");
+				notice.setText("pin,sample,M 값이 없습니다.");
 
 			} else {
 
 				String pincounttext;
-				String samplecounttext;
 				String sinebridgebuffer;
 
 				pincounttext = pintext.getText();
@@ -164,19 +165,19 @@ public class sinewindow extends JDialog implements ActionListener {
 					sinebuffer[i] = "";
 				}
 
-				if (Integer.parseInt(samplecounttext) <= Math.pow(2, Integer.parseInt(pincounttext))) {
+				//if (Integer.parseInt(samplecounttext) <= Math.pow(2, Integer.parseInt(pincounttext))) {
 
 					for (int i = 0; i < sinebuffer.length; i++) {
 
-						for (int j = 0; j < Integer.numberOfLeadingZeros((int) ((Math.sin(Mvalue * 2 * Math.PI * i / sinebuffer.length) + 1) * ((sinebuffer.length-1) / 2))); j++) {
+						for (int j = 0; j < Integer.numberOfLeadingZeros((int) ((double) ((Math.sin(Mvalue * 2 * Math.PI * i / (sinebuffer.length-1)) + 1) * ((sinebuffer.length-1) / 2)+0.5))); j++) {
 
 							sinebuffer[i] += "0"; // 0을 빈자리 개수만큼 만들어 전진 배치
 
 						}
 
-						if ((int) ((Math.sin(Mvalue * 2 * Math.PI * i / sinebuffer.length) + 1) * ((sinebuffer.length-1) / 2)) != 0) {
+						if ((int) ((double)((Math.sin(Mvalue * 2 * Math.PI * i / (sinebuffer.length-1)) + 1) * ((sinebuffer.length-1) / 2)+0.5)) != 0) {
 
-							sinebuffer[i] = sinebuffer[i] + Integer.toBinaryString((int) ((Math.sin(Mvalue * 2 * Math.PI * i / sinebuffer.length) + 1) * ((sinebuffer.length-1) / 2))) + "\n";
+							sinebuffer[i] = sinebuffer[i] + Integer.toBinaryString((int) ((double)((Math.sin(Mvalue * 2 * Math.PI * i / (sinebuffer.length-1)) + 1) * ((sinebuffer.length-1) / 2)+0.5))) + "\n";
 
 						} else {
 
@@ -201,15 +202,17 @@ public class sinewindow extends JDialog implements ActionListener {
 
 					// System.out.print(sinefinalbuffer);
 
+					new sinedraw(this);
+					
 					dispose();
 				
 				
-				} else {
+				//} else {
 
-					notice.setText("");
-					notice.setText("pin수와 sample수가 맞지 않습니다.");
+				//	notice.setText("");
+				//	notice.setText("pin수와 sample수가 맞지 않습니다.");
 
-				}
+				//}
 
 
 

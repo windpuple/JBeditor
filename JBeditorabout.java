@@ -20,17 +20,17 @@ public class JBeditorabout extends JDialog implements ActionListener {
 
  public JBeditorabout(JFrame frame) {
   super(frame);
-  setTitle("editor infomation");
+  setTitle("ITT infomation");
   setModal(true);    // true : Modal, false : Modeless
   
-  JLabel lbl = new JLabel("editor ver 0.0");
+  JLabel lbl = new JLabel("   ITT ver 0.0 made by JB.Jeon");
   JButton btn = new JButton("»Æ¿Œ");
   btn.addActionListener(this);
   add("Center", lbl);    // BordLayout
   add("South", btn);
   
   setBackground(Color.LIGHT_GRAY);
-  setBounds(350, 250, 150, 150);
+  setBounds(350, 250, 200, 150);
   setVisible(true);
  }
  

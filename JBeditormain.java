@@ -26,7 +26,7 @@ public class JBeditormain extends JFrame implements ActionListener {
 	// 그러므로 메뉴아이템을 여기다가 메뉴
 	JMenuItem mnuNew, mnuSave, mnuOpen, mnuDBE, mnuExit;
 	JMenuItem mnuCopy, mnuPaste, mnuCut, mnuDel, mnuSbinedit, mnurotation;
-	JMenuItem mnulinear, mnusine;
+	JMenuItem mnulinear, mnusine, mnutbl2swav;
 	JMenuItem mnuAbout, mnuEtc1, mnuEtc2;
 
 	// 팝업 메뉴
@@ -103,6 +103,13 @@ public class JBeditormain extends JFrame implements ActionListener {
 
 		mnuGeneration.add(mnulinear);
 		mnuGeneration.add(mnusine);
+		
+		JMenu mnuconversion = new JMenu("Conversion"); // 주메뉴
+		mnutbl2swav = new JMenuItem("tbl2swav");
+		
+		mnuconversion.add(mnutbl2swav);
+		
+		
 
 		JMenu mnuHelp = new JMenu("help");
 		mnuAbout = new JMenuItem("ITT About...");
@@ -117,6 +124,7 @@ public class JBeditormain extends JFrame implements ActionListener {
 		menuBar.add(mnuFile);
 		menuBar.add(mnuEdit);
 		menuBar.add(mnuGeneration);
+		menuBar.add(mnuconversion);
 		menuBar.add(mnuHelp);
 
 		setJMenuBar(menuBar); // Frame에 메뉴바 장착
@@ -134,6 +142,7 @@ public class JBeditormain extends JFrame implements ActionListener {
 		mnurotation.addActionListener(this);
 		mnulinear.addActionListener(this);
 		mnusine.addActionListener(this);
+		mnutbl2swav.addActionListener(this);
 		mnuAbout.addActionListener(this);
 		mnuEtc1.addActionListener(this);
 		mnuEtc2.addActionListener(this);
@@ -320,7 +329,20 @@ public class JBeditormain extends JFrame implements ActionListener {
 			Finalarray = sinewindow.sinefinalbuffer;
 			sinewindow.sinefinalbuffer = "";
 
-		} else if (e.getSource() == mnuExit) {
+		} else if (e.getSource() == mnutbl2swav) {
+
+			new Tbl2SwavWindow(this);
+
+			txtJBeditormain.setText("");
+			txtJBeditormain.setText(Tbl2SwavWindow.tbl2swavfinalbuffer);
+			System.out.print(Tbl2SwavWindow.tbl2swavfinalbuffer);
+
+			Finalarray = "";
+			Finalarray = Tbl2SwavWindow.tbl2swavfinalbuffer;
+			Tbl2SwavWindow.tbl2swavfinalbuffer = "";
+
+		}	else if (e.getSource() == mnuExit) {
+			
 			System.exit(0);
 
 		} else if (e.getSource() == mnuAbout) {

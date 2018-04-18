@@ -26,6 +26,7 @@ public class linearwindow extends JDialog implements ActionListener {
 	JLabel notice = new JLabel("");
 
 	public static String linearfinalbuffer;
+	public static String samplecounttext;
 
 	private JTextField pintext;
 	private JTextField sampletext;
@@ -34,6 +35,7 @@ public class linearwindow extends JDialog implements ActionListener {
 		super(frame);
 
 		linearfinalbuffer = "";
+		samplecounttext = "";
 
 		setTitle("linear vector generator");
 		setModal(true);
@@ -86,7 +88,6 @@ public class linearwindow extends JDialog implements ActionListener {
 			} else {
 
 				String pincounttext;
-				String samplecounttext;
 				String linearbridgebuffer;
 
 				pincounttext = pintext.getText();
@@ -103,7 +104,7 @@ public class linearwindow extends JDialog implements ActionListener {
 					linearbuffer[i] = "";
 				}
 
-				if (Integer.parseInt(samplecounttext) <= Math.pow(2, Integer.parseInt(pincounttext))) {
+			
 
 					for (int i = 0; i < linearbuffer.length; i++) {
 
@@ -129,11 +130,7 @@ public class linearwindow extends JDialog implements ActionListener {
 						// System.out.println(linearbuffer[i]);
 
 					}
-				} else {
-
-					new LinearErrorMessage(this);
-
-				}
+				
 
 				for (int i = 0; i < linearbuffer.length; i++) {
 
@@ -143,6 +140,8 @@ public class linearwindow extends JDialog implements ActionListener {
 
 				linearfinalbuffer = linearbridgebuffer;
 
+				new lineardraw(this);
+				
 				dispose();
 
 			}
