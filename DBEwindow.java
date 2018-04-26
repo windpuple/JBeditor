@@ -37,21 +37,6 @@ public class DBEwindow extends JFrame {
 	
 
 	public DBEwindow() {
-
-		// DBEarrary = "DBE test 중입니다.";
-		/*
-		int p1 = JBeditormain.Finalarray.indexOf("WAFER ID");
-		int p2 = JBeditormain.Finalarray.indexOf("FLAT ZONE");
-		int p3 = JBeditormain.Finalarray.indexOf("LOT Number");
-		
-		waferid = JBeditormain.Finalarray.substring(p1+11,);
-		flatzone = JBeditormain.Finalarray.substring(p2+10);
-		lotnumber = JBeditormain.Finalarray.substring(p3+10);
-		lotnumber = JBeditormain.Finalarray.subs
-		System.out.println("wafer id : "+waferid);
-		System.out.println("flat zone : "+flatzone);
-		System.out.println("lot number : "+lotnumber);
-		*/
 		
 		String header[] = JBeditormain.Finalarray.split(":");
 		
@@ -59,11 +44,9 @@ public class DBEwindow extends JFrame {
 		for(int i = 0; i < header.length; i++) {
 			int p1 = header[i].indexOf(")");
 			String sub = header[i].substring(p1-2);
-			//System.out.println("hedear sub 1 "+i+" : "+sub);
-			
+						
 			header[i] = header[i].replace(sub, "");
-								
-			//System.out.println("hedear "+i+" : "+header[i]);
+											
 		}
         
 		
@@ -72,22 +55,22 @@ public class DBEwindow extends JFrame {
 
 			cutmap[i] = JBeditormain.Finalarray.charAt(i);
 
-			// System.out.println("debug 0 "+firstflag+flag+BSflag+BEflag+cutmap[i]);
+			
 
 			if (cutmap[i] == '\n' && flag == 1 && BEflag == 0) {
 
 				BSflag = 1;
-				// System.out.println("debug 1"+firstflag+flag+BSflag+BEflag+cutmap[i]);
+				
 
 			} else if (cutmap[i] == '|' && flag == 0 && firstflag == 0) {
 
 				BEflag = 1;
-				// System.out.println("debug 2 "+firstflag+flag+BSflag+BEflag+cutmap[i]);
+				
 
 			} else if (BSflag == 1 && BEflag == 0) {
 
 				binsize++;
-				// System.out.println("binsize 정보 : " + binsize);
+				
 
 			}
 
@@ -132,20 +115,11 @@ public class DBEwindow extends JFrame {
 			}
 
 		}
-
-		// System.out.print("def buffer1 내용:");
-		// System.out.print(defbuffer);
-		
-		
+	
 		
 		DBEsumarrary = str1+header[2].substring(1)+hype+header[3].substring(1)+enter;
-		//System.out.print(DBEsumarrary);
 		
 		DBEsumarrary = DBEsumarrary+str2+header[4].substring(1)+enter+enter;
-		//System.out.print(DBEsumarrary);
-		
-		
-		
 
 		for (int i = 0; i < cnt; i++) {
 			DBEarrary += Character.toString(defbuffer[i]);
@@ -178,22 +152,16 @@ public class DBEwindow extends JFrame {
 			DBEarrary = DBEarrary.replace(" ", ".");
 
 		}
-
-		//System.out.print("debug 1 : " + DBEsumarrary + "\n");
 		
 		DBEsumarrary = DBEsumarrary + DBEarrary;
 		
-		//System.out.print("debug 2 : " + DBEsumarrary + "\n");
-		// System.out.print(defbuffer);
-
 		FileDialog dialog = new FileDialog(this, "Save", FileDialog.SAVE);
-		dialog.setDirectory("."); // .은 지금폴더
-		dialog.setVisible(true); // 박스는 그냥 틀이고
+		dialog.setDirectory("."); 
+		dialog.setVisible(true); 
 		if (dialog.getFile() == null)
-			return; // 이걸빼면 취소를 해도 저장이됨
-		String dfName = dialog.getDirectory() + dialog.getFile(); // 경로명 파일명
-		// System.out.println(dfName);
-		// 실제 저장은 여기에서
+			return; 
+		String dfName = dialog.getDirectory() + dialog.getFile(); 
+		
 		try {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(dfName));
 			writer.write(DBEsumarrary);

@@ -23,7 +23,7 @@ public class JBeditormain extends JFrame implements ActionListener {
 	JTextArea txtJBeditormain = new JTextArea("", 100, 400);
 	String copyText;
 
-	JMenuItem mnuNew, mnuSave, mnuOpen, mnuDBE, mnuExit;
+	JMenuItem mnuNew, mnuSave, mnuOpen, mnuDBE, mnuMAP,  mnuExit;
 	JMenuItem mnuCopy, mnuPaste, mnuCut, mnuDel, mnuSbinedit, mnurotation;
 	JMenuItem mnulinear, mnusine, mnutbl2swav;
 	JMenuItem mnuAbout, mnuEtc1, mnuEtc2;
@@ -33,11 +33,15 @@ public class JBeditormain extends JFrame implements ActionListener {
 	JMenuItem m_white, m_blue, m_yellow;
 
 	public static String Finalarray = "";
-	public static String txtJBeditormainbuffer = "";
+	//public static String txtJBeditormainbuffer = "";
+	public static StringBuilder txtJBeditormainbuffer = new StringBuilder();
+	
 
 	public JBeditormain() {
 		super("Intergrated Test Tool");
 
+		txtJBeditormainbuffer.setLength(0);
+		
 		initLayout();
 		menuLayout();
 		setBounds(200, 100, 800, 900);
@@ -73,11 +77,14 @@ public class JBeditormain extends JFrame implements ActionListener {
 		mnuNew = new JMenuItem("New");
 		mnuOpen = new JMenuItem("Open...");
 		mnuSave = new JMenuItem("Save...");
-		mnuDBE = new JMenuItem("Create DBE...");
+		mnuMAP = new JMenuItem("Back2Map...");
+		mnuDBE = new JMenuItem("Map2DBE...");
 		mnuExit = new JMenuItem("Exit");
 		mnuFile.add(mnuNew);
 		mnuFile.add(mnuOpen);
 		mnuFile.add(mnuSave);
+		mnuFile.addSeparator();
+		mnuFile.add(mnuMAP);
 		mnuFile.add(mnuDBE);
 		mnuFile.addSeparator();
 		mnuFile.add(mnuExit);
@@ -87,12 +94,13 @@ public class JBeditormain extends JFrame implements ActionListener {
 		mnuPaste = new JMenuItem("paste");
 		mnuCut = new JMenuItem("Cut");
 		mnuDel = new JMenuItem("Delete");
-		mnuSbinedit = new JMenuItem("SbinEdit");
+		mnuSbinedit = new JMenuItem("MapSbinEdit");
 		mnurotation = new JMenuItem("MapRotaion");
 		mnuEdit.add(mnuCopy);
 		mnuEdit.add(mnuPaste);
 		mnuEdit.add(mnuCut);
 		mnuEdit.add(mnuDel);
+		mnuEdit.addSeparator();
 		mnuEdit.add(mnuSbinedit);
 		mnuEdit.add(mnurotation);
 
@@ -129,6 +137,7 @@ public class JBeditormain extends JFrame implements ActionListener {
 		mnuNew.addActionListener(this);
 		mnuSave.addActionListener(this);
 		mnuOpen.addActionListener(this);
+		mnuMAP.addActionListener(this);
 		mnuDBE.addActionListener(this);
 		mnuExit.addActionListener(this);
 		mnuCopy.addActionListener(this);
@@ -177,7 +186,6 @@ public class JBeditormain extends JFrame implements ActionListener {
 		if (e.getSource() == btnCopy || e.getSource() == mnuCopy) {
 
 			copyText = txtJBeditormain.getSelectedText();
-			;
 
 		} else if (e.getSource() == btnPaste || e.getSource() == mnuPaste) {
 
@@ -201,7 +209,6 @@ public class JBeditormain extends JFrame implements ActionListener {
 
 			txtJBeditormain.setText("");
 			txtJBeditormain.setText(Sbinwindow.txtSbinbuffer);
-			System.out.print(Sbinwindow.txtSbinbuffer);
 
 			Finalarray = "";
 			Finalarray = Sbinwindow.txtSbinbuffer;
@@ -213,7 +220,6 @@ public class JBeditormain extends JFrame implements ActionListener {
 
 			txtJBeditormain.setText("");
 			txtJBeditormain.setText(Rotationwindow.rotationfinalbuffer);
-			System.out.print(Rotationwindow.rotationfinalbuffer);
 
 			Finalarray = "";
 			Finalarray = Rotationwindow.rotationfinalbuffer;
@@ -240,29 +246,52 @@ public class JBeditormain extends JFrame implements ActionListener {
 				BufferedReader reader = new BufferedReader(new FileReader(dfName));
 				// FileReader reader = new FileReader(dfName);
 				txtJBeditormain.setText("");
-				int line = 0;
+				String line;
 				int m = 0;
 
 				char[] origin = new char[fileSize];
 
+				System.out.println("1");
+				
+				while ((line = reader.readLine()) != null) {
+
+					txtJBeditormainbuffer.append(line);
+					txtJBeditormainbuffer.append('\n');
+				}
+				
+				
+				/*
 				while ((line = reader.read()) != -1) {
 
 					// txtJBeditormain.append(linechar + "\n"); // txtJBeditormain에 추가 line 단위 처리시
 					origin[m] = (char) line; // txtJBeditormain에 추가 char 단위 처리시
 					m++;
 				}
+				*/
+				
 
+				System.out.println("2");
+				
+				/*
 				for (int i = 0; i < origin.length; i++) {
 					txtJBeditormainbuffer += Character.toString(origin[i]);
 				}
+				*/
+				
 
-				txtJBeditormain.setText(txtJBeditormainbuffer);
-				System.out.print(txtJBeditormainbuffer);
-
+				System.out.println("3");
+				
+				txtJBeditormain.setText(txtJBeditormainbuffer.toString());
+				
+				System.out.println("4");
+				
 				Finalarray = "";
-				Finalarray = txtJBeditormainbuffer;
-				txtJBeditormainbuffer = "";
-
+				Finalarray = txtJBeditormainbuffer.toString();
+				//txtJBeditormainbuffer = "";
+				txtJBeditormainbuffer.setLength(0);
+				
+				System.out.println("5");
+				
 				reader.close();
 
 				setTitle(dialog.getFile() + " - ITT");
@@ -289,17 +318,20 @@ public class JBeditormain extends JFrame implements ActionListener {
 				JOptionPane.showMessageDialog(this, "Save error");
 			}
 
+		} else if (e.getSource() == mnuMAP) {
+
+			new MAPwindow();
+			
 		} else if (e.getSource() == mnuDBE) {
 
 			new DBEwindow();
-
+			
 		} else if (e.getSource() == mnulinear) {
 
 			new linearwindow(this);
 
 			txtJBeditormain.setText("");
 			txtJBeditormain.setText(linearwindow.linearfinalbuffer);
-			System.out.print(linearwindow.linearfinalbuffer);
 
 			Finalarray = "";
 			Finalarray = linearwindow.linearfinalbuffer;
@@ -311,7 +343,6 @@ public class JBeditormain extends JFrame implements ActionListener {
 
 			txtJBeditormain.setText("");
 			txtJBeditormain.setText(sinewindow.sinefinalbuffer);
-			System.out.print(sinewindow.sinefinalbuffer);
 
 			Finalarray = "";
 			Finalarray = sinewindow.sinefinalbuffer;
