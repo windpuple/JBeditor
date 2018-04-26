@@ -18,6 +18,9 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JSlider;
+import java.awt.Font;
+import java.awt.SystemColor;
 
 public class linearwindow extends JDialog implements ActionListener {
 
@@ -30,6 +33,8 @@ public class linearwindow extends JDialog implements ActionListener {
 
 	private JTextField pintext;
 	private JTextField sampletext;
+	public static JSlider Linearslider = new JSlider(JSlider.HORIZONTAL, 0, 100, 50);
+	private JLabel linearsliderLabel = new JLabel("Scale Adjust");
 
 	public linearwindow(JFrame frame) {
 		super(frame);
@@ -40,7 +45,7 @@ public class linearwindow extends JDialog implements ActionListener {
 		setTitle("linear vector generator");
 		setModal(true);
 
-		btn.setBounds(23, 156, 98, 21);
+		btn.setBounds(23, 116, 98, 21);
 		btn.addActionListener(this);
 		getContentPane().setLayout(null);
 		getContentPane().add(btn);
@@ -53,7 +58,7 @@ public class linearwindow extends JDialog implements ActionListener {
 		counterclockwise.setBounds(23, 73, 120, 15);
 		getContentPane().add(counterclockwise);
 
-		btncancel.setBounds(133, 155, 97, 23);
+		btncancel.setBounds(137, 115, 97, 23);
 		getContentPane().add(btncancel);
 		btncancel.addActionListener(this);
 
@@ -71,8 +76,23 @@ public class linearwindow extends JDialog implements ActionListener {
 		notice.setBounds(23, 116, 224, 15);
 		getContentPane().add(notice);
 
+		Linearslider.setPaintLabels(true);
+		Linearslider.setPaintTicks(true);
+		Linearslider.setPaintTrack(true);
+		Linearslider.setMajorTickSpacing(50);
+		Linearslider.setMinorTickSpacing(10);
+
+		Linearslider.setBounds(34, 177, 200, 38);
+		getContentPane().add(Linearslider);
+
+		linearsliderLabel.setForeground(SystemColor.textHighlight);
+		linearsliderLabel.setFont(new Font("굴림", Font.BOLD, 12));
+		linearsliderLabel.setBounds(85, 152, 97, 15);
+
+		getContentPane().add(linearsliderLabel);
+
 		setBackground(Color.LIGHT_GRAY);
-		setBounds(350, 250, 275, 226);
+		setBounds(350, 250, 275, 264);
 		setVisible(true);
 	}
 
@@ -93,8 +113,6 @@ public class linearwindow extends JDialog implements ActionListener {
 				pincounttext = pintext.getText();
 				samplecounttext = sampletext.getText();
 
-				// Integer.parseInt(pincounttext)
-
 				String[] linearbuffer = new String[Integer.parseInt(samplecounttext)];
 
 				linearbridgebuffer = "";
@@ -104,33 +122,28 @@ public class linearwindow extends JDialog implements ActionListener {
 					linearbuffer[i] = "";
 				}
 
-			
+				for (int i = 0; i < linearbuffer.length; i++) {
 
-					for (int i = 0; i < linearbuffer.length; i++) {
+					for (int j = 0; j < Integer.numberOfLeadingZeros(i); j++) {
 
-						for (int j = 0; j < Integer.numberOfLeadingZeros(i); j++) {
-
-							linearbuffer[i] += "0"; // 0을 빈자리 개수만큼 만들어 전진 배치
-
-						}
-
-						if (i != 0) {
-
-							linearbuffer[i] = linearbuffer[i] + Integer.toBinaryString(i) + "\n";
-
-						} else {
-
-							linearbuffer[i] = linearbuffer[i] + "\n";
-
-						}
-
-						String sub = linearbuffer[i].substring(32 - Integer.parseInt(pincounttext));
-						linearbuffer[i] = sub;
-
-						// System.out.println(linearbuffer[i]);
+						linearbuffer[i] += "0"; // 0을 빈자리 개수만큼 만들어 전진 배치
 
 					}
-				
+
+					if (i != 0) {
+
+						linearbuffer[i] = linearbuffer[i] + Integer.toBinaryString(i) + "\n";
+
+					} else {
+
+						linearbuffer[i] = linearbuffer[i] + "\n";
+
+					}
+
+					String sub = linearbuffer[i].substring(32 - Integer.parseInt(pincounttext));
+					linearbuffer[i] = sub;
+
+				}
 
 				for (int i = 0; i < linearbuffer.length; i++) {
 
@@ -141,7 +154,7 @@ public class linearwindow extends JDialog implements ActionListener {
 				linearfinalbuffer = linearbridgebuffer;
 
 				new lineardraw(this);
-				
+
 				dispose();
 
 			}

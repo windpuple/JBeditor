@@ -20,6 +20,8 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
+import javax.swing.JSlider;
+import java.awt.SystemColor;
 
 public class sinewindow extends JDialog implements ActionListener {
 
@@ -28,6 +30,7 @@ public class sinewindow extends JDialog implements ActionListener {
 	JButton nbtn = new JButton("M\uACC4\uC0B0");
 
 	JLabel notice = new JLabel("");
+	public static JSlider SineScaleSlider = new JSlider(JSlider.HORIZONTAL, 0, 100, 50);
 
 	public static String sinefinalbuffer;
 	public static String samplecounttext;
@@ -128,8 +131,23 @@ public class sinewindow extends JDialog implements ActionListener {
 		notice.setBounds(79, 98, 316, 15);
 		getContentPane().add(notice);
 
+		SineScaleSlider.setPaintLabels(true);
+		SineScaleSlider.setPaintTicks(true);
+		SineScaleSlider.setPaintTrack(true);
+		SineScaleSlider.setMajorTickSpacing(50);
+		SineScaleSlider.setMinorTickSpacing(10);
+
+		SineScaleSlider.setBounds(196, 207, 200, 44);
+		getContentPane().add(SineScaleSlider);
+
+		JLabel SlideLabel = new JLabel("Scale Adjust");
+		SlideLabel.setFont(new Font("굴림", Font.BOLD, 12));
+		SlideLabel.setForeground(SystemColor.textHighlight);
+		SlideLabel.setBounds(105, 225, 98, 15);
+		getContentPane().add(SlideLabel);
+
 		setBackground(Color.LIGHT_GRAY);
-		setBounds(350, 250, 468, 260);
+		setBounds(350, 250, 468, 300);
 		setVisible(true);
 	}
 
@@ -150,71 +168,57 @@ public class sinewindow extends JDialog implements ActionListener {
 				pincounttext = pintext.getText();
 				samplecounttext = sampletext.getText();
 
-				// Integer.parseInt(pincounttext)
-
 				String[] sinebuffer = new String[Integer.parseInt(samplecounttext)];
 
 				sinebridgebuffer = "";
 
 				Mvalue = Integer.parseInt(Mcycletext.getText());
-				//System.out.println("M값 확인");
-				//System.out.println(Mvalue);
-				
+
 				for (int i = 0; i < sinebuffer.length; i++) {
 
 					sinebuffer[i] = "";
 				}
 
-				//if (Integer.parseInt(samplecounttext) <= Math.pow(2, Integer.parseInt(pincounttext))) {
+				for (int i = 0; i < sinebuffer.length; i++) {
 
-					for (int i = 0; i < sinebuffer.length; i++) {
+					for (int j = 0; j < Integer.numberOfLeadingZeros(
+							(int) ((double) ((Math.sin(Mvalue * 2 * Math.PI * i / (sinebuffer.length - 1)) + 1)
+									* ((sinebuffer.length - 1) / 2) + 0.5))); j++) {
 
-						for (int j = 0; j < Integer.numberOfLeadingZeros((int) ((double) ((Math.sin(Mvalue * 2 * Math.PI * i / (sinebuffer.length-1)) + 1) * ((sinebuffer.length-1) / 2)+0.5))); j++) {
-
-							sinebuffer[i] += "0"; // 0을 빈자리 개수만큼 만들어 전진 배치
-
-						}
-
-						if ((int) ((double)((Math.sin(Mvalue * 2 * Math.PI * i / (sinebuffer.length-1)) + 1) * ((sinebuffer.length-1) / 2)+0.5)) != 0) {
-
-							sinebuffer[i] = sinebuffer[i] + Integer.toBinaryString((int) ((double)((Math.sin(Mvalue * 2 * Math.PI * i / (sinebuffer.length-1)) + 1) * ((sinebuffer.length-1) / 2)+0.5))) + "\n";
-
-						} else {
-
-							sinebuffer[i] = sinebuffer[i] + "\n";
-
-						}
-
-						String sub = sinebuffer[i].substring(32 - Integer.parseInt(pincounttext));
-						sinebuffer[i] = sub;
-
-						//System.out.println((int) ((Math.sin(Mvalue * 2 * Math.PI * i / sinebuffer.length) + 1) * ((sinebuffer.length-1) / 2)));
-
-					}
-				
-					for (int i = 0; i < sinebuffer.length; i++) {
-
-						sinebridgebuffer += sinebuffer[i];
+						sinebuffer[i] += "0"; // 0을 빈자리 개수만큼 만들어 전진 배치
 
 					}
 
-					sinefinalbuffer = sinebridgebuffer;
+					if ((int) ((double) ((Math.sin(Mvalue * 2 * Math.PI * i / (sinebuffer.length - 1)) + 1)
+							* ((sinebuffer.length - 1) / 2) + 0.5)) != 0) {
 
-					// System.out.print(sinefinalbuffer);
+						sinebuffer[i] = sinebuffer[i] + Integer.toBinaryString(
+								(int) ((double) ((Math.sin(Mvalue * 2 * Math.PI * i / (sinebuffer.length - 1)) + 1)
+										* ((sinebuffer.length - 1) / 2) + 0.5)))
+								+ "\n";
 
-					new sinedraw(this);
-					
-					dispose();
-				
-				
-				//} else {
+					} else {
 
-				//	notice.setText("");
-				//	notice.setText("pin수와 sample수가 맞지 않습니다.");
+						sinebuffer[i] = sinebuffer[i] + "\n";
 
-				//}
+					}
 
+					String sub = sinebuffer[i].substring(32 - Integer.parseInt(pincounttext));
+					sinebuffer[i] = sub;
 
+				}
+
+				for (int i = 0; i < sinebuffer.length; i++) {
+
+					sinebridgebuffer += sinebuffer[i];
+
+				}
+
+				sinefinalbuffer = sinebridgebuffer;
+
+				new sinedraw(this);
+
+				dispose();
 
 			}
 
@@ -241,7 +245,6 @@ public class sinewindow extends JDialog implements ActionListener {
 
 				Mvalue = (int) Mvaluebuf;
 
-				
 				Mcycletext.setText("");
 				Mcycletext.setText(Integer.toString(Mvalue));
 

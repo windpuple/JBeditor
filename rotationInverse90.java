@@ -185,16 +185,6 @@ public class rotationInverse90 {
 
 		}
 
-		//System.out.println("3글자 string 배열 출력");
-		//for (int i = 0; i < sylength; i++) {
-
-		//	for (int j = 0; j < sxlength; j++) {
-
-		//		System.out.print(rotationarray[i][j]);
-
-		//	}
-
-		//}
 
 		// map을 시계방향으로 돌려, rotation90 string 2차원 배열에 저장.
 
