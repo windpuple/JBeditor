@@ -23,12 +23,18 @@ public class rotationInverse90 {
 
 		int flag = 0;
 		int k = 0;
-		int enter = 0;
+		int Rbinchars = 0;
 		int firsttouch = 0;
-		int cnt = 0;
+		int Mapchar = 0;
 		int xlength = 0, ylength = 0;
+		int maxbinchar = 0;
+		int Ycountlenght = 0;
 
 		resultbuffer = "";
+
+		for (int i = 0; i < read.length; i++) {
+			rotationbuffer[i] = ' ';
+		}
 
 		// 파일로 읽어드린, map을 char 전체 map인 read와 map 부분인 rotationbuffer 배열로 분리 .
 
@@ -57,7 +63,15 @@ public class rotationInverse90 {
 
 					rotationbuffer[k] = read[j];
 
-					k++;
+					if (rotationbuffer[0] == '\n') {
+
+						// first cell is enter character, do not nothing
+
+					} else {
+
+						k++;
+
+					}
 
 				}
 
@@ -69,9 +83,14 @@ public class rotationInverse90 {
 
 			}
 
-			if (firsttouch == 1 && flag == 0) {
+		}
 
-				cnt++;
+		for (int i = 0; i < rotationbuffer.length; i++) {
+
+			if (rotationbuffer[i] == '\n' && rotationbuffer[i + 1] == '\n') {
+
+				rotationbuffer[i + 1] = '\0';
+				rotationbuffer[i] = '\n';
 
 			}
 
@@ -80,6 +99,36 @@ public class rotationInverse90 {
 		// 읽어온 char을 string totalbuffer로 변환.
 		for (int i = 0; i < read.length; i++) {
 			totalbuffer += Character.toString(read[i]);
+		}
+
+		// bin char 추
+		int tailindex = JBeditormain.Finalarray.indexOf("SoftBIN");
+		String taillinebuf = JBeditormain.Finalarray.substring(tailindex);
+		String[] tailline = taillinebuf.split("\n");
+
+		String[][] tailcomponent = new String[tailline.length][];
+
+		for (int i = 0; i < tailline.length; i++) {
+
+			tailcomponent[i] = tailline[i].split("\\s");
+
+		}
+
+		for (int i = 0; i < tailcomponent.length - 1; i++) {
+
+			for (int j = 0; j < tailcomponent[i][2].length(); j++) {
+
+				maxbinchar++;
+
+			}
+
+			if (maxbinchar > Rbinchars) {
+
+				Rbinchars = maxbinchar;
+			}
+
+			maxbinchar = 0;
+
 		}
 
 		// totalbuffer에서 필요한 head 부분만 header와 tail로 string 저장.
@@ -103,8 +152,6 @@ public class rotationInverse90 {
 
 		}
 
-		// System.out.println("ylength : " + ylength);
-
 		for (int i = 0; i < rotationbuffer.length; i++) {
 
 			xlength++;
@@ -117,18 +164,47 @@ public class rotationInverse90 {
 
 		}
 
-		// System.out.println("xlength : " + xlength);
+		for (int i = 0; i < rotationbuffer.length; i++) {
 
-		int sxlength = (xlength / cnt) + 1;
+			if ((rotationbuffer[i] < 47 || rotationbuffer[i] > 58) && rotationbuffer[i] != ' '
+					&& rotationbuffer[i] != '\n') {
+
+				Mapchar = 1;
+
+			}
+
+		}
+
+		// Map 마다 char를 찍는 갯수의 상이함을 보상.
+		if (Rbinchars == 2) {
+
+			Rbinchars = Rbinchars - 1;
+
+		} else if (Mapchar == 1) {
+
+			Rbinchars = 1;
+
+		}
+
+		int sxlength = 0;
+
+		if (Rbinchars == 1) {
+
+			sxlength = (xlength / Rbinchars);
+
+		} else {
+
+			sxlength = (xlength / Rbinchars) + 1;
+
+		}
+
 		int sylength = ylength;
-		int count = cnt;
+		int count = Rbinchars;
 		int ylength90 = sxlength - 1;
 		int xlength90 = sylength + 1;
 
 		String[][] rotationarray = new String[sylength][sxlength];
 		String[][] rotationarray90 = new String[ylength90][xlength90];
-
-		String imsibuffer = "";
 
 		// body string에 들어갈 이차원 배열 두개를 초기화.
 
@@ -158,39 +234,33 @@ public class rotationInverse90 {
 
 			for (int z = 0; z < sxlength; z++, h = h + count) {
 
-				for (int m = 0; m < cnt; m++) {
+				for (int m = 0; m < Rbinchars; m++) {
 
-					if (z == sxlength - 1) {
+					rotationarray[x][z] += Character.toString(rotationbuffer[h + m]);
 
-						rotationarray[x][z] = "\n";
+					if (rotationbuffer[h + m] == '\n') {
 
-						m = cnt;
+						count = 1;
+						m = Rbinchars;
 
 					} else {
 
-						imsibuffer = Character.toString(rotationbuffer[h + m]);
-						rotationarray[x][z] += imsibuffer;
+						count = Rbinchars;
 
 					}
 
 				}
 
-				if (rotationarray[x][z] == "\n") {
-					count = 1;
-				} else {
-					count = cnt;
-				}
-
 			}
 
 		}
+		
+		// map을 반시계방향으로 돌려, rotation90 string 2차원 배열에 저장.
 
+		
+		for (int i = 0, z = sxlength -2; i < ylength90; i++, z--) {
 
-		// map을 시계방향으로 돌려, rotation90 string 2차원 배열에 저장.
-
-		for (int i = 0, z = sxlength - 2; i < ylength90; i++, z--) {
-
-			for (int j = 0, x = 0; j < xlength90; j++, x++) {
+			for (int j = 0, x = 0 ; j < xlength90; j++, x++) {
 
 				if (j == xlength90 - 1) {
 
@@ -202,10 +272,14 @@ public class rotationInverse90 {
 
 				}
 
+		
 			}
 
 		}
-
+		
+	
+		
+		
 		// 90도 돌아간 map을 body string에 저장
 		for (int i = 0; i < ylength90; i++) {
 
@@ -216,9 +290,24 @@ public class rotationInverse90 {
 			}
 
 		}
-		
-		//System.out.println("바디 인버스 90도");
-		//System.out.print(body);
+
+		if (ylength90 > 99 && ylength90 < 1000) {
+
+			Ycountlenght = 4;
+
+		}
+
+		if (ylength90 > 9 && ylength90 < 100) {
+
+			Ycountlenght = 3;
+
+		}
+
+		if (ylength90 > -1 && ylength90 < 10) {
+
+			Ycountlenght = 2;
+
+		}
 
 		// resultbuffer string에 header string 삽입.
 
@@ -226,131 +315,460 @@ public class rotationInverse90 {
 		resultbuffer += "\n**********  WAFER MAP  **********\n\n";
 
 		// numbering x축
+		
 
-		for (int i = 0; i < cnt; i++) {
 
-			resultbuffer += " ";
-		}
-
-		if (cnt == 4) {
-
-			for (int i = 1; i < xlength90; i++) {
-
-				if (i < xlength90 - 1) {
-
-					resultbuffer += "  " + String.valueOf(i / 100);
-
-				} else if (i == xlength90 - 1) {
-
-					resultbuffer += "  " + String.valueOf(i / 100) + "\n";
-
-				}
-
-			}
-
-			for (int i = 0; i < cnt; i++) {
-
-				resultbuffer += " ";
-			}
-
-			for (int i = 1; i < xlength90; i++) {
-
-				if (i < xlength90 - 1) {
-
-					resultbuffer += "  " + String.valueOf(i / 10);
-
-				} else if (i == xlength90 - 1) {
-
-					resultbuffer += "  " + String.valueOf(i / 10) + "\n";
-
-				}
-
-			}
-
-			for (int i = 0; i < cnt; i++) {
-
-				resultbuffer += " ";
-			}
-
-			for (int i = 1; i < xlength90; i++) {
-
-				if (i < xlength90 - 1) {
-
-					resultbuffer += "  " + String.valueOf(i % 10);
-
-				} else if (i == xlength90 - 1) {
-
-					resultbuffer += "  " + String.valueOf(i % 10) + "\n";
-
-				}
-
-			}
-
-		} else if (cnt == 3) {
-
-			for (int i = 1; i < xlength90; i++) {
-
-				if (i < xlength90 - 1) {
-
-					resultbuffer += "  " + String.valueOf(i / 10);
-
-				} else if (i == xlength90 - 1) {
-
-					resultbuffer += "  " + String.valueOf(i / 10) + "\n";
-
-				}
-
-			}
-
-			for (int i = 0; i < cnt; i++) {
-
-				resultbuffer += " ";
-			}
-
-			for (int i = 1; i < xlength90; i++) {
-
-				if (i < xlength90 - 1) {
-
-					resultbuffer += "  " + String.valueOf(i % 10);
-
-				} else if (i == xlength90 - 1) {
-
-					resultbuffer += "  " + String.valueOf(i % 10) + "\n";
-
-				}
-
-			}
-
-		} else if (cnt == 2) {
-
-			for (int i = 1; i < xlength90; i++) {
-
-				if (i < xlength90 - 1) {
-
-					resultbuffer += "  " + String.valueOf(i);
-
-				} else if (i == xlength90 - 1) {
-
-					resultbuffer += "  " + String.valueOf(i) + "\n";
-
-				}
-
-			}
-
-		}
-
-		for (int i = 0; i < cnt; i++) {
+		for (int i = 0; i < Ycountlenght; i++) {
 
 			resultbuffer += " ";
 		}
 
-		for (int i = cnt; i < xlength90 * cnt + 1; i++) {
+		if (Rbinchars == 4) {
 
-			if ((i - (cnt - 1)) % (cnt * 5) == 0) {
+			if (xlength90 > 99) {
+
+				for (int i = 1; i < xlength90; i++) {
+
+					if (i < xlength90 - 1) {
+
+						resultbuffer += "   " + String.valueOf(i / 100);
+
+					} else if (i == xlength90 - 1) {
+
+						resultbuffer += "   " + String.valueOf(i / 100) + "\n";
+
+					}
+
+				}
+
+				for (int i = 0; i < Ycountlenght; i++) {
+
+					resultbuffer += " ";
+				}
+
+				for (int i = 1; i < xlength90; i++) {
+
+					if (i < xlength90 - 1) {
+
+						resultbuffer += "   " + String.valueOf(i / 10);
+
+					} else if (i == xlength90 - 1) {
+
+						resultbuffer += "   " + String.valueOf(i / 10) + "\n";
+
+					}
+
+				}
+
+				for (int i = 0; i < Ycountlenght; i++) {
+
+					resultbuffer += " ";
+				}
+
+				for (int i = 1; i < xlength90; i++) {
+
+					if (i < xlength90 - 1) {
+
+						resultbuffer += "   " + String.valueOf(i % 10);
+
+					} else if (i == xlength90 - 1) {
+
+						resultbuffer += "   " + String.valueOf(i % 10) + "\n";
+
+					}
+
+				}
+
+			} else if (xlength90 < 99 && xlength90 > 9) {
+
+				for (int i = 1; i < xlength90; i++) {
+
+					if (i < xlength90 - 1) {
+
+						resultbuffer += "   " + String.valueOf(i / 10);
+
+					} else if (i == xlength90 - 1) {
+
+						resultbuffer += "   " + String.valueOf(i / 10) + "\n";
+
+					}
+
+				}
+
+				for (int i = 0; i < Ycountlenght; i++) {
+
+					resultbuffer += " ";
+				}
+
+				for (int i = 1; i < xlength90; i++) {
+
+					if (i < xlength90 - 1) {
+
+						resultbuffer += "   " + String.valueOf(i % 10);
+
+					} else if (i == xlength90 - 1) {
+
+						resultbuffer += "   " + String.valueOf(i % 10) + "\n";
+
+					}
+
+				}
+
+			} else if (xlength90 < 10) {
+
+				for (int i = 1; i < xlength90; i++) {
+
+					if (i < xlength90 - 1) {
+
+						resultbuffer += "   " + String.valueOf(i % 10);
+
+					} else if (i == xlength90 - 1) {
+
+						resultbuffer += "   " + String.valueOf(i % 10) + "\n";
+
+					}
+
+				}
+			}
+
+		} else if (Rbinchars == 3) {
+
+			if (xlength90 > 99) {
+
+				for (int i = 1; i < xlength90; i++) {
+
+					if (i < xlength90 - 1) {
+
+						resultbuffer += "  " + String.valueOf(i / 100);
+
+					} else if (i == xlength90 - 1) {
+
+						resultbuffer += "  " + String.valueOf(i / 100) + "\n";
+
+					}
+
+				}
+
+				for (int i = 0; i < Ycountlenght; i++) {
+
+					resultbuffer += " ";
+				}
+
+				for (int i = 1; i < xlength90; i++) {
+
+					if (i < xlength90 - 1) {
+
+						resultbuffer += "  " + String.valueOf(i / 10);
+
+					} else if (i == xlength90 - 1) {
+
+						resultbuffer += "  " + String.valueOf(i / 10) + "\n";
+
+					}
+
+				}
+
+				for (int i = 0; i < Ycountlenght; i++) {
+
+					resultbuffer += " ";
+				}
+
+				for (int i = 1; i < xlength90; i++) {
+
+					if (i < xlength90 - 1) {
+
+						resultbuffer += "  " + String.valueOf(i % 10);
+
+					} else if (i == xlength90 - 1) {
+
+						resultbuffer += "  " + String.valueOf(i % 10) + "\n";
+
+					}
+
+				}
+
+			} else if (xlength90 < 99 && xlength90 > 9) {
+
+				for (int i = 1; i < xlength90; i++) {
+
+					if (i < xlength90 - 1) {
+
+						resultbuffer += "  " + String.valueOf(i / 10);
+
+					} else if (i == xlength90 - 1) {
+
+						resultbuffer += "  " + String.valueOf(i / 10) + "\n";
+
+					}
+
+				}
+
+				for (int i = 0; i < Ycountlenght; i++) {
+
+					resultbuffer += " ";
+				}
+
+				for (int i = 1; i < xlength90; i++) {
+
+					if (i < xlength90 - 1) {
+
+						resultbuffer += "  " + String.valueOf(i % 10);
+
+					} else if (i == xlength90 - 1) {
+
+						resultbuffer += "  " + String.valueOf(i % 10) + "\n";
+
+					}
+
+				}
+
+			} else if (xlength90 < 10) {
+
+				for (int i = 1; i < xlength90; i++) {
+
+					if (i < xlength90 - 1) {
+
+						resultbuffer += "  " + String.valueOf(i % 10);
+
+					} else if (i == xlength90 - 1) {
+
+						resultbuffer += "  " + String.valueOf(i % 10) + "\n";
+
+					}
+
+				}
+			}
+
+		} else if (Rbinchars == 2) {
+
+			if (xlength90 > 99) {
+
+				for (int i = 1; i < xlength90; i++) {
+
+					if (i < xlength90 - 1) {
+
+						resultbuffer += " " + String.valueOf(i / 100);
+
+					} else if (i == xlength90 - 1) {
+
+						resultbuffer += " " + String.valueOf(i / 100) + "\n";
+
+					}
+
+				}
+
+				for (int i = 0; i < Ycountlenght; i++) {
+
+					resultbuffer += " ";
+				}
+
+				for (int i = 1; i < xlength90; i++) {
+
+					if (i < xlength90 - 1) {
+
+						resultbuffer += " " + String.valueOf(i / 10);
+
+					} else if (i == xlength90 - 1) {
+
+						resultbuffer += " " + String.valueOf(i / 10) + "\n";
+
+					}
+
+				}
+
+				for (int i = 0; i < Ycountlenght; i++) {
+
+					resultbuffer += " ";
+				}
+
+				for (int i = 1; i < xlength90; i++) {
+
+					if (i < xlength90 - 1) {
+
+						resultbuffer += " " + String.valueOf(i % 10);
+
+					} else if (i == xlength90 - 1) {
+
+						resultbuffer += " " + String.valueOf(i % 10) + "\n";
+
+					}
+
+				}
+
+			} else if (xlength90 < 99 && xlength90 > 9) {
+
+				for (int i = 1; i < xlength90; i++) {
+
+					if (i < xlength90 - 1) {
+
+						resultbuffer += " " + String.valueOf(i / 10);
+
+					} else if (i == xlength90 - 1) {
+
+						resultbuffer += " " + String.valueOf(i / 10) + "\n";
+
+					}
+
+				}
+
+				for (int i = 0; i < Ycountlenght; i++) {
+
+					resultbuffer += " ";
+				}
+
+				for (int i = 1; i < xlength90; i++) {
+
+					if (i < xlength90 - 1) {
+
+						resultbuffer += " " + String.valueOf(i % 10);
+
+					} else if (i == xlength90 - 1) {
+
+						resultbuffer += " " + String.valueOf(i % 10) + "\n";
+
+					}
+
+				}
+
+			} else if (xlength90 < 10) {
+
+				for (int i = 1; i < xlength90; i++) {
+
+					if (i < xlength90 - 1) {
+
+						resultbuffer += " " + String.valueOf(i % 10);
+
+					} else if (i == xlength90 - 1) {
+
+						resultbuffer += " " + String.valueOf(i % 10) + "\n";
+
+					}
+
+				}
+			}
+
+		} else if (Rbinchars == 1) {
+
+			if (xlength90 > 99) {
+
+				for (int i = 1; i < xlength90; i++) {
+
+					if (i < xlength90 - 1) {
+
+						resultbuffer += String.valueOf(i / 100);
+
+					} else if (i == xlength90 - 1) {
+
+						resultbuffer += String.valueOf(i / 100) + "\n";
+
+					}
+
+				}
+
+				for (int i = 0; i < Ycountlenght; i++) {
+
+					resultbuffer += " ";
+				}
+
+				for (int i = 1; i < xlength90; i++) {
+
+					if (i < xlength90 - 1) {
+
+						resultbuffer += String.valueOf(i / 10);
+
+					} else if (i == xlength90 - 1) {
+
+						resultbuffer += String.valueOf(i / 10) + "\n";
+
+					}
+
+				}
+
+				for (int i = 0; i < Ycountlenght; i++) {
+
+					resultbuffer += " ";
+				}
+
+				for (int i = 1; i < xlength90; i++) {
+
+					if (i < xlength90 - 1) {
+
+						resultbuffer += String.valueOf(i % 10);
+
+					} else if (i == xlength90 - 1) {
+
+						resultbuffer += String.valueOf(i % 10) + "\n";
+
+					}
+
+				}
+
+			} else if (xlength90 < 99 && xlength90 > 9) {
+
+				for (int i = 1; i < xlength90; i++) {
+
+					if (i < xlength90 - 1) {
+
+						resultbuffer += String.valueOf(i / 10);
+
+					} else if (i == xlength90 - 1) {
+
+						resultbuffer += String.valueOf(i / 10) + "\n";
+
+					}
+
+				}
+
+				for (int i = 0; i < Ycountlenght; i++) {
+
+					resultbuffer += " ";
+				}
+
+				for (int i = 1; i < xlength90; i++) {
+
+					if (i < xlength90 - 1) {
+
+						resultbuffer += String.valueOf(i % 10);
+
+					} else if (i == xlength90 - 1) {
+
+						resultbuffer += String.valueOf(i % 10) + "\n";
+
+					}
+
+				}
+
+			} else if (xlength90 < 10) {
+
+				for (int i = 1; i < xlength90; i++) {
+
+					if (i < xlength90 - 1) {
+
+						resultbuffer += String.valueOf(i % 10);
+
+					} else if (i == xlength90 - 1) {
+
+						resultbuffer += String.valueOf(i % 10) + "\n";
+
+					}
+
+				}
+			}
+
+		}
+
+		for (int i = 0; i < Ycountlenght; i++) {
+
+			resultbuffer += " ";
+		}
+
+		for (int i = Rbinchars; i < xlength90 * Rbinchars + 1; i++) {
+
+			if ((i - (Rbinchars - 1)) % (Rbinchars * 5) == 0) {
 
 				resultbuffer += "+";
 
-			} else if (i == xlength90 * cnt) {
+			} else if (i == xlength90 * Rbinchars) {
 
 				resultbuffer += "\n";
 
@@ -366,84 +784,93 @@ public class rotationInverse90 {
 
 		StringBuffer bodybuffer = new StringBuffer(body);
 
-		for (int i = 0, j = 1; i < bodybuffer.length(); i = i + (xlength90 * cnt) + 1, j++) {
+		for (int i = 0, j = 1; i < bodybuffer.length(); i = i + (xlength90 * Rbinchars) + Ycountlenght-(Rbinchars-1), j++) {
 
-			if (j < 10 && cnt == 4) {
+			if (ylength90 > 99 && ylength90 < 1000) {
 
-				if (j % 5 == 0) {
+				if (j < 10) {
 
-					bodybuffer.insert(i, "  " + j + "+");
+					if (j % 5 == 0) {
 
-				} else {
+						bodybuffer.insert(i, "  " + j + "+");
 
-					bodybuffer.insert(i, "  " + j + "|");
+					} else {
+
+						bodybuffer.insert(i, "  " + j + "|");
+
+					}
+
+				} else if (j > 9 && j < 100) {
+
+					if (j % 5 == 0) {
+
+						bodybuffer.insert(i, " " + j + "+");
+
+					} else {
+
+						bodybuffer.insert(i, " " + j + "|");
+
+					}
+
+				} else if (j > 99 && j < 1000) {
+
+					if (j % 5 == 0) {
+
+						bodybuffer.insert(i, j + "+");
+
+					} else {
+
+						bodybuffer.insert(i, j + "|");
+
+					}
 
 				}
-
-			} else if (j < 10 && cnt == 3) {
-
-				if (j % 5 == 0) {
-
-					bodybuffer.insert(i, " " + j + "+");
-
-				} else {
-
-					bodybuffer.insert(i, " " + j + "|");
-
-				}
-
-			} else if (j < 10 && cnt == 2) {
-
-				if (j % 5 == 0) {
-
-					bodybuffer.insert(i, j + "+");
-
-				} else {
-
-					bodybuffer.insert(i, j + "|");
-
-				}
-
 			}
 
-			if (9 < j && j < 100 && cnt == 4) {
+			if (ylength90 > 9 && ylength90 < 100) {
 
-				if (j % 5 == 0) {
+				if (j < 10) {
 
-					bodybuffer.insert(i, " " + j + "+");
+					if (j % 5 == 0) {
 
-				} else {
+						bodybuffer.insert(i, " " + j + "+");
 
-					bodybuffer.insert(i, " " + j + "|");
+					} else {
+
+						bodybuffer.insert(i, " " + j + "|");
+
+					}
+
+				} else if (j > 9 && j < 100) {
+
+					if (j % 5 == 0) {
+
+						bodybuffer.insert(i, j + "+");
+
+					} else {
+
+						bodybuffer.insert(i, j + "|");
+
+					}
 
 				}
-
-			} else if (9 < j && j < 100 && cnt == 3) {
-
-				if (j % 5 == 0) {
-
-					bodybuffer.insert(i, j + "+");
-
-				} else {
-
-					bodybuffer.insert(i, j + "|");
-
-				}
-
 			}
 
-			if (99 < j && j < 1000 && cnt == 4) {
+			if (ylength90 > -1 && ylength90 < 10) {
 
-				if (j % 5 == 0) {
+				if (j < 10) {
 
-					bodybuffer.insert(i, j + "+");
+					if (j % 5 == 0) {
 
-				} else {
+						bodybuffer.insert(i, j + "+");
 
-					bodybuffer.insert(i, j + "|");
+					} else {
+
+						bodybuffer.insert(i, j + "|");
+
+					}
 
 				}
-
 			}
 
 		}
@@ -456,18 +883,18 @@ public class rotationInverse90 {
 
 		// numbering x축
 
-		for (int i = 0; i < cnt; i++) {
+		for (int i = 0; i < Ycountlenght; i++) {
 
 			resultbuffer += " ";
 		}
 
-		for (int i = cnt; i < xlength90 * cnt + 1; i++) {
+		for (int i = Rbinchars; i < xlength90 * Rbinchars + 1; i++) {
 
-			if ((i - (cnt - 1)) % (cnt * 5) == 0) {
+			if ((i - (Rbinchars - 1)) % (Rbinchars * 5) == 0) {
 
 				resultbuffer += "+";
 
-			} else if (i == xlength90 * cnt) {
+			} else if (i == xlength90 * Rbinchars) {
 
 				resultbuffer += "\n";
 
@@ -479,114 +906,441 @@ public class rotationInverse90 {
 
 		}
 
-		for (int i = 0; i < cnt; i++) {
+		for (int i = 0; i < Ycountlenght; i++) {
 
 			resultbuffer += " ";
 		}
 
-		if (cnt == 4) {
+		if (Rbinchars == 4) {
 
-			for (int i = 1; i < xlength90; i++) {
+			if (xlength90 > 99) {
 
-				if (i < xlength90 - 1) {
+				for (int i = 1; i < xlength90; i++) {
 
-					resultbuffer += "  " + String.valueOf(i / 100);
+					if (i < xlength90 - 1) {
 
-				} else if (i == xlength90 - 1) {
+						resultbuffer += "   " + String.valueOf(i / 100);
 
-					resultbuffer += "  " + String.valueOf(i / 100) + "\n";
+					} else if (i == xlength90 - 1) {
 
-				}
+						resultbuffer += "   " + String.valueOf(i / 100) + "\n";
 
-			}
-
-			for (int i = 0; i < cnt; i++) {
-
-				resultbuffer += " ";
-			}
-
-			for (int i = 1; i < xlength90; i++) {
-
-				if (i < xlength90 - 1) {
-
-					resultbuffer += "  " + String.valueOf(i / 10);
-
-				} else if (i == xlength90 - 1) {
-
-					resultbuffer += "  " + String.valueOf(i / 10) + "\n";
+					}
 
 				}
 
-			}
+				for (int i = 0; i < Ycountlenght; i++) {
 
-			for (int i = 0; i < cnt; i++) {
+					resultbuffer += " ";
+				}
 
-				resultbuffer += " ";
-			}
+				for (int i = 1; i < xlength90; i++) {
 
-			for (int i = 1; i < xlength90; i++) {
+					if (i < xlength90 - 1) {
 
-				if (i < xlength90 - 1) {
+						resultbuffer += "   " + String.valueOf(i / 10);
 
-					resultbuffer += "  " + String.valueOf(i % 10);
+					} else if (i == xlength90 - 1) {
 
-				} else if (i == xlength90 - 1) {
+						resultbuffer += "   " + String.valueOf(i / 10) + "\n";
 
-					resultbuffer += "  " + String.valueOf(i % 10) + "\n";
+					}
 
 				}
 
-			}
+				for (int i = 0; i < Ycountlenght; i++) {
 
-		} else if (cnt == 3) {
+					resultbuffer += " ";
+				}
 
-			for (int i = 1; i < xlength90; i++) {
+				for (int i = 1; i < xlength90; i++) {
 
-				if (i < xlength90 - 1) {
+					if (i < xlength90 - 1) {
 
-					resultbuffer += "  " + String.valueOf(i / 10);
+						resultbuffer += "   " + String.valueOf(i % 10);
 
-				} else if (i == xlength90 - 1) {
+					} else if (i == xlength90 - 1) {
 
-					resultbuffer += "  " + String.valueOf(i / 10) + "\n";
+						resultbuffer += "   " + String.valueOf(i % 10) + "\n";
+
+					}
 
 				}
 
-			}
+			} else if (xlength90 < 99 && xlength90 > 9) {
 
-			for (int i = 0; i < cnt; i++) {
+				for (int i = 1; i < xlength90; i++) {
 
-				resultbuffer += " ";
-			}
+					if (i < xlength90 - 1) {
 
-			for (int i = 1; i < xlength90; i++) {
+						resultbuffer += "   " + String.valueOf(i / 10);
 
-				if (i < xlength90 - 1) {
+					} else if (i == xlength90 - 1) {
 
-					resultbuffer += "  " + String.valueOf(i % 10);
+						resultbuffer += "   " + String.valueOf(i / 10) + "\n";
 
-				} else if (i == xlength90 - 1) {
-
-					resultbuffer += "  " + String.valueOf(i % 10) + "\n";
+					}
 
 				}
 
-			}
+				for (int i = 0; i < Ycountlenght; i++) {
 
-		} else if (cnt == 2) {
+					resultbuffer += " ";
+				}
 
-			for (int i = 1; i < xlength90; i++) {
+				for (int i = 1; i < xlength90; i++) {
 
-				if (i < xlength90 - 1) {
+					if (i < xlength90 - 1) {
 
-					resultbuffer += "  " + String.valueOf(i);
+						resultbuffer += "   " + String.valueOf(i % 10);
 
-				} else if (i == xlength90 - 1) {
+					} else if (i == xlength90 - 1) {
 
-					resultbuffer += "  " + String.valueOf(i) + "\n";
+						resultbuffer += "   " + String.valueOf(i % 10) + "\n";
+
+					}
 
 				}
 
+			} else if (xlength90 < 10) {
+
+				for (int i = 1; i < xlength90; i++) {
+
+					if (i < xlength90 - 1) {
+
+						resultbuffer += "   " + String.valueOf(i % 10);
+
+					} else if (i == xlength90 - 1) {
+
+						resultbuffer += "   " + String.valueOf(i % 10) + "\n";
+
+					}
+
+				}
+			}
+
+		} else if (Rbinchars == 3) {
+
+			if (xlength90 > 99) {
+
+				for (int i = 1; i < xlength90; i++) {
+
+					if (i < xlength90 - 1) {
+
+						resultbuffer += "  " + String.valueOf(i / 100);
+
+					} else if (i == xlength90 - 1) {
+
+						resultbuffer += "  " + String.valueOf(i / 100) + "\n";
+
+					}
+
+				}
+
+				for (int i = 0; i < Ycountlenght; i++) {
+
+					resultbuffer += " ";
+				}
+
+				for (int i = 1; i < xlength90; i++) {
+
+					if (i < xlength90 - 1) {
+
+						resultbuffer += "  " + String.valueOf(i / 10);
+
+					} else if (i == xlength90 - 1) {
+
+						resultbuffer += "  " + String.valueOf(i / 10) + "\n";
+
+					}
+
+				}
+
+				for (int i = 0; i < Ycountlenght; i++) {
+
+					resultbuffer += " ";
+				}
+
+				for (int i = 1; i < xlength90; i++) {
+
+					if (i < xlength90 - 1) {
+
+						resultbuffer += "  " + String.valueOf(i % 10);
+
+					} else if (i == xlength90 - 1) {
+
+						resultbuffer += "  " + String.valueOf(i % 10) + "\n";
+
+					}
+
+				}
+
+			} else if (xlength90 < 99 && xlength90 > 9) {
+
+				for (int i = 1; i < xlength90; i++) {
+
+					if (i < xlength90 - 1) {
+
+						resultbuffer += "  " + String.valueOf(i / 10);
+
+					} else if (i == xlength90 - 1) {
+
+						resultbuffer += "  " + String.valueOf(i / 10) + "\n";
+
+					}
+
+				}
+
+				for (int i = 0; i < Ycountlenght; i++) {
+
+					resultbuffer += " ";
+				}
+
+				for (int i = 1; i < xlength90; i++) {
+
+					if (i < xlength90 - 1) {
+
+						resultbuffer += "  " + String.valueOf(i % 10);
+
+					} else if (i == xlength90 - 1) {
+
+						resultbuffer += "  " + String.valueOf(i % 10) + "\n";
+
+					}
+
+				}
+
+			} else if (xlength90 < 10) {
+
+				for (int i = 1; i < xlength90; i++) {
+
+					if (i < xlength90 - 1) {
+
+						resultbuffer += "  " + String.valueOf(i % 10);
+
+					} else if (i == xlength90 - 1) {
+
+						resultbuffer += "  " + String.valueOf(i % 10) + "\n";
+
+					}
+
+				}
+			}
+
+		} else if (Rbinchars == 2) {
+
+			if (xlength90 > 99) {
+
+				for (int i = 1; i < xlength90; i++) {
+
+					if (i < xlength90 - 1) {
+
+						resultbuffer += " " + String.valueOf(i / 100);
+
+					} else if (i == xlength90 - 1) {
+
+						resultbuffer += " " + String.valueOf(i / 100) + "\n";
+
+					}
+
+				}
+
+				for (int i = 0; i < Ycountlenght; i++) {
+
+					resultbuffer += " ";
+				}
+
+				for (int i = 1; i < xlength90; i++) {
+
+					if (i < xlength90 - 1) {
+
+						resultbuffer += " " + String.valueOf(i / 10);
+
+					} else if (i == xlength90 - 1) {
+
+						resultbuffer += " " + String.valueOf(i / 10) + "\n";
+
+					}
+
+				}
+
+				for (int i = 0; i < Ycountlenght; i++) {
+
+					resultbuffer += " ";
+				}
+
+				for (int i = 1; i < xlength90; i++) {
+
+					if (i < xlength90 - 1) {
+
+						resultbuffer += " " + String.valueOf(i % 10);
+
+					} else if (i == xlength90 - 1) {
+
+						resultbuffer += " " + String.valueOf(i % 10) + "\n";
+
+					}
+
+				}
+
+			} else if (xlength90 < 99 && xlength90 > 9) {
+
+				for (int i = 1; i < xlength90; i++) {
+
+					if (i < xlength90 - 1) {
+
+						resultbuffer += " " + String.valueOf(i / 10);
+
+					} else if (i == xlength90 - 1) {
+
+						resultbuffer += " " + String.valueOf(i / 10) + "\n";
+
+					}
+
+				}
+
+				for (int i = 0; i < Ycountlenght; i++) {
+
+					resultbuffer += " ";
+				}
+
+				for (int i = 1; i < xlength90; i++) {
+
+					if (i < xlength90 - 1) {
+
+						resultbuffer += " " + String.valueOf(i % 10);
+
+					} else if (i == xlength90 - 1) {
+
+						resultbuffer += " " + String.valueOf(i % 10) + "\n";
+
+					}
+
+				}
+
+			} else if (xlength90 < 10) {
+
+				for (int i = 1; i < xlength90; i++) {
+
+					if (i < xlength90 - 1) {
+
+						resultbuffer += " " + String.valueOf(i % 10);
+
+					} else if (i == xlength90 - 1) {
+
+						resultbuffer += " " + String.valueOf(i % 10) + "\n";
+
+					}
+
+				}
+			}
+
+		} else if (Rbinchars == 1) {
+
+			if (xlength90 > 99) {
+
+				for (int i = 1; i < xlength90; i++) {
+
+					if (i < xlength90 - 1) {
+
+						resultbuffer += String.valueOf(i / 100);
+
+					} else if (i == xlength90 - 1) {
+
+						resultbuffer += String.valueOf(i / 100) + "\n";
+
+					}
+
+				}
+
+				for (int i = 0; i < Ycountlenght; i++) {
+
+					resultbuffer += " ";
+				}
+
+				for (int i = 1; i < xlength90; i++) {
+
+					if (i < xlength90 - 1) {
+
+						resultbuffer += String.valueOf(i / 10);
+
+					} else if (i == xlength90 - 1) {
+
+						resultbuffer += String.valueOf(i / 10) + "\n";
+
+					}
+
+				}
+
+				for (int i = 0; i < Ycountlenght; i++) {
+
+					resultbuffer += " ";
+				}
+
+				for (int i = 1; i < xlength90; i++) {
+
+					if (i < xlength90 - 1) {
+
+						resultbuffer += String.valueOf(i % 10);
+
+					} else if (i == xlength90 - 1) {
+
+						resultbuffer += String.valueOf(i % 10) + "\n";
+
+					}
+
+				}
+
+			} else if (xlength90 < 99 && xlength90 > 9) {
+
+				for (int i = 1; i < xlength90; i++) {
+
+					if (i < xlength90 - 1) {
+
+						resultbuffer += String.valueOf(i / 10);
+
+					} else if (i == xlength90 - 1) {
+
+						resultbuffer += String.valueOf(i / 10) + "\n";
+
+					}
+
+				}
+
+				for (int i = 0; i < Ycountlenght; i++) {
+
+					resultbuffer += " ";
+				}
+
+				for (int i = 1; i < xlength90; i++) {
+
+					if (i < xlength90 - 1) {
+
+						resultbuffer += String.valueOf(i % 10);
+
+					} else if (i == xlength90 - 1) {
+
+						resultbuffer += String.valueOf(i % 10) + "\n";
+
+					}
+
+				}
+
+			} else if (xlength90 < 10) {
+
+				for (int i = 1; i < xlength90; i++) {
+
+					if (i < xlength90 - 1) {
+
+						resultbuffer += String.valueOf(i % 10);
+
+					} else if (i == xlength90 - 1) {
+
+						resultbuffer += String.valueOf(i % 10) + "\n";
+
+					}
+
+				}
 			}
 
 		}
@@ -595,9 +1349,6 @@ public class rotationInverse90 {
 
 		resultbuffer += "\n\n";
 		resultbuffer += tail;
-
-		System.out.print(resultbuffer);
-
 	}
 
 }

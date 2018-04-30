@@ -245,52 +245,23 @@ public class JBeditormain extends JFrame implements ActionListener {
 			try {
 				BufferedReader reader = new BufferedReader(new FileReader(dfName));
 				// FileReader reader = new FileReader(dfName);
+				
 				txtJBeditormain.setText("");
+				
 				String line;
-				int m = 0;
-
-				char[] origin = new char[fileSize];
-
-				System.out.println("1");
 				
 				while ((line = reader.readLine()) != null) {
 
 					txtJBeditormainbuffer.append(line);
 					txtJBeditormainbuffer.append('\n');
 				}
-				
-				
-				/*
-				while ((line = reader.read()) != -1) {
-
-					// txtJBeditormain.append(linechar + "\n"); // txtJBeditormain에 추가 line 단위 처리시
-					origin[m] = (char) line; // txtJBeditormain에 추가 char 단위 처리시
-					m++;
-				}
-				*/
-				
-
-				System.out.println("2");
-				
-				/*
-				for (int i = 0; i < origin.length; i++) {
-					txtJBeditormainbuffer += Character.toString(origin[i]);
-				}
-				*/
-				
-
-				System.out.println("3");
-				
+							
 				txtJBeditormain.setText(txtJBeditormainbuffer.toString());
-				
-				System.out.println("4");
-				
+					
 				Finalarray = "";
 				Finalarray = txtJBeditormainbuffer.toString();
-				//txtJBeditormainbuffer = "";
+
 				txtJBeditormainbuffer.setLength(0);
-				
-				System.out.println("5");
 				
 				reader.close();
 

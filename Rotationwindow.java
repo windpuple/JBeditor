@@ -110,6 +110,8 @@ public class Rotationwindow extends JDialog implements ActionListener {
 			if (cwbuffer == "90") {
 
 				new rotation90();
+				JBeditormain.Finalarray = "";
+				JBeditormain.Finalarray = rotation90.resultbuffer;
 
 				rotationfinalbuffer = rotation90.resultbuffer;
 
@@ -145,6 +147,8 @@ public class Rotationwindow extends JDialog implements ActionListener {
 				// System.out.println("실행되니");
 
 				new rotationInverse90();
+				JBeditormain.Finalarray = "";
+				JBeditormain.Finalarray = rotationInverse90.resultbuffer;
 
 				rotationfinalbuffer = rotationInverse90.resultbuffer;
 
