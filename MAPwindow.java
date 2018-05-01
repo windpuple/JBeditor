@@ -24,7 +24,7 @@ public class MAPwindow extends JFrame {
 	public MAPwindow() {
 
 
-		StringBuilder Bodybuffer = new StringBuilder();
+		StringBuilder Bodybuffer1 = new StringBuilder();
 		StringBuilder Mapbuffer = new StringBuilder();
 
 		String backline[] = JBeditormain.Finalarray.split("\n");
@@ -107,6 +107,7 @@ public class MAPwindow extends JFrame {
 		int Ymax = 0;
 		int Softmax = 0;
 		int binchars = 0;
+		int Ycountlength = 0;
 
 		for (int i = 0; i < xposition.length; i++) {
 
@@ -152,6 +153,19 @@ public class MAPwindow extends JFrame {
 		} else if(Softmax > 99 && Softmax < 1000) {
 			
 			binchars = 3;
+		}
+		
+		if(Ymax > 0 && Ymax < 10) {
+			
+			Ycountlength = 2;
+			
+		} else if(Ymax > 9 && Ymax < 100) {
+			
+			Ycountlength = 3;
+			
+		} else if(Ymax > 99 && Ymax < 1000) {
+			
+			Ycountlength = 4;
 		}
 		
 		System.out.println("Xmax :" + Xmax);
@@ -250,12 +264,12 @@ public class MAPwindow extends JFrame {
 				
 				//System.out.println("map chip component : "+i+":"+j+":"+ChipPosition[i][j]);
 		
-				Bodybuffer.append(ChipPosition[i][j]);
+				Bodybuffer1.append(ChipPosition[i][j]);
 				
 				
 			}
 
-			Bodybuffer.append("\n");
+			Bodybuffer1.append("\n");
 			
 		}
 		
@@ -331,152 +345,1137 @@ public class MAPwindow extends JFrame {
 		Mapbuffer.append("MAX Y SIZE       : " + MaxYSize + "\n\n");
 		Mapbuffer.append("**********  WAFER MAP  **********\n\n");
 		
+		int Rbinchars = 0;
 		
-				// numbering xÃà
+		if(binchars != 1) {
 		
-		int bincharsbuf = binchars+1;
+			Rbinchars = binchars + 1;
+		
+		}
 		
 
-				for (int i = 0; i < bincharsbuf; i++) {
+		// numbering xÃà
+
+		for (int i = 0; i < Ycountlength; i++) {
+
+			Mapbuffer.append(" ");
+		}
+
+		if (Rbinchars == 4) {
+
+			if ((Xmax+1) > 99) {
+
+				for (int i = 1; i < (Xmax+1); i++) {
+
+					if (i < (Xmax+1) - 1) {
+
+						Mapbuffer.append("   " + String.valueOf(i / 100));
+
+					} else if (i == (Xmax+1) - 1) {
+
+						Mapbuffer.append("   " + String.valueOf(i / 100) + "\n");
+
+					}
+
+				}
+
+				for (int i = 0; i < Ycountlength; i++) {
 
 					Mapbuffer.append(" ");
 				}
 
-				if (bincharsbuf == 4) {
+				for (int i = 1; i < (Xmax+1); i++) {
 
-					for (int i = 1; i < Xmax; i++) {
+					if (i < (Xmax+1) - 1) {
 
-						if (i < Xmax - 1) {
+						Mapbuffer.append("   " + String.valueOf(i / 10));
 
-							Mapbuffer.append("  " + String.valueOf(i / 100));
+					} else if (i == (Xmax+1) - 1) {
 
-						} else if (i == Xmax - 1) {
-
-							Mapbuffer.append("  " + String.valueOf(i / 100) + "\n");
-
-						}
-
-					}
-
-					for (int i = 0; i < bincharsbuf; i++) {
-
-						Mapbuffer.append(" ");
-					}
-
-					for (int i = 1; i < Xmax; i++) {
-
-						if (i < Xmax - 1) {
-
-							Mapbuffer.append("  " + String.valueOf(i / 10));
-
-						} else if (i == Xmax - 1) {
-
-							Mapbuffer.append("  " + String.valueOf(i / 10) + "\n");
-
-						}
-
-					}
-
-					for (int i = 0; i < bincharsbuf; i++) {
-
-						Mapbuffer.append(" ");
-					}
-
-					for (int i = 1; i < Xmax; i++) {
-
-						if (i < Xmax - 1) {
-
-							Mapbuffer.append("  " + String.valueOf(i % 10));
-
-						} else if (i == Xmax - 1) {
-
-							Mapbuffer.append("  " + String.valueOf(i % 10) + "\n");
-
-						}
-
-					}
-
-				} else if (bincharsbuf == 3) {
-
-					for (int i = 1; i < Xmax; i++) {
-
-						if (i < Xmax - 1) {
-
-							Mapbuffer.append("  " + String.valueOf(i / 10));
-
-						} else if (i == Xmax - 1) {
-
-							Mapbuffer.append("  " + String.valueOf(i / 10) + "\n");
-
-						}
-
-					}
-
-					for (int i = 0; i < bincharsbuf; i++) {
-
-						Mapbuffer.append(" ");
-					}
-
-					for (int i = 1; i < Xmax; i++) {
-
-						if (i < Xmax - 1) {
-
-							Mapbuffer.append("  " + String.valueOf(i % 10));
-
-						} else if (i == Xmax - 1) {
-
-							Mapbuffer.append("  " + String.valueOf(i % 10) + "\n");
-
-						}
-
-					}
-
-				} else if (bincharsbuf == 2) {
-
-					for (int i = 1; i < Xmax; i++) {
-
-						if (i < Xmax - 1) {
-
-							Mapbuffer.append("  " + String.valueOf(i));
-
-						} else if (i == Xmax - 1) {
-
-							Mapbuffer.append("  " + String.valueOf(i) + "\n");
-
-						}
+						Mapbuffer.append("   " + String.valueOf(i / 10) + "\n");
 
 					}
 
 				}
 
-				for (int i = 0; i < bincharsbuf; i++) {
+				for (int i = 0; i < Ycountlength; i++) {
 
 					Mapbuffer.append(" ");
 				}
 
-				for (int i = bincharsbuf; i < Xmax * bincharsbuf + 1; i++) {
+				for (int i = 1; i < (Xmax+1); i++) {
 
-					if ((i - (bincharsbuf - 1)) % (bincharsbuf * 5) == 0) {
+					if (i < (Xmax+1) - 1) {
 
-		
-							Mapbuffer.append("+");
-			
+						Mapbuffer.append("   " + String.valueOf(i % 10));
 
-					} else if (i == Xmax * bincharsbuf) {
+					} else if (i == (Xmax+1) - 1) {
 
-						Mapbuffer.append("\n");
+						Mapbuffer.append("   " + String.valueOf(i % 10) + "\n");
+
+					}
+
+				}
+
+			} else if ((Xmax+1) < 99 && (Xmax+1) > 9) {
+
+				for (int i = 1; i < (Xmax+1); i++) {
+
+					if (i < (Xmax+1) - 1) {
+
+						Mapbuffer.append("   " + String.valueOf(i / 10));
+
+					} else if (i == (Xmax+1) - 1) {
+
+						Mapbuffer.append("   " + String.valueOf(i / 10) + "\n");
+
+					}
+
+				}
+
+				for (int i = 0; i < Ycountlength; i++) {
+
+					Mapbuffer.append(" ");
+				}
+
+				for (int i = 1; i < (Xmax+1); i++) {
+
+					if (i < (Xmax+1) - 1) {
+
+						Mapbuffer.append("   " + String.valueOf(i % 10));
+
+					} else if (i == (Xmax+1) - 1) {
+
+						Mapbuffer.append("   " + String.valueOf(i % 10) + "\n");
+
+					}
+
+				}
+
+			} else if ((Xmax+1) < 10) {
+
+				for (int i = 1; i < (Xmax+1); i++) {
+
+					if (i < (Xmax+1) - 1) {
+
+						Mapbuffer.append("   " + String.valueOf(i % 10));
+
+					} else if (i == (Xmax+1) - 1) {
+
+						Mapbuffer.append("   " + String.valueOf(i % 10) + "\n");
+
+					}
+
+				}
+			}
+
+		} else if (Rbinchars == 3) {
+
+			if ((Xmax+1) > 99) {
+
+				for (int i = 1; i < (Xmax+1); i++) {
+
+					if (i < (Xmax+1) - 1) {
+
+						Mapbuffer.append("  " + String.valueOf(i / 100));
+
+					} else if (i == (Xmax+1) - 1) {
+
+						Mapbuffer.append("  " + String.valueOf(i / 100) + "\n");
+
+					}
+
+				}
+
+				for (int i = 0; i < Ycountlength; i++) {
+
+					Mapbuffer.append(" ");
+				}
+
+				for (int i = 1; i < (Xmax+1); i++) {
+
+					if (i < (Xmax+1) - 1) {
+
+						Mapbuffer.append("  " + String.valueOf(i / 10));
+
+					} else if (i == (Xmax+1) - 1) {
+
+						Mapbuffer.append("  " + String.valueOf(i / 10) + "\n");
+
+					}
+
+				}
+
+				for (int i = 0; i < Ycountlength; i++) {
+
+					Mapbuffer.append(" ");
+				}
+
+				for (int i = 1; i < (Xmax+1); i++) {
+
+					if (i < (Xmax+1) - 1) {
+
+						Mapbuffer.append("  " + String.valueOf(i % 10));
+
+					} else if (i == (Xmax+1) - 1) {
+
+						Mapbuffer.append("  " + String.valueOf(i % 10) + "\n");
+
+					}
+
+				}
+
+			} else if ((Xmax+1) < 99 && (Xmax+1) > 9) {
+
+				for (int i = 1; i < (Xmax+1); i++) {
+
+					if (i < (Xmax+1) - 1) {
+
+						Mapbuffer.append("  " + String.valueOf(i / 10));
+
+					} else if (i == (Xmax+1) - 1) {
+
+						Mapbuffer.append("  " + String.valueOf(i / 10) + "\n");
+
+					}
+
+				}
+
+				for (int i = 0; i < Ycountlength; i++) {
+
+					Mapbuffer.append(" ");
+				}
+
+				for (int i = 1; i < (Xmax+1); i++) {
+
+					if (i < (Xmax+1) - 1) {
+
+						Mapbuffer.append("  " + String.valueOf(i % 10));
+
+					} else if (i == (Xmax+1) - 1) {
+
+						Mapbuffer.append("  " + String.valueOf(i % 10) + "\n");
+
+					}
+
+				}
+
+			} else if ((Xmax+1) < 10) {
+
+				for (int i = 1; i < (Xmax+1); i++) {
+
+					if (i < (Xmax+1) - 1) {
+
+						Mapbuffer.append("  " + String.valueOf(i % 10));
+
+					} else if (i == (Xmax+1) - 1) {
+
+						Mapbuffer.append("  " + String.valueOf(i % 10) + "\n");
+
+					}
+
+				}
+			}
+
+		} else if (Rbinchars == 2) {
+
+			if ((Xmax+1) > 99) {
+
+				for (int i = 1; i < (Xmax+1); i++) {
+
+					if (i < (Xmax+1) - 1) {
+
+						Mapbuffer.append(" " + String.valueOf(i / 100));
+
+					} else if (i == (Xmax+1) - 1) {
+
+						Mapbuffer.append(" " + String.valueOf(i / 100) + "\n");
+
+					}
+
+				}
+
+				for (int i = 0; i < Ycountlength; i++) {
+
+					Mapbuffer.append(" ");
+				}
+
+				for (int i = 1; i < (Xmax+1); i++) {
+
+					if (i < (Xmax+1) - 1) {
+
+						Mapbuffer.append(" " + String.valueOf(i / 10));
+
+					} else if (i == (Xmax+1) - 1) {
+
+						Mapbuffer.append(" " + String.valueOf(i / 10) + "\n");
+
+					}
+
+				}
+
+				for (int i = 0; i < Ycountlength; i++) {
+
+					Mapbuffer.append(" ");
+				}
+
+				for (int i = 1; i < (Xmax+1); i++) {
+
+					if (i < (Xmax+1) - 1) {
+
+						Mapbuffer.append(" " + String.valueOf(i % 10));
+
+					} else if (i == (Xmax+1) - 1) {
+
+						Mapbuffer.append(" " + String.valueOf(i % 10) + "\n");
+
+					}
+
+				}
+
+			} else if ((Xmax+1) < 99 && (Xmax+1) > 9) {
+
+				for (int i = 1; i < (Xmax+1); i++) {
+
+					if (i < (Xmax+1) - 1) {
+
+						Mapbuffer.append(" " + String.valueOf(i / 10));
+
+					} else if (i == (Xmax+1) - 1) {
+
+						Mapbuffer.append(" " + String.valueOf(i / 10) + "\n");
+
+					}
+
+				}
+
+				for (int i = 0; i < Ycountlength; i++) {
+
+					Mapbuffer.append(" ");
+				}
+
+				for (int i = 1; i < (Xmax+1); i++) {
+
+					if (i < (Xmax+1) - 1) {
+
+						Mapbuffer.append(" " + String.valueOf(i % 10));
+
+					} else if (i == (Xmax+1) - 1) {
+
+						Mapbuffer.append(" " + String.valueOf(i % 10) + "\n");
+
+					}
+
+				}
+
+			} else if ((Xmax+1) < 10) {
+
+				for (int i = 1; i < (Xmax+1); i++) {
+
+					if (i < (Xmax+1) - 1) {
+
+						Mapbuffer.append(" " + String.valueOf(i % 10));
+
+					} else if (i == (Xmax+1) - 1) {
+
+						Mapbuffer.append(" " + String.valueOf(i % 10) + "\n");
+
+					}
+
+				}
+			}
+
+		} else if (Rbinchars == 1) {
+
+			if ((Xmax+1) > 99) {
+
+				for (int i = 1; i < (Xmax+1); i++) {
+
+					if (i < (Xmax+1) - 1) {
+
+						Mapbuffer.append(String.valueOf(i / 100));
+
+					} else if (i == (Xmax+1) - 1) {
+
+						Mapbuffer.append(String.valueOf(i / 100) + "\n");
+
+					}
+
+				}
+
+				for (int i = 0; i < Ycountlength; i++) {
+
+					Mapbuffer.append(" ");
+				}
+
+				for (int i = 1; i < (Xmax+1); i++) {
+
+					if (i < (Xmax+1) - 1) {
+
+						Mapbuffer.append(String.valueOf(i / 10));
+
+					} else if (i == (Xmax+1) - 1) {
+
+						Mapbuffer.append(String.valueOf(i / 10) + "\n");
+
+					}
+
+				}
+
+				for (int i = 0; i < Ycountlength; i++) {
+
+					Mapbuffer.append(" ");
+				}
+
+				for (int i = 1; i < (Xmax+1); i++) {
+
+					if (i < (Xmax+1) - 1) {
+
+						Mapbuffer.append(String.valueOf(i % 10));
+
+					} else if (i == (Xmax+1) - 1) {
+
+						Mapbuffer.append(String.valueOf(i % 10) + "\n");
+
+					}
+
+				}
+
+			} else if ((Xmax+1) < 99 && (Xmax+1) > 9) {
+
+				for (int i = 1; i < (Xmax+1); i++) {
+
+					if (i < (Xmax+1) - 1) {
+
+						Mapbuffer.append(String.valueOf(i / 10));
+
+					} else if (i == (Xmax+1) - 1) {
+
+						Mapbuffer.append(String.valueOf(i / 10) + "\n");
+
+					}
+
+				}
+
+				for (int i = 0; i < Ycountlength; i++) {
+
+					Mapbuffer.append(" ");
+				}
+
+				for (int i = 1; i < (Xmax+1); i++) {
+
+					if (i < (Xmax+1) - 1) {
+
+						Mapbuffer.append(String.valueOf(i % 10));
+
+					} else if (i == (Xmax+1) - 1) {
+
+						Mapbuffer.append(String.valueOf(i % 10) + "\n");
+
+					}
+
+				}
+
+			} else if ((Xmax+1) < 10) {
+
+				for (int i = 1; i < (Xmax+1); i++) {
+
+					if (i < (Xmax+1) - 1) {
+
+						Mapbuffer.append(String.valueOf(i % 10));
+
+					} else if (i == (Xmax+1) - 1) {
+
+						Mapbuffer.append(String.valueOf(i % 10) + "\n");
+
+					}
+
+				}
+			}
+
+		}
+
+		for (int i = 0; i < Ycountlength; i++) {
+
+			Mapbuffer.append(" ");
+		}
+
+		for (int i = Rbinchars; i < (Xmax+1) * Rbinchars + 1; i++) {
+
+			if ((i - (Rbinchars - 1)) % (Rbinchars * 5) == 0) {
+
+				Mapbuffer.append("+");
+
+			} else if (i == (Xmax+1) * Rbinchars) {
+
+				Mapbuffer.append("\n");
+
+			} else {
+
+				Mapbuffer.append("-");
+
+			}
+
+		}
+
+
+		StringBuffer bodybuffer2 = new StringBuffer(Bodybuffer1.toString());
+
+		for (int i = 0, j = 1; i < bodybuffer2.length(); i = i + ((Xmax+1) * Rbinchars) + Ycountlength- (Rbinchars - 1), j++) {
+
+			if (Ymax > 99 && Ymax < 1000) {
+
+				if (j < 10) {
+
+					if (j % 5 == 0) {
+
+						bodybuffer2.insert(i, "  " + j + "+");
 
 					} else {
-							
-							Mapbuffer.append("-");
-	
+
+						bodybuffer2.insert(i, "  " + j + "|");
+
+					}
+
+				} else if (j > 9 && j < 100) {
+
+					if (j % 5 == 0) {
+
+						bodybuffer2.insert(i, " " + j + "+");
+
+					} else {
+
+						bodybuffer2.insert(i, " " + j + "|");
+
+					}
+
+				} else if (j > 99 && j < 1000) {
+
+					if (j % 5 == 0) {
+
+						bodybuffer2.insert(i, j + "+");
+
+					} else {
+
+						bodybuffer2.insert(i, j + "|");
+
 					}
 
 				}
+			}
+
+			if (Ymax > 9 && Ymax < 100) {
+
+				if (j < 10) {
+
+					if (j % 5 == 0) {
+
+						bodybuffer2.insert(i, " " + j + "+");
+
+					} else {
+
+						bodybuffer2.insert(i, " " + j + "|");
+
+					}
+
+				} else if (j > 9 && j < 100) {
+
+					if (j % 5 == 0) {
+
+						bodybuffer2.insert(i, j + "+");
+
+					} else {
+
+						bodybuffer2.insert(i, j + "|");
+
+					}
+
+				}
+			}
+
+			if (Ymax > -1 && Ymax < 10) {
+
+				if (j < 10) {
+
+					if (j % 5 == 0) {
+
+						bodybuffer2.insert(i, j + "+");
+
+					} else {
+
+						bodybuffer2.insert(i, j + "|");
+
+					}
+
+				}
+			}
+
+		}
+
+		Mapbuffer.append(bodybuffer2.toString());
+
 		
+		// numbering xÃà
+		
+		for (int i = 0; i < Ycountlength; i++) {
+
+			Mapbuffer.append(" ");
+		}
+
+		for (int i = Rbinchars; i < (Xmax+1) * Rbinchars + 1; i++) {
+
+			if ((i - (Rbinchars - 1)) % (Rbinchars * 5) == 0) {
+
+				Mapbuffer.append("+");
+
+			} else if (i == (Xmax+1) * Rbinchars) {
+
+				Mapbuffer.append("\n");
+
+			} else {
+
+				Mapbuffer.append("-");
+
+			}
+
+		}
 	
-				
-				
+
+
+		for (int i = 0; i < Ycountlength; i++) {
+
+			Mapbuffer.append(" ");
+		}
+
+		if (Rbinchars == 4) {
+
+			if ((Xmax+1) > 99) {
+
+				for (int i = 1; i < (Xmax+1); i++) {
+
+					if (i < (Xmax+1) - 1) {
+
+						Mapbuffer.append("   " + String.valueOf(i / 100));
+
+					} else if (i == (Xmax+1) - 1) {
+
+						Mapbuffer.append("   " + String.valueOf(i / 100) + "\n");
+
+					}
+
+				}
+
+				for (int i = 0; i < Ycountlength; i++) {
+
+					Mapbuffer.append(" ");
+				}
+
+				for (int i = 1; i < (Xmax+1); i++) {
+
+					if (i < (Xmax+1) - 1) {
+
+						Mapbuffer.append("   " + String.valueOf(i / 10));
+
+					} else if (i == (Xmax+1) - 1) {
+
+						Mapbuffer.append("   " + String.valueOf(i / 10) + "\n");
+
+					}
+
+				}
+
+				for (int i = 0; i < Ycountlength; i++) {
+
+					Mapbuffer.append(" ");
+				}
+
+				for (int i = 1; i < (Xmax+1); i++) {
+
+					if (i < (Xmax+1) - 1) {
+
+						Mapbuffer.append("   " + String.valueOf(i % 10));
+
+					} else if (i == (Xmax+1) - 1) {
+
+						Mapbuffer.append("   " + String.valueOf(i % 10) + "\n");
+
+					}
+
+				}
+
+			} else if ((Xmax+1) < 99 && (Xmax+1) > 9) {
+
+				for (int i = 1; i < (Xmax+1); i++) {
+
+					if (i < (Xmax+1) - 1) {
+
+						Mapbuffer.append("   " + String.valueOf(i / 10));
+
+					} else if (i == (Xmax+1) - 1) {
+
+						Mapbuffer.append("   " + String.valueOf(i / 10) + "\n");
+
+					}
+
+				}
+
+				for (int i = 0; i < Ycountlength; i++) {
+
+					Mapbuffer.append(" ");
+				}
+
+				for (int i = 1; i < (Xmax+1); i++) {
+
+					if (i < (Xmax+1) - 1) {
+
+						Mapbuffer.append("   " + String.valueOf(i % 10));
+
+					} else if (i == (Xmax+1) - 1) {
+
+						Mapbuffer.append("   " + String.valueOf(i % 10) + "\n");
+
+					}
+
+				}
+
+			} else if ((Xmax+1) < 10) {
+
+				for (int i = 1; i < (Xmax+1); i++) {
+
+					if (i < (Xmax+1) - 1) {
+
+						Mapbuffer.append("   " + String.valueOf(i % 10));
+
+					} else if (i == (Xmax+1) - 1) {
+
+						Mapbuffer.append("   " + String.valueOf(i % 10) + "\n");
+
+					}
+
+				}
+			}
+
+		} else if (Rbinchars == 3) {
+
+			if ((Xmax+1) > 99) {
+
+				for (int i = 1; i < (Xmax+1); i++) {
+
+					if (i < (Xmax+1) - 1) {
+
+						Mapbuffer.append("  " + String.valueOf(i / 100));
+
+					} else if (i == (Xmax+1) - 1) {
+
+						Mapbuffer.append("  " + String.valueOf(i / 100) + "\n");
+
+					}
+
+				}
+
+				for (int i = 0; i < Ycountlength; i++) {
+
+					Mapbuffer.append(" ");
+				}
+
+				for (int i = 1; i < (Xmax+1); i++) {
+
+					if (i < (Xmax+1) - 1) {
+
+						Mapbuffer.append("  " + String.valueOf(i / 10));
+
+					} else if (i == (Xmax+1) - 1) {
+
+						Mapbuffer.append("  " + String.valueOf(i / 10) + "\n");
+
+					}
+
+				}
+
+				for (int i = 0; i < Ycountlength; i++) {
+
+					Mapbuffer.append(" ");
+				}
+
+				for (int i = 1; i < (Xmax+1); i++) {
+
+					if (i < (Xmax+1) - 1) {
+
+						Mapbuffer.append("  " + String.valueOf(i % 10));
+
+					} else if (i == (Xmax+1) - 1) {
+
+						Mapbuffer.append("  " + String.valueOf(i % 10) + "\n");
+
+					}
+
+				}
+
+			} else if ((Xmax+1) < 99 && (Xmax+1) > 9) {
+
+				for (int i = 1; i < (Xmax+1); i++) {
+
+					if (i < (Xmax+1) - 1) {
+
+						Mapbuffer.append("  " + String.valueOf(i / 10));
+
+					} else if (i == (Xmax+1) - 1) {
+
+						Mapbuffer.append("  " + String.valueOf(i / 10) + "\n");
+
+					}
+
+				}
+
+				for (int i = 0; i < Ycountlength; i++) {
+
+					Mapbuffer.append(" ");
+				}
+
+				for (int i = 1; i < (Xmax+1); i++) {
+
+					if (i < (Xmax+1) - 1) {
+
+						Mapbuffer.append("  " + String.valueOf(i % 10));
+
+					} else if (i == (Xmax+1) - 1) {
+
+						Mapbuffer.append("  " + String.valueOf(i % 10) + "\n");
+
+					}
+
+				}
+
+			} else if ((Xmax+1) < 10) {
+
+				for (int i = 1; i < (Xmax+1); i++) {
+
+					if (i < (Xmax+1) - 1) {
+
+						Mapbuffer.append("  " + String.valueOf(i % 10));
+
+					} else if (i == (Xmax+1) - 1) {
+
+						Mapbuffer.append("  " + String.valueOf(i % 10) + "\n");
+
+					}
+
+				}
+			}
+
+		} else if (Rbinchars == 2) {
+
+			if ((Xmax+1) > 99) {
+
+				for (int i = 1; i < (Xmax+1); i++) {
+
+					if (i < (Xmax+1) - 1) {
+
+						Mapbuffer.append(" " + String.valueOf(i / 100));
+
+					} else if (i == (Xmax+1) - 1) {
+
+						Mapbuffer.append(" " + String.valueOf(i / 100) + "\n");
+
+					}
+
+				}
+
+				for (int i = 0; i < Ycountlength; i++) {
+
+					Mapbuffer.append(" ");
+				}
+
+				for (int i = 1; i < (Xmax+1); i++) {
+
+					if (i < (Xmax+1) - 1) {
+
+						Mapbuffer.append(" " + String.valueOf(i / 10));
+
+					} else if (i == (Xmax+1) - 1) {
+
+						Mapbuffer.append(" " + String.valueOf(i / 10) + "\n");
+
+					}
+
+				}
+
+				for (int i = 0; i < Ycountlength; i++) {
+
+					Mapbuffer.append(" ");
+				}
+
+				for (int i = 1; i < (Xmax+1); i++) {
+
+					if (i < (Xmax+1) - 1) {
+
+						Mapbuffer.append(" " + String.valueOf(i % 10));
+
+					} else if (i == (Xmax+1) - 1) {
+
+						Mapbuffer.append(" " + String.valueOf(i % 10) + "\n");
+
+					}
+
+				}
+
+			} else if ((Xmax+1) < 99 && (Xmax+1) > 9) {
+
+				for (int i = 1; i < (Xmax+1); i++) {
+
+					if (i < (Xmax+1) - 1) {
+
+						Mapbuffer.append(" " + String.valueOf(i / 10));
+
+					} else if (i == (Xmax+1) - 1) {
+
+						Mapbuffer.append(" " + String.valueOf(i / 10) + "\n");
+
+					}
+
+				}
+
+				for (int i = 0; i < Ycountlength; i++) {
+
+					Mapbuffer.append(" ");
+				}
+
+				for (int i = 1; i < (Xmax+1); i++) {
+
+					if (i < (Xmax+1) - 1) {
+
+						Mapbuffer.append(" " + String.valueOf(i % 10));
+
+					} else if (i == (Xmax+1) - 1) {
+
+						Mapbuffer.append(" " + String.valueOf(i % 10) + "\n");
+
+					}
+
+				}
+
+			} else if ((Xmax+1) < 10) {
+
+				for (int i = 1; i < (Xmax+1); i++) {
+
+					if (i < (Xmax+1) - 1) {
+
+						Mapbuffer.append(" " + String.valueOf(i % 10));
+
+					} else if (i == (Xmax+1) - 1) {
+
+						Mapbuffer.append(" " + String.valueOf(i % 10) + "\n");
+
+					}
+
+				}
+			}
+
+		} else if (Rbinchars == 1) {
+
+			if ((Xmax+1) > 99) {
+
+				for (int i = 1; i < (Xmax+1); i++) {
+
+					if (i < (Xmax+1) - 1) {
+
+						Mapbuffer.append(String.valueOf(i / 100));
+
+					} else if (i == (Xmax+1) - 1) {
+
+						Mapbuffer.append(String.valueOf(i / 100) + "\n");
+
+					}
+
+				}
+
+				for (int i = 0; i < Ycountlength; i++) {
+
+					Mapbuffer.append(" ");
+				}
+
+				for (int i = 1; i < (Xmax+1); i++) {
+
+					if (i < (Xmax+1) - 1) {
+
+						Mapbuffer.append(String.valueOf(i / 10));
+
+					} else if (i == (Xmax+1) - 1) {
+
+						Mapbuffer.append(String.valueOf(i / 10) + "\n");
+
+					}
+
+				}
+
+				for (int i = 0; i < Ycountlength; i++) {
+
+					Mapbuffer.append(" ");
+				}
+
+				for (int i = 1; i < (Xmax+1); i++) {
+
+					if (i < (Xmax+1) - 1) {
+
+						Mapbuffer.append(String.valueOf(i % 10));
+
+					} else if (i == (Xmax+1) - 1) {
+
+						Mapbuffer.append(String.valueOf(i % 10) + "\n");
+
+					}
+
+				}
+
+			} else if ((Xmax+1) < 99 && (Xmax+1) > 9) {
+
+				for (int i = 1; i < (Xmax+1); i++) {
+
+					if (i < (Xmax+1) - 1) {
+
+						Mapbuffer.append(String.valueOf(i / 10));
+
+					} else if (i == (Xmax+1) - 1) {
+
+						Mapbuffer.append(String.valueOf(i / 10) + "\n");
+
+					}
+
+				}
+
+				for (int i = 0; i < Ycountlength; i++) {
+
+					Mapbuffer.append(" ");
+				}
+
+				for (int i = 1; i < (Xmax+1); i++) {
+
+					if (i < (Xmax+1) - 1) {
+
+						Mapbuffer.append(String.valueOf(i % 10));
+
+					} else if (i == (Xmax+1) - 1) {
+
+						Mapbuffer.append(String.valueOf(i % 10) + "\n");
+
+					}
+
+				}
+
+			} else if ((Xmax+1) < 10) {
+
+				for (int i = 1; i < (Xmax+1); i++) {
+
+					if (i < (Xmax+1) - 1) {
+
+						Mapbuffer.append(String.valueOf(i % 10));
+
+					} else if (i == (Xmax+1) - 1) {
+
+						Mapbuffer.append(String.valueOf(i % 10) + "\n");
+
+					}
+
+				}
+			}
+
+		}
+		
+		String[] TotalTested = tailelement[2][0].split("\\s");
+		String[] PassUnits = tailelement[13][0].split("\\s");
+		String[] PassYld = tailelement[6][0].split("\\s");
+		
+		double PassYldcount1 =((double)(Integer.parseInt(PassYld[4]))/(double)(Integer.parseInt(TotalTested[3])))*100.00;
+		
+		String PassYldcount2 = String.format("%.2f", PassYldcount1);
+
+		String[] softbinbuffer1 = tailelement[4][0].split("\\s");
+        String[] softbinbuffer2 = tailelement[4][tailelement[4].length-1].split("\\s");
+		
+		tailelement[4][tailelement[4].length-1] = softbinbuffer2[0];
+		tailelement[4][0] = softbinbuffer1[3];
+		
+		for(int i = 0; i < tailelement[4].length; i++) {
+			
+			tailelement[4][i] = String.format("%3s", tailelement[4][i]);
+			
+		}
+		
+		String[] hardbinbuffer1 = tailelement[3][0].split("\\s");
+        String[] hardbinbuffer2 = tailelement[3][tailelement[3].length-1].split("\\s");
+		
+		tailelement[3][tailelement[3].length-1] = hardbinbuffer2[0];
+		
+		tailelement[3][0] = hardbinbuffer1[3];
+		
+		for(int i = 0; i < tailelement[3].length; i++) {
+			
+			tailelement[3][i] = String.format("%2s", tailelement[3][i]);
+			
+		}
+			
+		String[] softbinnamebuffer1 = tailelement[5][0].split("\\s");
+        String[] softbinnamebuffer2 = tailelement[5][tailelement[5].length-1].split("\\s");
+		
+		tailelement[5][tailelement[5].length-1] = softbinnamebuffer2[0];
+		
+		tailelement[5][0] = softbinnamebuffer1[3];
+		
+		for(int i = 0; i < tailelement[5].length; i++) {
+			
+			tailelement[5][i] = String.format("%27s", tailelement[5][i]);
+			
+		}
+		
+		String[] softbincountbuffer1 = tailelement[13][0].split("\\s");
+		String[] softbincountbuffer2 = tailelement[13][tailelement[13].length-1].split("\\s");
+		
+		tailelement[13][0] = softbincountbuffer1[4];
+		tailelement[13][tailelement[13].length-1] = softbincountbuffer2[0];
+
+		for(int i = 0; i < tailelement[13].length; i++) {
+			
+			System.out.println("tail sfot count :"+tailelement[13][i]+"|"+i);
+			
+		}
+		
+		
+		double[] SoftbinYld = new double[tailelement[13].length];
+		String[] StrSoftbinYld = new String[tailelement[13].length];
+	
+		for(int i = 0; i < tailelement[13].length; i++) {
+			
+			SoftbinYld[i] = ((double)(Integer.parseInt(tailelement[13][i]))/(double)(Integer.parseInt(TotalTested[3])))*100.0;
+			
+			StrSoftbinYld[i] = String.format("%.2f", SoftbinYld[i]);
+			
+			System.out.println(StrSoftbinYld[i]);
+			
+			StrSoftbinYld[i] = String.format("%9s",StrSoftbinYld[i]);
+		}
+		
+		
+		for(int i = 0; i < tailelement[13].length; i++) {
+			
+			tailelement[13][i] = String.format("%7s", tailelement[13][i]);
+			
+		}
+		
+
+		
+		Mapbuffer.append("\n\n**********  BIN SUMMARY  **********\n\n");
+		Mapbuffer.append("Total Tested                      "+TotalTested[3]+"\n");
+		Mapbuffer.append(" PASS UNITS                       "+PassUnits[4]+" [ "+PassYldcount2+"% ]\n\n");
+		Mapbuffer.append("SoftBIN(HBin)       BIN DESCRIPTION  COUNT   YIELD\n");
+		
+		for(int i = 0; i < tailelement[4].length; i++) {
+		
+			Mapbuffer.append(" "+tailelement[4][i]+"("+tailelement[3][i]+")"+tailelement[5][i]+tailelement[13][i]+StrSoftbinYld[i]+"%\n");
+			
+		}
+		
+		
+		
 		System.out.print(Mapbuffer.toString());
 		
 		/*

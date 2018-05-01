@@ -113,11 +113,17 @@ public class rotation90 {
 			tailcomponent[i] = tailline[i].split("\\s");
 
 		}
+		
+
 
 		for (int i = 0; i < tailcomponent.length - 1; i++) {
 
+			
+			
 			for (int j = 0; j < tailcomponent[i][2].length(); j++) {
 
+			
+				
 				maxbinchar++;
 
 			}
@@ -130,6 +136,8 @@ public class rotation90 {
 			maxbinchar = 0;
 
 		}
+		
+		
 
 		// totalbuffer에서 필요한 head 부분만 header와 tail로 string 저장.
 		int p1 = totalbuffer.indexOf("**********  WAFER MAP");
