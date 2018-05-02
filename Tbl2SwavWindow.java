@@ -329,8 +329,6 @@ public class Tbl2SwavWindow extends JDialog implements ActionListener {
 
 								writer.append(tblloadbuffer.toString());
 								
-								System.out.println("repeat count "+j);
-								
 							}
 							
 							tblloadbuffer.setLength(0);
@@ -399,7 +397,6 @@ public class Tbl2SwavWindow extends JDialog implements ActionListener {
 
 					}
 
-					System.out.println("exit sequence");
 					
 					writer.append("pattern_end \"ITT_con_end\";");
 

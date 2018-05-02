@@ -59,7 +59,7 @@ public class JBeditormain extends JFrame implements ActionListener {
 		getContentPane().add("Center", txtJBeditormain);
 		txtJBeditormain.setFont(new Font("±Ã¼­Ã¼", Font.PLAIN, 13));
 		txtJBeditormain.setWrapStyleWord(true);
-		txtJBeditormain.setLineWrap(true);
+		txtJBeditormain.setLineWrap(false);
 
 		JScrollPane scrollPane = new JScrollPane(txtJBeditormain);
 		getContentPane().add(scrollPane);
