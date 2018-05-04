@@ -27,57 +27,89 @@ public class DBEwindow extends JFrame {
 	char[] cutmap = new char[JBeditormain.Finalarray.length()];
 	char[] defbuffer = new char[JBeditormain.Finalarray.length()];
 
-	int flag = 0;
-	int j = 0;
-	int cnt = 0;
-	int binsize = 0;
-	int BSflag = 0;
-	int BEflag = 0;
-	int firstflag = 1;
-	
-
 	public DBEwindow() {
-		
-		String header[] = JBeditormain.Finalarray.split(":");
-		
-		
-		for(int i = 0; i < header.length; i++) {
-			int p1 = header[i].indexOf(")");
-			String sub = header[i].substring(p1-2);
-						
-			header[i] = header[i].replace(sub, "");
-											
+
+		String header[] = JBeditormain.Finalarray.split("\n");
+
+		String LotId = "";
+		String WaferId = "";
+		String FlatZone = "";
+
+		int flag = 0;
+		int j = 0;
+		int cnt = 0;
+		int binsize = 0;
+		int maxbinchar = 0;
+		int Mapchar = 0;
+		int firstflag = 0;
+
+		for (int i = 0; i < header.length; i++) {
+
+			if (header[i].contains("LOT Number")) {
+
+				int p1 = header[i].indexOf("LOT Number");
+				LotId = header[i].substring(p1 + 19);
+
+			}
+
+			if (header[i].contains("WAFER ID")) {
+
+				int p1 = header[i].indexOf("WAFER ID");
+				WaferId = header[i].substring(p1 + 19);
+
+			}
+
+			if (header[i].contains("FLAT ZONE")) {
+
+				int p1 = header[i].indexOf("FLAT ZONE");
+				FlatZone = header[i].substring(p1 + 19);
+
+			}
+
 		}
-        
-		
-		
+
+		// bin char 추
+		int tailindex = JBeditormain.Finalarray.indexOf("SoftBIN");
+		String taillinebuf = JBeditormain.Finalarray.substring(tailindex);
+		String[] tailline = taillinebuf.split("\n");
+
+		String[][] tailcomponent = new String[tailline.length][];
+
+		for (int i = 0; i < tailline.length; i++) {
+
+			tailcomponent[i] = tailline[i].split("\\s");
+
+		}
+
+		for (int i = 0; i < tailcomponent.length - 1; i++) {
+
+			for (int j1 = 0; j1 < tailcomponent[i][2].length(); j1++) {
+
+				maxbinchar++;
+
+			}
+
+			if (maxbinchar > binsize) {
+
+				binsize = maxbinchar;
+			}
+
+			maxbinchar = 0;
+
+		}
+
 		for (int i = 0; i < JBeditormain.Finalarray.length(); i++) {
 
 			cutmap[i] = JBeditormain.Finalarray.charAt(i);
 
 			
-
-			if (cutmap[i] == '\n' && flag == 1 && BEflag == 0) {
-
-				BSflag = 1;
-				
-
-			} else if (cutmap[i] == '|' && flag == 0 && firstflag == 0) {
-
-				BEflag = 1;
-				
-
-			} else if (BSflag == 1 && BEflag == 0) {
-
-				binsize++;
-				
-
-			}
-
+			
+			
 			if (cutmap[i] == '|' || flag == 1) {
 
 				flag = 1;
-				firstflag = 0;
+				firstflag = 1;
+				
 
 				if (cutmap[i] == '\n') {
 
@@ -88,14 +120,22 @@ public class DBEwindow extends JFrame {
 					j++;
 					cnt++;
 
-				} else {
-
-					if (cutmap[i] < '0' || cutmap[i] > '9' || cutmap[i] == '1') {
+				} else if (cutmap[i] == ' ' || cutmap[i] == '1' || cutmap[i] == '|'|| cutmap[i] == '+') {
 
 						defbuffer[j] = cutmap[i];
 
 						j++;
 						cnt++;
+
+					} else if (cutmap[i] < 47 || cutmap[i] > 58 && cutmap[i] != '|' && cutmap[i] != '+') {
+
+						cutmap[i] = 'X';
+
+						defbuffer[j] = cutmap[i];
+
+						j++;
+						cnt++;
+						Mapchar = 1;
 
 					} else {
 
@@ -108,38 +148,69 @@ public class DBEwindow extends JFrame {
 
 					}
 
-				}
+			
 
-			} else if (cutmap[i] == '-') {
+			} else if(cutmap[i] == '+' && firstflag == 1) {
+				
+				flag = 1;
+				
+				defbuffer[j] = cutmap[i];
+
+				j++;
+				cnt++;
+				
+			}
+			
+			else if (cutmap[i] == '-') {
 				flag = 0;
+				firstflag =0;
 			}
 
 		}
-	
-		
-		DBEsumarrary = str1+header[2].substring(1)+hype+header[3].substring(1)+enter;
-		
-		DBEsumarrary = DBEsumarrary+str2+header[4].substring(1)+enter+enter;
+
+		// Map 마다 char를 찍는 갯수의 상이함을 보상.
+		if (binsize == 2) {
+
+			binsize = binsize - 1;
+
+		} else if (Mapchar == 1) {
+
+			binsize = 1;
+
+		}
+
+		DBEsumarrary = str1 + LotId + hype + WaferId + enter;
+
+		DBEsumarrary = DBEsumarrary + str2 + FlatZone + enter + enter;
 
 		for (int i = 0; i < cnt; i++) {
 			DBEarrary += Character.toString(defbuffer[i]);
 		}
 
-		if (binsize == 3) {
+		
+		if (binsize == 4) {
 			DBEarrary = DBEarrary.replace("null", "");
 			DBEarrary = DBEarrary.replace("|", "");
-			DBEarrary = DBEarrary.replace("111", "  1");
+			DBEarrary = DBEarrary.replace("+", "");
+			DBEarrary = DBEarrary.replace(" 11", "  X");
+			DBEarrary = DBEarrary.replace("111", "  X");
 			DBEarrary = DBEarrary.replace("11X", "  X");
+			DBEarrary = DBEarrary.replace("1XX", "  X");
+			DBEarrary = DBEarrary.replace("1X1", "  X");
+			DBEarrary = DBEarrary.replace("XX1", "  X");
+			DBEarrary = DBEarrary.replace("X11", "  X");
 			DBEarrary = DBEarrary.replace("XXX", "  X");
 			DBEarrary = DBEarrary.replace("   1", "1");
 			DBEarrary = DBEarrary.replace("   X", "X");
 			DBEarrary = DBEarrary.replace("    ", " ");
 			DBEarrary = DBEarrary.replace(" ", ".");
-		} else if (binsize == 2) {
+		} else if (binsize == 3) {
 			DBEarrary = DBEarrary.replace("null", "");
 			DBEarrary = DBEarrary.replace("|", "");
-			DBEarrary = DBEarrary.replace("11", " 1");
+			DBEarrary = DBEarrary.replace("+", "");
+			DBEarrary = DBEarrary.replace("11", " X");
 			DBEarrary = DBEarrary.replace("1X", " X");
+			DBEarrary = DBEarrary.replace("X1", " X");
 			DBEarrary = DBEarrary.replace("XX", " X");
 			DBEarrary = DBEarrary.replace("  1", "1");
 			DBEarrary = DBEarrary.replace("  X", "X");
@@ -149,28 +220,29 @@ public class DBEwindow extends JFrame {
 		} else if (binsize == 1) {
 			DBEarrary = DBEarrary.replace("null", "");
 			DBEarrary = DBEarrary.replace("|", "");
+			DBEarrary = DBEarrary.replace("+", "");
 			DBEarrary = DBEarrary.replace(" ", ".");
 
 		}
-		
+
 		DBEsumarrary = DBEsumarrary + DBEarrary;
-		
+
 		FileDialog dialog = new FileDialog(this, "Save", FileDialog.SAVE);
-		dialog.setDirectory("."); 
-		dialog.setVisible(true); 
+		dialog.setDirectory(".");
+		dialog.setVisible(true);
 		if (dialog.getFile() == null)
-			return; 
-		String dfName = dialog.getDirectory() + dialog.getFile(); 
-		
+			return;
+		String dfName = dialog.getDirectory() + dialog.getFile();
+
 		try {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(dfName));
 			writer.write(DBEsumarrary);
 			writer.close();
 
 			setTitle(dialog.getFile() + " - DBE save..");
-			DBEarrary ="";
-			DBEsumarrary ="";
-			
+			DBEarrary = "";
+			DBEsumarrary = "";
+
 		} catch (Exception e2) {
 			JOptionPane.showMessageDialog(this, "Save error");
 		}

@@ -40,7 +40,7 @@ public class Tbl2SwavWindow extends JDialog implements ActionListener {
 	JLabel fileEmpty = new JLabel("");
 
 	public static String pininputbuffer;
-	public static StringBuilder tblloadbuffer = new StringBuilder(); // MAX cap is 12383875 line
+	public static StringBuffer tblloadbuffer = new StringBuffer(); // MAX cap is 12383875 line
 
 	static int p = 0;
 
@@ -50,8 +50,8 @@ public class Tbl2SwavWindow extends JDialog implements ActionListener {
 	static String dTBLSavefName;
 	static String swavheader;
 
-	public Tbl2SwavWindow(JFrame frame) {
-		super(frame);
+	public Tbl2SwavWindow() {
+		
 
 		pininputbuffer = "";
 		dTBLfName = "";
@@ -249,7 +249,7 @@ public class Tbl2SwavWindow extends JDialog implements ActionListener {
 
 				String[] tblpinlist = new String[cnt];
 				String[] linesplit = new String[3];
-				String linesub;
+			
 
 				pininputbuffer.replace("\\s", "");
 				pininputbuffer.replace(",", "");
@@ -323,7 +323,7 @@ public class Tbl2SwavWindow extends JDialog implements ActionListener {
 							tblloadbuffer.append(line);
 							tblloadbuffer.append('\n');
 							
-							System.out.println("linsplit1 "+Integer.parseInt(linesplit[1]));
+							//System.out.println("linsplit1 "+Integer.parseInt(linesplit[1]));
 							
 							for (int j = 0; j < Integer.parseInt(linesplit[1]); j++) {
 

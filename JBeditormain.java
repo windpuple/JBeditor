@@ -12,6 +12,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Random;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -23,7 +26,7 @@ public class JBeditormain extends JFrame implements ActionListener {
 	JTextArea txtJBeditormain = new JTextArea("", 100, 400);
 	String copyText;
 
-	JMenuItem mnuNew, mnuSave, mnuOpen, mnuDBE, mnuMAP,  mnuExit;
+	JMenuItem mnuNew, mnuSave, mnuOpen, mnuDBE, mnuMAP, mnuExit;
 	JMenuItem mnuCopy, mnuPaste, mnuCut, mnuDel, mnuSbinedit, mnurotation;
 	JMenuItem mnulinear, mnusine, mnutbl2swav;
 	JMenuItem mnuAbout, mnuEtc1, mnuEtc2;
@@ -33,15 +36,16 @@ public class JBeditormain extends JFrame implements ActionListener {
 	JMenuItem m_white, m_blue, m_yellow;
 
 	public static String Finalarray = "";
-	//public static String txtJBeditormainbuffer = "";
-	public static StringBuilder txtJBeditormainbuffer = new StringBuilder();
+	public static StringBuffer txtJBeditormainbuffer = new StringBuffer();
 	
+	// 전체 thread의 thread number 확인.
+	int index = 0; 
 
 	public JBeditormain() {
 		super("Intergrated Test Tool");
 
 		txtJBeditormainbuffer.setLength(0);
-		
+
 		initLayout();
 		menuLayout();
 		setBounds(200, 100, 800, 900);
@@ -180,6 +184,31 @@ public class JBeditormain extends JFrame implements ActionListener {
 		});
 	}
 
+	// this way is not acceptable to Jdialog, the reason is making crash on
+	// setvisible function.
+	/*
+	 * public class Map2BackRunable implements Runnable{
+	 * 
+	 * private int index = 0;
+	 * 
+	 * @Override public synchronized void run() {
+	 * 
+	 * Random r = new Random(System.currentTimeMillis());
+	 * 
+	 * long s = r.nextInt(1000); // 3초내로 끝내자.
+	 * 
+	 * new MAPwindow();
+	 * 
+	 * index++; System.out.println("current index value: " + index);
+	 * 
+	 * }
+	 * 
+	 * 
+	 * }
+	 * 
+	 * 
+	 */
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
@@ -245,24 +274,24 @@ public class JBeditormain extends JFrame implements ActionListener {
 			try {
 				BufferedReader reader = new BufferedReader(new FileReader(dfName));
 				// FileReader reader = new FileReader(dfName);
-				
+
 				txtJBeditormain.setText("");
-				
+
 				String line;
-				
+
 				while ((line = reader.readLine()) != null) {
 
 					txtJBeditormainbuffer.append(line);
 					txtJBeditormainbuffer.append('\n');
 				}
-							
+
 				txtJBeditormain.setText(txtJBeditormainbuffer.toString());
-					
+
 				Finalarray = "";
 				Finalarray = txtJBeditormainbuffer.toString();
 
 				txtJBeditormainbuffer.setLength(0);
-				
+
 				reader.close();
 
 				setTitle(dialog.getFile() + " - ITT");
@@ -291,37 +320,117 @@ public class JBeditormain extends JFrame implements ActionListener {
 
 		} else if (e.getSource() == mnuMAP) {
 
-			new MAPwindow();
-			
+			// this way is not acceptable to Jdialog, the reason is making crash on
+			// setvisible function.
+
+			// System.out.println("Start main method.");
+
+			// Runnable r = new Map2BackRunable(); // 실제 구현한 Runnable 인터페이스
+			// ArrayList<Thread> threadList = new ArrayList<Thread>(); // 쓰레드들을 담을 객체
+
+			// Runnable 인터페이스를 사용해 새로운 쓰레드를 만듭니다.
+			// Thread test = new Thread(r);
+
+			// test.start(); // 이 메소드를 실행하면 Thread 내의 run()을 수행한다.
+			// threadList.add(test); 생성한 쓰레드를 리스트에 삽입
+
+			// for(Thread t : threadList){ try {
+
+			// t.join();
+
+			// } catch (InterruptedException e1) {
+
+			// e1.printStackTrace(); } // 쓰레드의 처리가 끝날때까지 기다립니다. }
+			// }
+			// System.out.println("End main method.");
+
+			// Swing 에서는 일반적인 thread가 구성되지 않는다. 오로지 eventqueue의 invoker에 의해서 thread가 숨겨진 dispatch thread로 생성된다.
+			EventQueue.invokeLater(new Runnable() {
+				public synchronized void run() {
+					// this will run in swings thread
+					
+					new MAPwindow();
+				
+					index++; System.out.println("current index value: " + index);
+				
+				}
+			});
+
 		} else if (e.getSource() == mnuDBE) {
 
-			new DBEwindow();
+			EventQueue.invokeLater(new Runnable() {
+				public synchronized void run() {
+					// this will run in swings thread
+					
+					int index = 0;
+					
+					new DBEwindow();
+				
+					index++; System.out.println("current index value: " + index);
+				
+				}
+			});
 			
+			
+
 		} else if (e.getSource() == mnulinear) {
 
-			new linearwindow(this);
+			EventQueue.invokeLater(new Runnable() {
+				public synchronized void run() {
+					// this will run in swings thread
+					
+					new linearwindow();
 
-			txtJBeditormain.setText("");
-			txtJBeditormain.setText(linearwindow.linearfinalbuffer);
+					txtJBeditormain.setText("");
+					txtJBeditormain.setText(linearwindow.linearfinalbuffer);
 
-			Finalarray = "";
-			Finalarray = linearwindow.linearfinalbuffer;
-			linearwindow.linearfinalbuffer = "";
+					Finalarray = "";
+					Finalarray = linearwindow.linearfinalbuffer;
+					linearwindow.linearfinalbuffer = "";
+				
+					index++; System.out.println("current index value: " + index);
+				
+				}
+			});
+			
+			
 
 		} else if (e.getSource() == mnusine) {
 
-			new sinewindow(this);
+			EventQueue.invokeLater(new Runnable() {
+				public synchronized void run() {
+					// this will run in swings thread
+					
+					new sinewindow();
 
-			txtJBeditormain.setText("");
-			txtJBeditormain.setText(sinewindow.sinefinalbuffer);
+					txtJBeditormain.setText("");
+					txtJBeditormain.setText(sinewindow.sinefinalbuffer);
 
-			Finalarray = "";
-			Finalarray = sinewindow.sinefinalbuffer;
-			sinewindow.sinefinalbuffer = "";
+					Finalarray = "";
+					Finalarray = sinewindow.sinefinalbuffer;
+					sinewindow.sinefinalbuffer = "";
 
+				
+					index++; System.out.println("current index value: " + index);
+				
+				}
+			});
+			
+		
 		} else if (e.getSource() == mnutbl2swav) {
 
-			new Tbl2SwavWindow(this);
+			EventQueue.invokeLater(new Runnable() {
+				public synchronized void run() {
+					// this will run in swings thread
+					
+					new Tbl2SwavWindow();
+				
+					index++; System.out.println("current index value: " + index);
+				
+				}
+			});
+			
+			
 
 		} else if (e.getSource() == mnuExit) {
 
@@ -360,7 +469,7 @@ public class JBeditormain extends JFrame implements ActionListener {
 		txtJBeditormain.requestFocus();
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 		new JBeditormain();
 	}
 

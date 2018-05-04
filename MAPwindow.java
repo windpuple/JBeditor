@@ -21,8 +21,8 @@ public class MAPwindow extends JFrame {
 	int bodycnt = 0;
 	int tailcnt = 0;
 
-	StringBuilder Bodybuffer1 = new StringBuilder();
-	StringBuilder Mapbuffer = new StringBuilder();
+	StringBuffer Bodybuffer1 = new StringBuffer();
+	StringBuffer Mapbuffer = new StringBuffer();
 
 	String backline[] = JBeditormain.Finalarray.split("\n");
 
@@ -31,8 +31,10 @@ public class MAPwindow extends JFrame {
 	String[][] bodyelement = new String[backline.length][];
 	String[][] tailelement = new String[backline.length][];
 
-	public MAPwindow() {
+	public  MAPwindow() {
 
+		System.out.println("Point 1");
+		
 		for (int i = 0; i < 7; i++) {
 
 			headelement[i] = backline[i].split("\\s");
@@ -71,6 +73,8 @@ public class MAPwindow extends JFrame {
 
 		}
 
+		System.out.println("Point 2");
+		
 		String[] xposition = new String[bodycnt];
 		String[] yposition = new String[bodycnt];
 		String[] Softbin = new String[bodycnt];
@@ -159,6 +163,8 @@ public class MAPwindow extends JFrame {
 		// System.out.println("Softmax :" + Softmax);
 		// System.out.println("binchars :" + binchars);
 
+		System.out.println("Point 3");
+		
 		String[][] ChipPosition = new String[Ymax][Xmax];
 
 		for (int i = 0; i < Ymax; i++) {
@@ -233,6 +239,8 @@ public class MAPwindow extends JFrame {
 
 		}
 
+		System.out.println("Point 4");
+		
 		for (int i = 0; i < Ymax; i++) {
 
 			for (int j = 0; j < Xmax; j++) {
@@ -269,6 +277,8 @@ public class MAPwindow extends JFrame {
 		// }
 		// }
 
+		System.out.println("Point 5");
+		
 		String CodeName = headelement[3][3];
 		String PgmName = headelement[1][3];
 		String TestSystem = headelement[0][4];
@@ -289,6 +299,8 @@ public class MAPwindow extends JFrame {
 			}
 		}
 
+		System.out.println("Point 6");
+		
 		String[] WaferIdbuf2 = WaferIdbuf1[1].split("-");
 		String WaferId = WaferIdbuf2[1].substring(0, 1);
 
@@ -351,6 +363,8 @@ public class MAPwindow extends JFrame {
 
 		}
 
+		System.out.println("Point 7");
+		
 		// numbering xÃà
 
 		for (int i = 0; i < Ycountlength; i++) {
@@ -1397,6 +1411,9 @@ public class MAPwindow extends JFrame {
 			}
 		}
 
+		
+		System.out.println("Point 8");
+		
 		String PassUnits = PassUnitsbuf[4];
 
 		String[] PassYld = tailelement[6][0].split("\\s");
@@ -1459,6 +1476,9 @@ public class MAPwindow extends JFrame {
 			}
 		}
 
+		
+		System.out.println("Point 9");
+		
 		String[] softbincountbuffer1 = tailelement[softbinlength][0].split("\\s");
 		String[] softbincountbuffer2 = tailelement[softbinlength][tailelement[softbinlength].length - 1].split("\\s");
 
@@ -1496,13 +1516,22 @@ public class MAPwindow extends JFrame {
 
 		}
 
+		System.out.println("Point 10");
+		
 		FileDialog dialog = new FileDialog(this, "Save", FileDialog.SAVE);
+		System.out.println("Point 11");
+		
 		dialog.setDirectory(".");
+		System.out.println("Point 12");
 		dialog.setVisible(true);
+		System.out.println("Point 13");
 		if (dialog.getFile() == null)
 			return;
+		System.out.println("Point 14");
 		String dfName = dialog.getDirectory() + dialog.getFile();
 
+		System.out.println("Point 15");
+		
 		try {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(dfName));
 			writer.write(Mapbuffer.toString());
@@ -1512,6 +1541,8 @@ public class MAPwindow extends JFrame {
 
 			Mapbuffer.setLength(0);
 
+			System.out.println("Point 16");
+			
 		} catch (Exception e2) {
 			JOptionPane.showMessageDialog(this, "Save error");
 		}

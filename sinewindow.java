@@ -42,8 +42,8 @@ public class sinewindow extends JDialog implements ActionListener {
 	private JTextField Fstext;
 	private JTextField Mcycletext;
 
-	public sinewindow(JFrame frame) {
-		super(frame);
+	public sinewindow() {
+		
 
 		sinefinalbuffer = "";
 		samplecounttext = "";

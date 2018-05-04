@@ -20,6 +20,7 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JSlider;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.SystemColor;
 
 public class linearwindow extends JDialog implements ActionListener {
@@ -36,8 +37,8 @@ public class linearwindow extends JDialog implements ActionListener {
 	public static JSlider Linearslider = new JSlider(JSlider.HORIZONTAL, 0, 100, 50);
 	private JLabel linearsliderLabel = new JLabel("Scale Adjust");
 
-	public linearwindow(JFrame frame) {
-		super(frame);
+	public linearwindow() {
+		
 
 		linearfinalbuffer = "";
 		samplecounttext = "";
