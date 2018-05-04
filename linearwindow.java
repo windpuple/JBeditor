@@ -22,6 +22,7 @@ import javax.swing.JSlider;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.SystemColor;
+import java.awt.Toolkit;
 
 public class linearwindow extends JDialog implements ActionListener {
 
@@ -34,10 +35,11 @@ public class linearwindow extends JDialog implements ActionListener {
 
 	private JTextField pintext;
 	private JTextField sampletext;
-	public static JSlider Linearslider = new JSlider(JSlider.HORIZONTAL, 0, 100, 50);
+	public static JSlider Linearslider = new JSlider(JSlider.HORIZONTAL, 0, 100, 100);
 	private JLabel linearsliderLabel = new JLabel("Scale Adjust");
 
 	public linearwindow() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(linearwindow.class.getResource("/javax/swing/plaf/metal/icons/sortDown.png")));
 		
 
 		linearfinalbuffer = "";

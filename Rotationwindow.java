@@ -18,6 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+import java.awt.Toolkit;
 
 public class Rotationwindow extends JDialog implements ActionListener {
 
@@ -32,6 +33,7 @@ public class Rotationwindow extends JDialog implements ActionListener {
 	public static String rotationfinalbuffer;
 
 	public Rotationwindow() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Rotationwindow.class.getResource("/javax/swing/plaf/metal/icons/sortDown.png")));
 	
 		cwbuffer = "";
 		ccwbuffer = "";

@@ -22,13 +22,14 @@ public class sinedraw extends JDialog {
 		super(frame);
 
 		JFrame frame1 = new JFrame("Sine Wave");
+		frame1.setIconImage(Toolkit.getDefaultToolkit().getImage(sinedraw.class.getResource("/javax/swing/plaf/metal/icons/sortDown.png")));
 
 		drawpanel.setPreferredSize(
 				new Dimension((int) (Integer.parseInt(sinewindow.samplecounttext) * sinescale) + 25, 1024));
 
 		JScrollPane scrollPane = new JScrollPane(drawpanel);
 
-		frame1.add(scrollPane);
+		frame1.getContentPane().add(scrollPane);
 
 		frame1.setResizable(true);
 		frame1.setPreferredSize(new Dimension(1000, 800));

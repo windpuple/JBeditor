@@ -45,6 +45,7 @@ public class JBeditormain extends JFrame implements ActionListener {
 
 	public JBeditormain() {
 		super("Intergrated Test Tool");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(JBeditormain.class.getResource("/javax/swing/plaf/metal/icons/sortDown.png")));
 
 		txtJBeditormainbuffer.setLength(0);
 

@@ -22,6 +22,7 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JSlider;
 import java.awt.SystemColor;
+import java.awt.Toolkit;
 
 public class sinewindow extends JDialog implements ActionListener {
 
@@ -30,7 +31,7 @@ public class sinewindow extends JDialog implements ActionListener {
 	JButton nbtn = new JButton("M\uACC4\uC0B0");
 
 	JLabel notice = new JLabel("");
-	public static JSlider SineScaleSlider = new JSlider(JSlider.HORIZONTAL, 0, 100, 50);
+	public static JSlider SineScaleSlider = new JSlider(JSlider.HORIZONTAL, 0, 100, 100);
 
 	public static String sinefinalbuffer;
 	public static String samplecounttext;
@@ -43,6 +44,7 @@ public class sinewindow extends JDialog implements ActionListener {
 	private JTextField Mcycletext;
 
 	public sinewindow() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(sinewindow.class.getResource("/javax/swing/plaf/metal/icons/sortDown.png")));
 		
 
 		sinefinalbuffer = "";

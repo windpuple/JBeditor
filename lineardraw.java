@@ -22,13 +22,14 @@ public class lineardraw extends JDialog {
 		super(frame);
 
 		JFrame frame1 = new JFrame("Linear Wave");
+		frame1.setIconImage(Toolkit.getDefaultToolkit().getImage(lineardraw.class.getResource("/javax/swing/plaf/metal/icons/sortDown.png")));
 
 		drawpanel.setPreferredSize(
 				new Dimension((int) (Integer.parseInt(linearwindow.samplecounttext) * linearscale) + 25, (int) ((Integer.parseInt(linearwindow.samplecounttext)) * linearscale)));
 
 		JScrollPane scrollPane = new JScrollPane(drawpanel);
 
-		frame1.add(scrollPane);
+		frame1.getContentPane().add(scrollPane);
 
 		frame1.setResizable(true);
 		frame1.setPreferredSize(new Dimension(1000, 800));

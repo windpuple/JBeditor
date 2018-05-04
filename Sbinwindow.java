@@ -16,6 +16,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import java.awt.Toolkit;
 
 public class Sbinwindow extends JDialog implements ActionListener {
 	private JTextField bh_textfield;
@@ -29,6 +30,7 @@ public class Sbinwindow extends JDialog implements ActionListener {
 	public static String txtSbinbuffer = "";;
 
 	public Sbinwindow() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Sbinwindow.class.getResource("/javax/swing/plaf/metal/icons/sortDown.png")));
 
 
 		setTitle("Sbin change input");

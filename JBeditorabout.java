@@ -15,19 +15,21 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import java.awt.Toolkit;
 
 public class JBeditorabout extends JDialog implements ActionListener {
 
  public JBeditorabout(JFrame frame) {
   super(frame);
+  setIconImage(Toolkit.getDefaultToolkit().getImage(JBeditorabout.class.getResource("/javax/swing/plaf/metal/icons/sortDown.png")));
   setTitle("ITT infomation");
   setModal(true);    // true : Modal, false : Modeless
   
-  JLabel lbl = new JLabel("   ITT ver 0.0 made by JB.Jeon");
+  JLabel lbl = new JLabel("   ITT ver 0.2 made by JB.Jeon");
   JButton btn = new JButton("»Æ¿Œ");
   btn.addActionListener(this);
-  add("Center", lbl);    // BordLayout
-  add("South", btn);
+  getContentPane().add("Center", lbl);    // BordLayout
+  getContentPane().add("South", btn);
   
   setBackground(Color.LIGHT_GRAY);
   setBounds(350, 250, 200, 150);

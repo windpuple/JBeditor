@@ -9,11 +9,13 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.Toolkit;
 
 public class LinearErrorMessage extends JDialog implements ActionListener {
 
  public LinearErrorMessage(JDialog linearwindow) {
   super(linearwindow);
+  setIconImage(Toolkit.getDefaultToolkit().getImage(LinearErrorMessage.class.getResource("/javax/swing/plaf/metal/icons/sortDown.png")));
   setTitle("linear error");
   setModal(true);    
   
