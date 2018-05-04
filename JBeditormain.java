@@ -23,7 +23,9 @@ public class JBeditormain extends JFrame implements ActionListener {
 	JButton btnPaste = new JButton("Paste");
 	JButton btnCut = new JButton("Cut");
 	JButton btnDel = new JButton("Delete");
-	JTextArea txtJBeditormain = new JTextArea("", 100, 400);
+	
+	public static JTextArea txtJBeditormain = new JTextArea("", 100, 400);
+	
 	String copyText;
 
 	JMenuItem mnuNew, mnuSave, mnuOpen, mnuDBE, mnuMAP, mnuExit;
@@ -234,25 +236,46 @@ public class JBeditormain extends JFrame implements ActionListener {
 
 		} else if (e.getSource() == mnuSbinedit) {
 
-			new Sbinwindow(this);
+			EventQueue.invokeLater(new Runnable() {
+				public synchronized void run() {
+					// this will run in swings thread
+					
+					index++; System.out.println("current index value: " + index);
+												
+					new Sbinwindow();
 
-			txtJBeditormain.setText("");
-			txtJBeditormain.setText(Sbinwindow.txtSbinbuffer);
+					txtJBeditormain.setText("");
+					txtJBeditormain.setText(Sbinwindow.txtSbinbuffer);
 
-			Finalarray = "";
-			Finalarray = Sbinwindow.txtSbinbuffer;
-			Sbinwindow.txtSbinbuffer = "";
+					Finalarray = "";
+					Finalarray = Sbinwindow.txtSbinbuffer;
+					Sbinwindow.txtSbinbuffer = "";
+
+				
+				}
+			});
+				
 
 		} else if (e.getSource() == mnurotation) {
 
-			new Rotationwindow(this);
+			EventQueue.invokeLater(new Runnable() {
+				public synchronized void run() {
+					// this will run in swings thread
+					
+					index++; System.out.println("current index value: " + index);
+												
+					new Rotationwindow();
 
-			txtJBeditormain.setText("");
-			txtJBeditormain.setText(Rotationwindow.rotationfinalbuffer);
+					txtJBeditormain.setText("");
+					txtJBeditormain.setText(Rotationwindow.rotationfinalbuffer);
 
-			Finalarray = "";
-			Finalarray = Rotationwindow.rotationfinalbuffer;
-			Rotationwindow.rotationfinalbuffer = "";
+					Finalarray = "";
+					Finalarray = Rotationwindow.rotationfinalbuffer;
+					Rotationwindow.rotationfinalbuffer = "";				
+				
+				}
+			});
+				
 
 		} else if (e.getSource() == mnuNew) {
 			txtJBeditormain.setText("");
@@ -260,63 +283,32 @@ public class JBeditormain extends JFrame implements ActionListener {
 			Finalarray = "";
 
 		} else if (e.getSource() == mnuOpen) {
-			FileDialog dialog = new FileDialog(this, "open", FileDialog.LOAD);
-			dialog.setDirectory(".");
-			dialog.setVisible(true);
-			if (dialog.getFile() == null)
-				return;
-			String dfName = dialog.getDirectory() + dialog.getFile();
-
-			File f = new File(dfName);
-
-			int fileSize = (int) f.length();
-
-			try {
-				BufferedReader reader = new BufferedReader(new FileReader(dfName));
-				// FileReader reader = new FileReader(dfName);
-
-				txtJBeditormain.setText("");
-
-				String line;
-
-				while ((line = reader.readLine()) != null) {
-
-					txtJBeditormainbuffer.append(line);
-					txtJBeditormainbuffer.append('\n');
+			
+			EventQueue.invokeLater(new Runnable() {
+				public synchronized void run() {
+					// this will run in swings thread
+					
+					index++; System.out.println("current index value: " + index);
+							
+					new MenuOpen();				
+				
 				}
-
-				txtJBeditormain.setText(txtJBeditormainbuffer.toString());
-
-				Finalarray = "";
-				Finalarray = txtJBeditormainbuffer.toString();
-
-				txtJBeditormainbuffer.setLength(0);
-
-				reader.close();
-
-				setTitle(dialog.getFile() + " - ITT");
-			} catch (Exception e2) {
-				JOptionPane.showMessageDialog(this, "Open Error");
-			}
-
+			});
+			
+			
 		} else if (e.getSource() == mnuSave) {
 
-			FileDialog dialog = new FileDialog(this, "Save", FileDialog.SAVE);
-			dialog.setDirectory(".");
-			dialog.setVisible(true);
-			if (dialog.getFile() == null)
-				return;
-			String dfName = dialog.getDirectory() + dialog.getFile();
-
-			try {
-				BufferedWriter writer = new BufferedWriter(new FileWriter(dfName));
-				writer.write(txtJBeditormain.getText());
-				writer.close();
-
-				setTitle(dialog.getFile() + " - text Save");
-			} catch (Exception e2) {
-				JOptionPane.showMessageDialog(this, "Save error");
-			}
+			EventQueue.invokeLater(new Runnable() {
+				public synchronized void run() {
+					// this will run in swings thread
+					
+					index++; System.out.println("current index value: " + index);
+							
+					new MenuSave();				
+				
+				}
+			});
+						
 
 		} else if (e.getSource() == mnuMAP) {
 
@@ -349,9 +341,11 @@ public class JBeditormain extends JFrame implements ActionListener {
 				public synchronized void run() {
 					// this will run in swings thread
 					
+					index++; System.out.println("current index value: " + index);
+					
 					new MAPwindow();
 				
-					index++; System.out.println("current index value: " + index);
+					
 				
 				}
 			});
@@ -362,11 +356,9 @@ public class JBeditormain extends JFrame implements ActionListener {
 				public synchronized void run() {
 					// this will run in swings thread
 					
-					int index = 0;
-					
-					new DBEwindow();
-				
 					index++; System.out.println("current index value: " + index);
+					
+					new DBEwindow();					
 				
 				}
 			});
@@ -379,6 +371,8 @@ public class JBeditormain extends JFrame implements ActionListener {
 				public synchronized void run() {
 					// this will run in swings thread
 					
+					index++; System.out.println("current index value: " + index);
+					
 					new linearwindow();
 
 					txtJBeditormain.setText("");
@@ -388,8 +382,7 @@ public class JBeditormain extends JFrame implements ActionListener {
 					Finalarray = linearwindow.linearfinalbuffer;
 					linearwindow.linearfinalbuffer = "";
 				
-					index++; System.out.println("current index value: " + index);
-				
+								
 				}
 			});
 			
@@ -401,6 +394,8 @@ public class JBeditormain extends JFrame implements ActionListener {
 				public synchronized void run() {
 					// this will run in swings thread
 					
+					index++; System.out.println("current index value: " + index);
+					
 					new sinewindow();
 
 					txtJBeditormain.setText("");
@@ -410,8 +405,6 @@ public class JBeditormain extends JFrame implements ActionListener {
 					Finalarray = sinewindow.sinefinalbuffer;
 					sinewindow.sinefinalbuffer = "";
 
-				
-					index++; System.out.println("current index value: " + index);
 				
 				}
 			});
@@ -423,10 +416,10 @@ public class JBeditormain extends JFrame implements ActionListener {
 				public synchronized void run() {
 					// this will run in swings thread
 					
-					new Tbl2SwavWindow();
-				
 					index++; System.out.println("current index value: " + index);
-				
+					
+					new Tbl2SwavWindow();
+						
 				}
 			});
 			
@@ -469,7 +462,7 @@ public class JBeditormain extends JFrame implements ActionListener {
 		txtJBeditormain.requestFocus();
 	}
 
-	public static void main(String[] args) throws InterruptedException {
+	public static void main(final String[] args) throws InterruptedException {
 		new JBeditormain();
 	}
 

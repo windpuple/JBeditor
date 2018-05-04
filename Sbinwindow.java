@@ -28,8 +28,8 @@ public class Sbinwindow extends JDialog implements ActionListener {
 
 	public static String txtSbinbuffer = "";;
 
-	public Sbinwindow(JFrame frame) {
-		super(frame);
+	public Sbinwindow() {
+
 
 		setTitle("Sbin change input");
 		setModal(true);

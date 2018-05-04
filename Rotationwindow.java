@@ -31,9 +31,8 @@ public class Rotationwindow extends JDialog implements ActionListener {
 
 	public static String rotationfinalbuffer;
 
-	public Rotationwindow(JFrame frame) {
-		super(frame);
-
+	public Rotationwindow() {
+	
 		cwbuffer = "";
 		ccwbuffer = "";
 		rotationfinalbuffer = "";
@@ -103,9 +102,6 @@ public class Rotationwindow extends JDialog implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 
 		if (e.getSource() == btn) {
-
-			// System.out.println(cwbuffer);
-			// System.out.println(ccwbuffer);
 
 			if (cwbuffer == "90") {
 
