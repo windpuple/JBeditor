@@ -53,9 +53,9 @@ public class sinedraw extends JDialog {
 			for (int i = 0; i < Integer.parseInt(sinewindow.samplecounttext); i++) {
 				g.drawLine((int) (i * sinescale),
 						(int) ((double) ((Math.sin(sinewindow.Mvalue * 2 * Math.PI * i
-								/ (Integer.parseInt(sinewindow.samplecounttext) - 1)) + 1) * 200) + 0.5),
+								/ (Integer.parseInt(sinewindow.samplecounttext))) + 1) * 200)),
 						(int) ((i + 1) * sinescale), (int) ((double) ((Math.sin(sinewindow.Mvalue * 2 * Math.PI
-								* (i + 1) / (Integer.parseInt(sinewindow.samplecounttext) - 1)) + 1) * 200) + 0.5));
+								* (i + 1) / (Integer.parseInt(sinewindow.samplecounttext))) + 1) * 200)));
 			}
 
 			g.setColor(Color.BLUE);
@@ -63,8 +63,8 @@ public class sinedraw extends JDialog {
 
 			for (int i = 0; i < Integer.parseInt(sinewindow.samplecounttext); i++) {
 				g.fillOval((int) (i * sinescale), (-450) + (int) ((double) ((Math.sin(
-						sinewindow.Mvalue * 2 * Math.PI * i / (Integer.parseInt(sinewindow.samplecounttext) - 1)) + 1)
-						* 200) + 0.5), 2, 2);
+						sinewindow.Mvalue * 2 * Math.PI * i / (Integer.parseInt(sinewindow.samplecounttext))) + 1)
+						* 200)), 2, 2);
 
 			}
 

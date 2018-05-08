@@ -29,7 +29,7 @@ public class JBeditormain extends JFrame implements ActionListener {
 	String copyText;
 
 	JMenuItem mnuNew, mnuSave, mnuOpen, mnuDBE, mnuMAP, mnuExit;
-	JMenuItem mnuCopy, mnuPaste, mnuCut, mnuDel, mnuSbinedit, mnurotation;
+	JMenuItem mnuCopy, mnuPaste, mnuCut, mnuDel, mnuSbinedit, mnurotation, mnuTdlOenMatch, mnuTdlderive;
 	JMenuItem mnulinear, mnusine, mnutbl2swav;
 	JMenuItem mnuAbout, mnuEtc1, mnuEtc2;
 
@@ -41,7 +41,7 @@ public class JBeditormain extends JFrame implements ActionListener {
 	public static StringBuffer txtJBeditormainbuffer = new StringBuffer();
 	
 	// 전체 thread의 thread number 확인.
-	int index = 0; 
+	//int index = 0; 
 
 	public JBeditormain() {
 		super("Intergrated Test Tool");
@@ -103,6 +103,8 @@ public class JBeditormain extends JFrame implements ActionListener {
 		mnuDel = new JMenuItem("Delete");
 		mnuSbinedit = new JMenuItem("MapSbinEdit");
 		mnurotation = new JMenuItem("MapRotaion");
+		mnuTdlOenMatch = new JMenuItem("TDLpinOenMatch");
+		mnuTdlderive = new JMenuItem("TDLpinDerive");
 		mnuEdit.add(mnuCopy);
 		mnuEdit.add(mnuPaste);
 		mnuEdit.add(mnuCut);
@@ -110,6 +112,9 @@ public class JBeditormain extends JFrame implements ActionListener {
 		mnuEdit.addSeparator();
 		mnuEdit.add(mnuSbinedit);
 		mnuEdit.add(mnurotation);
+		mnuEdit.addSeparator();
+		mnuEdit.add(mnuTdlOenMatch);
+		mnuEdit.add(mnuTdlderive);
 
 		JMenu mnuGeneration = new JMenu("Generate");
 		mnulinear = new JMenuItem("Linear");
@@ -153,6 +158,8 @@ public class JBeditormain extends JFrame implements ActionListener {
 		mnuDel.addActionListener(this);
 		mnuSbinedit.addActionListener(this);
 		mnurotation.addActionListener(this);
+		mnuTdlOenMatch.addActionListener(this);
+		mnuTdlderive.addActionListener(this);
 		mnulinear.addActionListener(this);
 		mnusine.addActionListener(this);
 		mnutbl2swav.addActionListener(this);
@@ -240,9 +247,7 @@ public class JBeditormain extends JFrame implements ActionListener {
 			EventQueue.invokeLater(new Runnable() {
 				public synchronized void run() {
 					// this will run in swings thread
-					
-					index++; System.out.println("current index value: " + index);
-												
+																	
 					new Sbinwindow();
 
 					txtJBeditormain.setText("");
@@ -262,9 +267,7 @@ public class JBeditormain extends JFrame implements ActionListener {
 			EventQueue.invokeLater(new Runnable() {
 				public synchronized void run() {
 					// this will run in swings thread
-					
-					index++; System.out.println("current index value: " + index);
-												
+																
 					new Rotationwindow();
 
 					txtJBeditormain.setText("");
@@ -273,6 +276,44 @@ public class JBeditormain extends JFrame implements ActionListener {
 					Finalarray = "";
 					Finalarray = Rotationwindow.rotationfinalbuffer;
 					Rotationwindow.rotationfinalbuffer = "";				
+				
+				}
+			});
+				
+
+		} else if (e.getSource() == mnuTdlOenMatch) {
+
+			EventQueue.invokeLater(new Runnable() {
+				public synchronized void run() {
+					// this will run in swings thread
+																
+					new TDLpinsOENmatch();
+
+					txtJBeditormain.setText("");
+					txtJBeditormain.setText(TDLpinsOENmatch.TDLpinsOENmatchbuffer.toString());
+
+					Finalarray = "";
+					Finalarray = TDLpinsOENmatch.TDLpinsOENmatchbuffer.toString();
+					TDLpinsOENmatch.TDLpinsOENmatchbuffer.setLength(0);;				
+				
+				}
+			});
+				
+
+		} else if (e.getSource() == mnuTdlderive) {
+
+			EventQueue.invokeLater(new Runnable() {
+				public synchronized void run() {
+					// this will run in swings thread
+																
+					new TDLderiveWindow();
+
+					txtJBeditormain.setText("");
+					txtJBeditormain.setText(TDLderiveWindow.TDLderivefinalbuffer.toString());
+
+					Finalarray = "";
+					Finalarray = TDLderiveWindow.TDLderivefinalbuffer.toString();
+					TDLderiveWindow.TDLderivefinalbuffer.setLength(0);;				
 				
 				}
 			});
@@ -288,9 +329,7 @@ public class JBeditormain extends JFrame implements ActionListener {
 			EventQueue.invokeLater(new Runnable() {
 				public synchronized void run() {
 					// this will run in swings thread
-					
-					index++; System.out.println("current index value: " + index);
-							
+											
 					new MenuOpen();				
 				
 				}
@@ -302,9 +341,7 @@ public class JBeditormain extends JFrame implements ActionListener {
 			EventQueue.invokeLater(new Runnable() {
 				public synchronized void run() {
 					// this will run in swings thread
-					
-					index++; System.out.println("current index value: " + index);
-							
+											
 					new MenuSave();				
 				
 				}
@@ -341,12 +378,9 @@ public class JBeditormain extends JFrame implements ActionListener {
 			EventQueue.invokeLater(new Runnable() {
 				public synchronized void run() {
 					// this will run in swings thread
-					
-					index++; System.out.println("current index value: " + index);
-					
+										
 					new MAPwindow();
-				
-					
+									
 				
 				}
 			});
@@ -356,9 +390,7 @@ public class JBeditormain extends JFrame implements ActionListener {
 			EventQueue.invokeLater(new Runnable() {
 				public synchronized void run() {
 					// this will run in swings thread
-					
-					index++; System.out.println("current index value: " + index);
-					
+									
 					new DBEwindow();					
 				
 				}
@@ -371,9 +403,7 @@ public class JBeditormain extends JFrame implements ActionListener {
 			EventQueue.invokeLater(new Runnable() {
 				public synchronized void run() {
 					// this will run in swings thread
-					
-					index++; System.out.println("current index value: " + index);
-					
+										
 					new linearwindow();
 
 					txtJBeditormain.setText("");
@@ -394,9 +424,7 @@ public class JBeditormain extends JFrame implements ActionListener {
 			EventQueue.invokeLater(new Runnable() {
 				public synchronized void run() {
 					// this will run in swings thread
-					
-					index++; System.out.println("current index value: " + index);
-					
+									
 					new sinewindow();
 
 					txtJBeditormain.setText("");
@@ -416,9 +444,7 @@ public class JBeditormain extends JFrame implements ActionListener {
 			EventQueue.invokeLater(new Runnable() {
 				public synchronized void run() {
 					// this will run in swings thread
-					
-					index++; System.out.println("current index value: " + index);
-					
+								
 					new Tbl2SwavWindow();
 						
 				}

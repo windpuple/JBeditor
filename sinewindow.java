@@ -181,22 +181,23 @@ public class sinewindow extends JDialog implements ActionListener {
 					sinebuffer[i] = "";
 				}
 
+				
 				for (int i = 0; i < sinebuffer.length; i++) {
 
 					for (int j = 0; j < Integer.numberOfLeadingZeros(
-							(int) ((double) ((Math.sin(Mvalue * 2 * Math.PI * i / (sinebuffer.length - 1)) + 1)
-									* ((sinebuffer.length - 1) / 2) + 0.5))); j++) {
+							(int) ((double) ((Math.sin(Mvalue * 2 * Math.PI * i / (sinebuffer.length)) + 1)
+									* ((sinebuffer.length-1) / 2)))); j++) {
 
 						sinebuffer[i] += "0"; // 0을 빈자리 개수만큼 만들어 전진 배치
 
 					}
 
-					if ((int) ((double) ((Math.sin(Mvalue * 2 * Math.PI * i / (sinebuffer.length - 1)) + 1)
-							* ((sinebuffer.length - 1) / 2) + 0.5)) != 0) {
+					if ((int) ((double) ((Math.sin(Mvalue * 2 * Math.PI * i / (sinebuffer.length)) + 1)
+							* ((sinebuffer.length-1) / 2))) != 0) {
 
 						sinebuffer[i] = sinebuffer[i] + Integer.toBinaryString(
-								(int) ((double) ((Math.sin(Mvalue * 2 * Math.PI * i / (sinebuffer.length - 1)) + 1)
-										* ((sinebuffer.length - 1) / 2) + 0.5)))
+								(int) ((double) ((Math.sin(Mvalue * 2 * Math.PI * i / (sinebuffer.length)) + 1)
+										* ((sinebuffer.length-1) / 2))))
 								+ "\n";
 
 					} else {
