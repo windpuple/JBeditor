@@ -21,7 +21,6 @@ public class TDLderiveQuartet extends JDialog {
 			TDLderivebuffer.setLength(0);
 			derivebufferarrary.setLength(0);
 			
-			System.out.println("실행하나");
 			
 			int k = 0;
 			int cnt = 0;
