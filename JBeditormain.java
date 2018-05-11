@@ -16,6 +16,9 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.*;
+
+import jxl.write.WriteException;
+
 import java.awt.*;
 
 public class JBeditormain extends JFrame implements ActionListener {
@@ -28,7 +31,7 @@ public class JBeditormain extends JFrame implements ActionListener {
 	
 	String copyText;
 
-	JMenuItem mnuNew, mnuSave, mnuOpen, mnuDBE, mnuMAP, mnuExit;
+	JMenuItem mnuNew, mnuSave, mnuOpen, mnuExportExel, mnuDBE, mnuMAP, mnuExit;
 	JMenuItem mnuCopy, mnuPaste, mnuCut, mnuDel, mnuSbinedit, mnurotation, mnuTdlOenMatch, mnuTdlderive;
 	JMenuItem mnulinear, mnusine, mnuRamp, mnutbl2swav;
 	JMenuItem mnuAbout, mnuEtc1, mnuEtc2;
@@ -84,12 +87,15 @@ public class JBeditormain extends JFrame implements ActionListener {
 		mnuNew = new JMenuItem("New");
 		mnuOpen = new JMenuItem("Open...");
 		mnuSave = new JMenuItem("Save...");
+		mnuExportExel = new JMenuItem("Export2Exel...");
 		mnuMAP = new JMenuItem("Back2Map...");
 		mnuDBE = new JMenuItem("Map2DBE...");
 		mnuExit = new JMenuItem("Exit");
 		mnuFile.add(mnuNew);
 		mnuFile.add(mnuOpen);
 		mnuFile.add(mnuSave);
+		mnuFile.addSeparator();
+		mnuFile.add(mnuExportExel);
 		mnuFile.addSeparator();
 		mnuFile.add(mnuMAP);
 		mnuFile.add(mnuDBE);
@@ -151,6 +157,7 @@ public class JBeditormain extends JFrame implements ActionListener {
 		mnuNew.addActionListener(this);
 		mnuSave.addActionListener(this);
 		mnuOpen.addActionListener(this);
+		mnuExportExel.addActionListener(this);
 		mnuMAP.addActionListener(this);
 		mnuDBE.addActionListener(this);
 		mnuExit.addActionListener(this);
@@ -346,6 +353,27 @@ public class JBeditormain extends JFrame implements ActionListener {
 					// this will run in swings thread
 											
 					new MenuSave();				
+				
+				}
+			});
+						
+
+		}  else if (e.getSource() == mnuExportExel) {
+
+			EventQueue.invokeLater(new Runnable() {
+				public synchronized void run() {
+					// this will run in swings thread
+											
+					try {
+					
+						new ExelExport();
+
+						
+						
+					} catch (WriteException | IOException e) {
+						
+						e.printStackTrace();
+					}			
 				
 				}
 			});
