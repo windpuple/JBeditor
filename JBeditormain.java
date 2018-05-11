@@ -30,7 +30,7 @@ public class JBeditormain extends JFrame implements ActionListener {
 
 	JMenuItem mnuNew, mnuSave, mnuOpen, mnuDBE, mnuMAP, mnuExit;
 	JMenuItem mnuCopy, mnuPaste, mnuCut, mnuDel, mnuSbinedit, mnurotation, mnuTdlOenMatch, mnuTdlderive;
-	JMenuItem mnulinear, mnusine, mnutbl2swav;
+	JMenuItem mnulinear, mnusine, mnuRamp, mnutbl2swav;
 	JMenuItem mnuAbout, mnuEtc1, mnuEtc2;
 
 	// ÆË¾÷ ¸Þ´º
@@ -118,9 +118,11 @@ public class JBeditormain extends JFrame implements ActionListener {
 
 		JMenu mnuGeneration = new JMenu("Generate");
 		mnulinear = new JMenuItem("Linear");
+		mnuRamp = new JMenuItem("Ramp");
 		mnusine = new JMenuItem("Sine");
 
 		mnuGeneration.add(mnulinear);
+		mnuGeneration.add(mnuRamp);
 		mnuGeneration.add(mnusine);
 
 		JMenu mnuconversion = new JMenu("Conversion");
@@ -161,6 +163,7 @@ public class JBeditormain extends JFrame implements ActionListener {
 		mnuTdlOenMatch.addActionListener(this);
 		mnuTdlderive.addActionListener(this);
 		mnulinear.addActionListener(this);
+		mnuRamp.addActionListener(this);
 		mnusine.addActionListener(this);
 		mnutbl2swav.addActionListener(this);
 		mnuAbout.addActionListener(this);
@@ -412,6 +415,28 @@ public class JBeditormain extends JFrame implements ActionListener {
 					Finalarray = "";
 					Finalarray = linearwindow.linearfinalbuffer;
 					linearwindow.linearfinalbuffer = "";
+				
+								
+				}
+			});
+			
+			
+
+		} else if (e.getSource() == mnuRamp) {
+
+			EventQueue.invokeLater(new Runnable() {
+				public synchronized void run() {
+					// this will run in swings thread
+										
+					new RampWindow();
+
+					txtJBeditormain.setText("");
+					txtJBeditormain.setText(RampWindow.Rampfinalbuffer);
+
+					Finalarray = "";
+					Finalarray = RampWindow.Rampfinalbuffer;
+					RampWindow.Rampfinalbuffer = "";
+				
 				
 								
 				}
