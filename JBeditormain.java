@@ -18,6 +18,7 @@ import java.util.Random;
 import javax.swing.*;
 
 import jxl.write.WriteException;
+import jxl.write.biff.RowsExceededException;
 
 import java.awt.*;
 
@@ -32,7 +33,7 @@ public class JBeditormain extends JFrame implements ActionListener {
 	String copyText;
 
 	JMenuItem mnuNew, mnuSave, mnuOpen, mnuExportExel, mnuDBE, mnuMAP, mnuExit;
-	JMenuItem mnuCopy, mnuPaste, mnuCut, mnuDel, mnuSbinedit, mnurotation, mnuTdlOenMatch, mnuTdlderive;
+	JMenuItem mnuCopy, mnuPaste, mnuCut, mnuDel, mnuSbinedit, mnurotation, mnuTdlOenMatch, mnuTdlderive, mnuVGpgmBin2Exel;
 	JMenuItem mnulinear, mnusine, mnuRamp, mnutbl2swav;
 	JMenuItem mnuAbout, mnuEtc1, mnuEtc2;
 
@@ -47,7 +48,7 @@ public class JBeditormain extends JFrame implements ActionListener {
 	//int index = 0; 
 
 	public JBeditormain() {
-		super("Intergrated Test Tool");
+		super("Intergrated Text Tool");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(JBeditormain.class.getResource("/javax/swing/plaf/metal/icons/sortDown.png")));
 
 		txtJBeditormainbuffer.setLength(0);
@@ -111,6 +112,7 @@ public class JBeditormain extends JFrame implements ActionListener {
 		mnurotation = new JMenuItem("MapRotaion");
 		mnuTdlOenMatch = new JMenuItem("TDLpinOenMatch");
 		mnuTdlderive = new JMenuItem("TDLpinDerive");
+		mnuVGpgmBin2Exel = new JMenuItem("VGpgmbin2Exel");
 		mnuEdit.add(mnuCopy);
 		mnuEdit.add(mnuPaste);
 		mnuEdit.add(mnuCut);
@@ -121,6 +123,8 @@ public class JBeditormain extends JFrame implements ActionListener {
 		mnuEdit.addSeparator();
 		mnuEdit.add(mnuTdlOenMatch);
 		mnuEdit.add(mnuTdlderive);
+		mnuEdit.addSeparator();
+		mnuEdit.add(mnuVGpgmBin2Exel);
 
 		JMenu mnuGeneration = new JMenu("Generate");
 		mnulinear = new JMenuItem("Linear");
@@ -169,6 +173,7 @@ public class JBeditormain extends JFrame implements ActionListener {
 		mnurotation.addActionListener(this);
 		mnuTdlOenMatch.addActionListener(this);
 		mnuTdlderive.addActionListener(this);
+		mnuVGpgmBin2Exel.addActionListener(this);
 		mnulinear.addActionListener(this);
 		mnuRamp.addActionListener(this);
 		mnusine.addActionListener(this);
@@ -324,6 +329,32 @@ public class JBeditormain extends JFrame implements ActionListener {
 					Finalarray = "";
 					Finalarray = TDLderiveWindow.TDLderivefinalbuffer.toString();
 					TDLderiveWindow.TDLderivefinalbuffer.setLength(0);;				
+				
+				}
+			});
+				
+
+		} else if (e.getSource() == mnuVGpgmBin2Exel) {
+
+			EventQueue.invokeLater(new Runnable() {
+				public synchronized void run() {
+																					
+					try {
+						
+						new VGpgmBin2ExelFomat();
+					
+					} catch (RowsExceededException e) {
+						
+						e.printStackTrace();
+					
+					} catch (WriteException e) {
+						
+						e.printStackTrace();
+					
+					} catch (IOException e) {
+					
+						e.printStackTrace();
+					}			
 				
 				}
 			});
