@@ -33,7 +33,7 @@ public class JBeditormain extends JFrame implements ActionListener {
 	String copyText;
 
 	JMenuItem mnuNew, mnuSave, mnuOpen, mnuExportExel, mnuDBE, mnuMAP, mnuExit;
-	JMenuItem mnuCopy, mnuPaste, mnuCut, mnuDel, mnuSbinedit, mnurotation, mnuTdlOenMatch, mnuTdlderive, mnuVGpgmBin2Exel;
+	JMenuItem mnuCopy, mnuPaste, mnuCut, mnuDel, mnuSbinedit, mnurotation, mnuTdlOenMatch, mnuTdlderive, mnuVGpgmBin2Exel, mnuEagleMakeGrp;
 	JMenuItem mnulinear, mnusine, mnuRamp, mnutbl2swav;
 	JMenuItem mnuAbout, mnuEtc1, mnuEtc2;
 
@@ -113,6 +113,7 @@ public class JBeditormain extends JFrame implements ActionListener {
 		mnuTdlOenMatch = new JMenuItem("TDLpinOenMatch");
 		mnuTdlderive = new JMenuItem("TDLpinDerive");
 		mnuVGpgmBin2Exel = new JMenuItem("VGpgmbin2Exel");
+		mnuEagleMakeGrp = new JMenuItem("EagleMakeGrp");
 		mnuEdit.add(mnuCopy);
 		mnuEdit.add(mnuPaste);
 		mnuEdit.add(mnuCut);
@@ -125,6 +126,8 @@ public class JBeditormain extends JFrame implements ActionListener {
 		mnuEdit.add(mnuTdlderive);
 		mnuEdit.addSeparator();
 		mnuEdit.add(mnuVGpgmBin2Exel);
+		mnuEdit.addSeparator();
+		mnuEdit.add(mnuEagleMakeGrp);
 
 		JMenu mnuGeneration = new JMenu("Generate");
 		mnulinear = new JMenuItem("Linear");
@@ -174,6 +177,7 @@ public class JBeditormain extends JFrame implements ActionListener {
 		mnuTdlOenMatch.addActionListener(this);
 		mnuTdlderive.addActionListener(this);
 		mnuVGpgmBin2Exel.addActionListener(this);
+		mnuEagleMakeGrp.addActionListener(this);
 		mnulinear.addActionListener(this);
 		mnuRamp.addActionListener(this);
 		mnusine.addActionListener(this);
@@ -355,6 +359,25 @@ public class JBeditormain extends JFrame implements ActionListener {
 					
 						e.printStackTrace();
 					}			
+				
+				}
+			});
+				
+
+		} else if (e.getSource() == mnuEagleMakeGrp) {
+
+			EventQueue.invokeLater(new Runnable() {
+				public synchronized void run() {
+					// this will run in swings thread
+																
+					new EagleMakeGrp();
+
+					txtJBeditormain.setText("");
+					txtJBeditormain.setText(EagleMakeGrp.EagleGrpbuffer.toString());
+
+					Finalarray = "";
+					Finalarray = EagleMakeGrp.EagleGrpbuffer.toString();
+					EagleMakeGrp.EagleGrpbuffer.setLength(0);;				
 				
 				}
 			});
