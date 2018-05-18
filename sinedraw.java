@@ -37,6 +37,7 @@ public class sinedraw extends JDialog {
 		frame1.setLocationByPlatform(true);
 		frame1.setVisible(true);
 
+		setDefaultCloseOperation (JFrame.DISPOSE_ON_CLOSE);
 	}
 
 	class DrawPanel extends JPanel {

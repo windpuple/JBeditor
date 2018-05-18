@@ -34,7 +34,7 @@ public class JBeditormain extends JFrame implements ActionListener {
 
 	JMenuItem mnuNew, mnuSave, mnuOpen, mnuExportExel, mnuDBE, mnuMAP, mnuExit;
 	JMenuItem mnuCopy, mnuPaste, mnuCut, mnuDel, mnuSbinedit, mnurotation, mnuTdlOenMatch, mnuTdlderive, mnuVGpgmBin2Exel, mnuEagleMakeGrp;
-	JMenuItem mnulinear, mnusine, mnuRamp, mnutbl2swav;
+	JMenuItem mnulinear, mnusine, mnuRamp, mnutbl2swav, mnuMultiServer, mnuMultiClient;
 	JMenuItem mnuAbout, mnuEtc1, mnuEtc2;
 
 	// ÆË¾÷ ¸Þ´º
@@ -142,6 +142,13 @@ public class JBeditormain extends JFrame implements ActionListener {
 		mnutbl2swav = new JMenuItem("tbl2swav");
 
 		mnuconversion.add(mnutbl2swav);
+		
+		JMenu mnuNetwork = new JMenu("Network");
+		mnuMultiServer= new JMenuItem("MultiChatServer");
+		mnuMultiClient= new JMenuItem("MultiChatClient");
+		
+		mnuNetwork.add(mnuMultiServer);
+		mnuNetwork.add(mnuMultiClient);
 
 		JMenu mnuHelp = new JMenu("help");
 		mnuAbout = new JMenuItem("ITT About...");
@@ -157,8 +164,10 @@ public class JBeditormain extends JFrame implements ActionListener {
 		menuBar.add(mnuEdit);
 		menuBar.add(mnuGeneration);
 		menuBar.add(mnuconversion);
+		menuBar.add(mnuNetwork);
 		menuBar.add(mnuHelp);
-
+		
+		
 		setJMenuBar(menuBar);
 
 		mnuNew.addActionListener(this);
@@ -182,6 +191,8 @@ public class JBeditormain extends JFrame implements ActionListener {
 		mnuRamp.addActionListener(this);
 		mnusine.addActionListener(this);
 		mnutbl2swav.addActionListener(this);
+		mnuMultiServer.addActionListener(this);
+		mnuMultiClient.addActionListener(this);
 		mnuAbout.addActionListener(this);
 		mnuEtc1.addActionListener(this);
 		mnuEtc2.addActionListener(this);
@@ -553,6 +564,34 @@ public class JBeditormain extends JFrame implements ActionListener {
 					// this will run in swings thread
 								
 					new Tbl2SwavWindow();
+						
+				}
+			});
+			
+			
+
+		} else if (e.getSource() == mnuMultiServer) {
+
+			EventQueue.invokeLater(new Runnable() {
+				public synchronized void run() {
+					// this will run in swings thread
+					
+			        Thread desktopServerThread = new Thread(new MultiServer());
+			        desktopServerThread.start();
+					
+				}
+			});
+			
+			
+
+		} else if (e.getSource() == mnuMultiClient) {
+
+			EventQueue.invokeLater(new Runnable() {
+				public synchronized void run() {
+					// this will run in swings thread
+								
+					  JFrame.setDefaultLookAndFeelDecorated(true);
+					  new MultiClient();
 						
 				}
 			});

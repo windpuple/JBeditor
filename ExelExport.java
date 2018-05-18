@@ -1,3 +1,10 @@
+/* 
+ *  
+ * 2018.03.26 JB.Jeon ITT(katherine) project start.  
+ * 
+ *  
+ */
+
 package window;
 
 import java.io.File;
