@@ -212,7 +212,12 @@ public class SysTray {
                                 JOptionPane.OK_CANCEL_OPTION) ==
                                 JOptionPane.OK_OPTION) {
                             tray.remove(SysTray.trayIcon);
-                            Rdesktopmain.exit();
+                           
+                        	if (Server.isRunning())       
+                                Server.Stop();
+                            System.setSecurityManager(null);
+                            
+                            mainFrame.frame.dispose();
                         }
                     }
                 });

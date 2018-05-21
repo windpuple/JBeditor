@@ -54,6 +54,7 @@ public class Rdesktopmain {
             int port = 6666;
             
             arg = args[0];
+            System.out.println("argsstart0:"+args[0]);
             if (arg.equals("-help") || arg.equals("-?")) // display usage information
                 displayHelp();                   
             else if (arg.equals("server")) // start server with default paramaters
@@ -65,6 +66,8 @@ public class Rdesktopmain {
             else {
                 for (int i=0; i<args.length; i++) {
                     arg = args[i];                  
+                    
+                    System.out.println("argsi:"+args[i]);
                     
                     if (arg.startsWith("-a:")) {
                         server = arg.substring(3);   
@@ -143,10 +146,4 @@ public class Rdesktopmain {
         return currentDirectory;
     } 
     
-    public static void exit() {
-        if (Server.isRunning())       
-            Server.Stop();
-        System.setSecurityManager(null);
-        System.exit(0);
-    }
 }

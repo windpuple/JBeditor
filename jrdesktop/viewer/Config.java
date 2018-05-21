@@ -18,7 +18,7 @@ public class Config {
     public static int server_port = 6666;    
     
     public static void loadConfiguration() {
-        if (new File(Rdesktopmain.VIEWER_CONFIG_FILE).canRead())
+
             try {
                 Properties properties = new Properties();            
                 properties.load(new FileInputStream(Rdesktopmain.VIEWER_CONFIG_FILE));
@@ -29,7 +29,7 @@ public class Config {
             catch (Exception e) {
                 e.getStackTrace();
             }
-       else
+
             storeConfiguration();    
     }
     

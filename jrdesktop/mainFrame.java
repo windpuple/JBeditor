@@ -14,7 +14,7 @@ import jrdesktop.viewer.ConnectionDialog;
  * @author  benbac
  */
 public class mainFrame extends javax.swing.JFrame {
-    private static mainFrame frame = new mainFrame();
+    static mainFrame frame = new mainFrame();
     
     /** Creates new form ServerGUI */
     public mainFrame() {        
@@ -254,6 +254,11 @@ private void jButtonExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     if (JOptionPane.showConfirmDialog(this, "Exit application ?", "Confirm Dialog", 
             JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION)
     	//Rdesktopmain.exit();
+        
+    	if (Server.isRunning())       
+            Server.Stop();
+        System.setSecurityManager(null);
+        
     	dispose();
 }//GEN-LAST:event_jButtonExitActionPerformed
 
@@ -267,7 +272,12 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
                 if (JOptionPane.showConfirmDialog(this, "Exit application ?", 
                         "Confirm Dialog", JOptionPane.OK_CANCEL_OPTION) == 
                     JOptionPane.OK_OPTION)
-                	Rdesktopmain.exit();            
+                    
+                	if (Server.isRunning())       
+                        Server.Stop();
+                    System.setSecurityManager(null);
+                    
+                    dispose();
             }
             else
                 dispose();

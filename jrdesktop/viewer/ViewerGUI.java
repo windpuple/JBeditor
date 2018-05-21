@@ -5,6 +5,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import jrdesktop.SysTray;
+import jrdesktop.mainFrame;
+import jrdesktop.server.rmi.Server;
 import jrdesktop.Rdesktopmain;
 
 /**
@@ -84,7 +86,11 @@ public class ViewerGUI extends javax.swing.JFrame {
                     if (SysTray.isSupported()) 
                         dispose();
                     else
-                    	Rdesktopmain.exit();
+                     	if (Server.isRunning())       
+                            Server.Stop();
+                        System.setSecurityManager(null);
+                        
+                        dispose();
             }            
         }    
         else

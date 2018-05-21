@@ -66,7 +66,7 @@ public class AcceptRemoteServerIP extends JDialog implements ActionListener {
 			} else {
 
 				  String Address = AddressTest.getText();
-				  String args[] = {"viewer","-a:"+Address};
+				  String args[] = {"-a:"+Address};
 				  new jrdesktop.Rdesktopmain(args);
 				  
 				  dispose();
