@@ -7,8 +7,8 @@ import java.net.*;
 import javax.swing.*;
 
 public class MultiClient extends JFrame implements ActionListener {
-	private Socket socket;
-	private ObjectInputStream ois;
+	static Socket clientsocket;
+
 	private ObjectOutputStream oos;
 	private JFrame jframe, login1; // 창
 	private JTextField jtf, idc, pass;// 전송,아이디,비번창
@@ -46,7 +46,7 @@ public class MultiClient extends JFrame implements ActionListener {
 
 		// };
 
-		System.out.println("window IP :" + ip);
+		//System.out.println("window IP :" + ip);
 
 		jta = new JTextArea(43, 43); // chatting display textfield
 
@@ -151,15 +151,15 @@ public class MultiClient extends JFrame implements ActionListener {
 			ip = idc.getText();
 			id = pass.getText();
 
-			System.out.println("after login IP :" + ip);
+			//System.out.println("after login IP :" + ip);
 			
 			jlb1.setText(id+" Chatting Window");
 			jlb2.setText("Connected Server IP : " + ip);
 
 			try {
-				socket = new Socket(ip, 5000);
+				clientsocket = new Socket(ip, 5000);
 
-				if (socket.isConnected() == false) {
+				if (clientsocket.isConnected() == false) {
 
 					JOptionPane.showMessageDialog(null, "Connect not established", "Notice",
 							JOptionPane.WARNING_MESSAGE);
@@ -175,13 +175,19 @@ public class MultiClient extends JFrame implements ActionListener {
 
 				}
 
-				oos = new ObjectOutputStream(socket.getOutputStream());
-				ois = new ObjectInputStream(socket.getInputStream());
-
+				
+				oos = new ObjectOutputStream(clientsocket.getOutputStream());
+				oos.writeObject(id + "#" + id+" is joined "+ip+" Channel");
+				oos.flush();
+				
+			    //if client side ois use only client thread, not socket connect side,
+				//because outstream and inputstream crash and making forever hanging, freezing NetWork.
+				//ois = new ObjectInputStream(clientsocket.getInputStream());
+										
 				MultiClientThread ct = new MultiClientThread(this);
 				Thread t = new Thread(ct);
-				t.start();
-
+				t.start();				
+				
 			} catch (UnknownHostException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -194,6 +200,12 @@ public class MultiClient extends JFrame implements ActionListener {
 
 		if (str.equals("exit")) {
 			
+			try {
+				clientsocket.close();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			login1.dispose();
 			jframe.dispose();
 
@@ -259,10 +271,8 @@ public class MultiClient extends JFrame implements ActionListener {
 			if (msg.equals("exit")) {
 								
 				try {
-					
-					ois.close();
-					oos.close();
-					socket.close();
+				
+					clientsocket.close();
 					
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
@@ -275,14 +285,11 @@ public class MultiClient extends JFrame implements ActionListener {
 	}
 
 	public void exit() throws IOException {
-	
+		
+		clientsocket.close();
 		login1.dispose();
 		jframe.dispose();
 
-	}
-
-	public ObjectInputStream getOis() {
-		return ois;
 	}
 
 	public JTextArea getJta() {

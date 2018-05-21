@@ -1,9 +1,11 @@
 package window;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
 
 public class MultiClientThread extends Thread{
     private MultiClient mc;
+	private ObjectInputStream ois;
     
     public MultiClientThread(MultiClient mc){
         this.mc = mc;
@@ -15,18 +17,31 @@ public class MultiClientThread extends Thread{
         String[] receivedMsg = null;
         
         boolean isStop = false;
+        
+        try {
+		
+        	ois = new ObjectInputStream(MultiClient.clientsocket.getInputStream());
+		
+        } catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+        
         while(!isStop){
             try{
-                message = (String)mc.getOis().readObject();
+                message = (String)ois.readObject();
                 receivedMsg = message.split("#");
 
             }catch(Exception e){
                 e.printStackTrace();
                 isStop = true;
             }
-            System.out.println("rmsg0:"+receivedMsg[0]);
-            System.out.println("rmsg1:"+receivedMsg[1]);
-            System.out.println(receivedMsg[0]+","+receivedMsg[1]);
+            
+            //client side message debug
+            //System.out.println("rmsg0:"+receivedMsg[0]);
+            //System.out.println("rmsg1:"+receivedMsg[1]);
+            //System.out.println(receivedMsg[0]+","+receivedMsg[1]);
+            
             if(receivedMsg[1].equals("exit")){
                 if(receivedMsg[0].equals(mc.getId())){
                     try {

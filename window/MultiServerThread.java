@@ -27,6 +27,7 @@ public class MultiServerThread implements Runnable {
 			
 			ois = new ObjectInputStream(socket.getInputStream());
 			oos = new ObjectOutputStream(socket.getOutputStream());
+			oos.flush();
 			
 			String message = null;
 			
@@ -35,9 +36,10 @@ public class MultiServerThread implements Runnable {
 				message = (String) ois.readObject();
 				
 				String[] str = message.split("#");
-								
-				System.out.println("str0:"+str[0]);
-				System.out.println("str1:"+str[1]);
+				
+				//Server side meassage debug
+				//System.out.println("str0:"+str[0]);
+				//System.out.println("str1:"+str[1]);
 				
 				String name = "list"+"#";
 				
