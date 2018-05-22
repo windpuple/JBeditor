@@ -40,7 +40,6 @@ public class Rdesktopmain {
         SERVER_CONFIG_FILE = getCurrentDirectory() + "server.config";
         VIEWER_CONFIG_FILE = getCurrentDirectory() + "viewer.config";       
     
-        System.out.println("실행되는지 확인");
         System.out.println("CONFIG_FILE:"+CONFIG_FILE);
         System.out.println("SERVER_CONFIG_FILE:"+SERVER_CONFIG_FILE);
         System.out.println("VIEWER_CONFIG_FILE:"+VIEWER_CONFIG_FILE);
@@ -54,7 +53,7 @@ public class Rdesktopmain {
             int port = 6666;
             
             arg = args[0];
-            System.out.println("argsstart0:"+args[0]);
+            //System.out.println("argsstart0:"+args[0]);
             if (arg.equals("-help") || arg.equals("-?")) // display usage information
                 displayHelp();                   
             else if (arg.equals("server")) // start server with default paramaters
@@ -67,7 +66,7 @@ public class Rdesktopmain {
                 for (int i=0; i<args.length; i++) {
                     arg = args[i];                  
                     
-                    System.out.println("argsi:"+args[i]);
+                    //System.out.println("argsi:"+args[i]);
                     
                     if (arg.startsWith("-a:")) {
                         server = arg.substring(3);   
