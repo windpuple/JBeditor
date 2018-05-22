@@ -51,7 +51,7 @@ public class ImageUtility {
 			// Set the compression quality to 0.5
 			ImageWriteParam param = jpegWriter.getDefaultWriteParam();
 			param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-			param.setCompressionQuality(0.5f);
+			param.setCompressionQuality(0.3f);
 
 			// Write the image to a file
 			FileImageOutputStream outcomp = new FileImageOutputStream(new File("image.jpg"));
@@ -60,8 +60,13 @@ public class ImageUtility {
 			jpegWriter.dispose();
 			outcomp.close();
 
+			// low quality image file read and give to ImageIO
+	        InputStream is = new BufferedInputStream(
+		            new FileInputStream("./image.jpg"));
+		    BufferedImage image2 = ImageIO.read(is);
+						
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
-			ImageIO.write(image, "jpeg", out); // write without compression
+			ImageIO.write(image2, "jpeg", out); // write without compression
 
 			return out.toByteArray();
 		} catch (IOException e) {
