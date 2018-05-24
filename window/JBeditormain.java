@@ -37,7 +37,7 @@ public class JBeditormain extends JFrame implements ActionListener {
 
 	JMenuItem mnuNew, mnuSave, mnuOpen, mnuExportExel, mnuDBE, mnuMAP, mnuExit;
 	JMenuItem mnuCopy, mnuPaste, mnuCut, mnuDel, mnuSbinedit, mnurotation, mnuTdlOenMatch, mnuTdlderive, mnuVGpgmBin2Exel, mnuEagleMakeGrp;
-	JMenuItem mnulinear, mnusine, mnuRamp, mnutbl2swav, mnuMultiServer, mnuMultiClient, mnuRemoteDesktopServer, mnuRemoteDesktopviewer;
+	JMenuItem mnulinear, mnusine, mnuRamp, mnutbl2swav, mnuMultiServer, mnuMultiClient, mnuRemoteDesktopServer, mnuRemoteDesktopviewer, mnuTelnet;
 	JMenuItem mnuAbout, mnuEtc1, mnuEtc2;
 
 	// ÆË¾÷ ¸Þ´º
@@ -151,12 +151,15 @@ public class JBeditormain extends JFrame implements ActionListener {
 		mnuMultiClient= new JMenuItem("MultiChatClient");
 		mnuRemoteDesktopServer= new JMenuItem("RemoteDesktopServer");
 		mnuRemoteDesktopviewer= new JMenuItem("RemoteDesktopviewer");
+		mnuTelnet= new JMenuItem("Telnet");
 		
 		mnuNetwork.add(mnuMultiServer);
 		mnuNetwork.add(mnuMultiClient);
 		mnuNetwork.addSeparator();
 		mnuNetwork.add(mnuRemoteDesktopServer);
 		mnuNetwork.add(mnuRemoteDesktopviewer);
+		mnuNetwork.addSeparator();
+		mnuNetwork.add(mnuTelnet);
 
 		JMenu mnuHelp = new JMenu("help");
 		mnuAbout = new JMenuItem("ITT About...");
@@ -203,6 +206,7 @@ public class JBeditormain extends JFrame implements ActionListener {
 		mnuMultiClient.addActionListener(this);
 		mnuRemoteDesktopServer.addActionListener(this);
 		mnuRemoteDesktopviewer.addActionListener(this);
+		mnuTelnet.addActionListener(this);
 		mnuAbout.addActionListener(this);
 		mnuEtc1.addActionListener(this);
 		mnuEtc2.addActionListener(this);
@@ -631,6 +635,36 @@ public class JBeditormain extends JFrame implements ActionListener {
 								
 					 // JFrame.setDefaultLookAndFeelDecorated(true);
 					  new AcceptRemoteServerIP();
+						
+				}
+			});
+			
+			
+
+		} else if (e.getSource() == mnuTelnet) {
+
+			EventQueue.invokeLater(new Runnable() {
+				public synchronized void run() {
+					// this will run in swings thread
+					
+					 // below CalltelentJar is connect to PC and take a file function.
+					 //new CallTelenetJar();
+					
+					try {
+						
+						new CallPutty();
+						
+					} catch (RowsExceededException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (WriteException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
 						
 				}
 			});

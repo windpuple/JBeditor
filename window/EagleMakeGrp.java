@@ -15,11 +15,9 @@ public class EagleMakeGrp extends JDialog {
 
 	public static StringBuffer EagleGrpbuffer = new StringBuffer();
 
-
 	public EagleMakeGrp() {
 
 		EagleGrpbuffer.setLength(0);
-
 
 		int k = 0;
 		int x = 0;
@@ -60,15 +58,15 @@ public class EagleMakeGrp extends JDialog {
 		}
 
 		// OEN pin 제거한 data 확인.
-		//for (int i = 0; i < bodyline.length; i++) {
+		// for (int i = 0; i < bodyline.length; i++) {
 
-		//	for (int j = 0; j < bodyline[i].length; j++) {
+		// for (int j = 0; j < bodyline[i].length; j++) {
 
-		//		System.out.println("bodyline[i][j]" + i + "|" + j + ":" + bodyline[i][j]);
+		// System.out.println("bodyline[i][j]" + i + "|" + j + ":" + bodyline[i][j]);
 
-		//	}
+		// }
 
-		//}
+		// }
 
 		String[][] newbodyline = new String[cnt][3];
 
@@ -80,7 +78,8 @@ public class EagleMakeGrp extends JDialog {
 
 					newbodyline[i][x] = bodyline[i][j];
 
-					//System.out.println("newbodyline[i][x]" + i + "|" + x + ":" + newbodyline[i][x]);
+					// System.out.println("newbodyline[i][x]" + i + "|" + x + ":" +
+					// newbodyline[i][x]);
 
 					x++;
 				}
@@ -98,11 +97,12 @@ public class EagleMakeGrp extends JDialog {
 			EagleGrpbuffer.append("const int " + newbodyline[i][1].substring(0, lastindex - 1) + "[]={");
 			for (int j = 0; j < Integer.parseInt(newbodyline[0][2]); j++) {
 
-				EagleGrpbuffer.append(newbodyline[i][1].substring(0, lastindex - 1) + (j + 1) + ",");
-
 				if (j == Integer.parseInt(newbodyline[0][2]) - 1) {
 
 					EagleGrpbuffer.append(newbodyline[i][1].substring(0, lastindex - 1) + (j + 1) + "};\n");
+				} else {
+
+					EagleGrpbuffer.append(newbodyline[i][1].substring(0, lastindex - 1) + (j + 1) + ",");
 				}
 
 			}
@@ -135,7 +135,7 @@ public class EagleMakeGrp extends JDialog {
 			}
 
 			EagleGrpbuffer.append("     sprintf_s(resource_name, \"" + newbodyline[i][1].substring(0, lastindex - 1)
-					+ "%d\", site+1);          nameset((NAME_" + pinscale + ", "
+					+ "%d\", site+1);          nameset(NAME_" + pinscale + ", "
 					+ newbodyline[i][1].substring(0, lastindex - 1) + "[site], resource_name);\n");
 
 		}
@@ -167,22 +167,25 @@ public class EagleMakeGrp extends JDialog {
 
 			for (int j = 0; j < Integer.parseInt(newbodyline[0][2]); j++) {
 
-				EagleGrpbuffer.append(pinscale + "_%d,");
-
 				if (j == Integer.parseInt(newbodyline[0][2]) - 1) {
 
 					EagleGrpbuffer.append(pinscale + "_%d\", ");
+				} else {
+
+					EagleGrpbuffer.append(pinscale + "_%d,");
 				}
 
 			}
 
 			for (int j = 0; j < Integer.parseInt(newbodyline[0][2]); j++) {
 
-				EagleGrpbuffer.append(newbodyline[i][1].substring(0, lastindex - 1) + (j + 1) + ",");
-
 				if (j == Integer.parseInt(newbodyline[0][2]) - 1) {
 
 					EagleGrpbuffer.append(newbodyline[i][1].substring(0, lastindex - 1) + (j + 1) + ");\n");
+				} else {
+
+					EagleGrpbuffer.append(newbodyline[i][1].substring(0, lastindex - 1) + (j + 1) + ",");
+
 				}
 
 			}
@@ -230,11 +233,12 @@ public class EagleMakeGrp extends JDialog {
 
 					pinscale = "APU12";
 
-					EagleGrpbuffer.append(pinscale + "_%d,");
-
 					if (apucount == apucnt - 1) {
 
 						EagleGrpbuffer.append(pinscale + "_%d\", ");
+					} else {
+
+						EagleGrpbuffer.append(pinscale + "_%d,");
 					}
 
 					apucount++;
@@ -253,11 +257,12 @@ public class EagleMakeGrp extends JDialog {
 
 					pinscale = "APU12";
 
-					EagleGrpbuffer.append(newbodyline[i][1].substring(0, lastindex - 1) + "[site],");
-
 					if (apucount == apucnt - 1) {
 
 						EagleGrpbuffer.append(newbodyline[i][1].substring(0, lastindex - 1) + "[site]);\n");
+					} else {
+
+						EagleGrpbuffer.append(newbodyline[i][1].substring(0, lastindex - 1) + "[site],");
 					}
 
 					apucount++;
@@ -286,11 +291,13 @@ public class EagleMakeGrp extends JDialog {
 
 					pinscale = "SP100";
 
-					EagleGrpbuffer.append(pinscale + "_%d,");
-
 					if (spucount == spucnt - 1) {
 
 						EagleGrpbuffer.append(pinscale + "_%d\", ");
+					} else {
+
+						EagleGrpbuffer.append(pinscale + "_%d,");
+
 					}
 
 					spucount++;
@@ -309,11 +316,12 @@ public class EagleMakeGrp extends JDialog {
 
 					pinscale = "SP100";
 
-					EagleGrpbuffer.append(newbodyline[i][1].substring(0, lastindex - 1) + "[site],");
-
 					if (spucount == spucnt - 1) {
 
 						EagleGrpbuffer.append(newbodyline[i][1].substring(0, lastindex - 1) + "[site]);\n");
+					} else {
+
+						EagleGrpbuffer.append(newbodyline[i][1].substring(0, lastindex - 1) + "[site],");
 					}
 
 					spucount++;
@@ -335,11 +343,12 @@ public class EagleMakeGrp extends JDialog {
 
 					pinscale = "CBIT";
 
-					EagleGrpbuffer.append(pinscale + "_%d,");
-
 					if (cbitcount == cbitcnt - 1) {
 
 						EagleGrpbuffer.append(pinscale + "_%d\", ");
+					} else {
+
+						EagleGrpbuffer.append(pinscale + "_%d,");
 					}
 
 					cbitcount++;
@@ -358,11 +367,12 @@ public class EagleMakeGrp extends JDialog {
 
 					pinscale = "CBIT";
 
-					EagleGrpbuffer.append(newbodyline[i][1].substring(0, lastindex - 1) + "[site],");
-
 					if (cbitcount == cbitcnt - 1) {
 
 						EagleGrpbuffer.append(newbodyline[i][1].substring(0, lastindex - 1) + "[site]);\n");
+					} else {
+
+						EagleGrpbuffer.append(newbodyline[i][1].substring(0, lastindex - 1) + "[site],");
 					}
 
 					cbitcount++;
@@ -373,7 +383,7 @@ public class EagleMakeGrp extends JDialog {
 		}
 
 		EagleGrpbuffer.append(" }\n\n}\n");
-		
+
 	}
 
 }
