@@ -58,10 +58,10 @@ public class MultiServerThread implements Runnable {
 			}		
 			
 			
-			broadCasting(socket.getInetAddress() + "Á¤»óÀûÀ¸·Î Á¾·áÇÏ¼Ì½À´Ï´Ù.");
+			broadCasting(socket.getInetAddress() + "ì •ìƒì ìœ¼ë¡œ ì¢…ë£Œí•˜ì…¨ìŠµë‹ˆë‹¤.");
 			broadCasting("Current Connected Users : " + ms.getList().size());
 			
-			System.out.println(socket.getInetAddress() + "Á¤»óÀûÀ¸·Î Á¾·áÇÏ¼Ì½À´Ï´Ù.");
+			System.out.println(socket.getInetAddress() + "ì •ìƒì ìœ¼ë¡œ ì¢…ë£Œí•˜ì…¨ìŠµë‹ˆë‹¤.");
 			System.out.println("Current Connected Users : " + ms.getList().size());
 		
 			ms.getList().remove(this);
@@ -70,10 +70,10 @@ public class MultiServerThread implements Runnable {
 			
 			
 			try {
-				broadCasting(socket.getInetAddress() + "ºñÁ¤»óÀûÀ¸·Î Á¾·áÇÏ¼Ì½À´Ï´Ù.");
+				broadCasting(socket.getInetAddress() + "ë¹„ì •ìƒì ìœ¼ë¡œ ì¢…ë£Œí•˜ì…¨ìŠµë‹ˆë‹¤.");
 				broadCasting("Current Connected Users : " + ms.getList().size());
 			
-				System.out.println(socket.getInetAddress() + "ºñÁ¤»óÀûÀ¸·Î Á¾·áÇÏ¼Ì½À´Ï´Ù.");
+				System.out.println(socket.getInetAddress() + "ë¹„ì •ìƒì ìœ¼ë¡œ ì¢…ë£Œí•˜ì…¨ìŠµë‹ˆë‹¤.");
 				System.out.println("list size : " + ms.getList().size());
 				
 				ms.getList().remove(this);

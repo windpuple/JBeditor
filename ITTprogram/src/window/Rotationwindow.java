@@ -22,8 +22,8 @@ import java.awt.Toolkit;
 
 public class Rotationwindow extends JDialog implements ActionListener {
 
-	JButton btn = new JButton("»Æ¿Œ");
-	JButton btncancel = new JButton("\uCDE8\uC18C");
+	JButton btn = new JButton("Confirm");
+	JButton btncancel = new JButton("Cancel");
 
 	JLabel notice = new JLabel("");
 
@@ -142,8 +142,6 @@ public class Rotationwindow extends JDialog implements ActionListener {
 
 			} else if (ccwbuffer == "90") {
 
-				// System.out.println("Ω««‡µ«¥œ");
-
 				new rotationInverse90();
 				JBeditormain.Finalarray = "";
 				JBeditormain.Finalarray = rotationInverse90.resultbuffer;
@@ -180,7 +178,7 @@ public class Rotationwindow extends JDialog implements ActionListener {
 			} else {
 
 				notice.setText("");
-				notice.setText("degree ∞™¿Ã æ¯Ω¿¥œ¥Ÿ.");
+				notice.setText("degree Í∞íÏù¥ ÏóÜÏäµÎãàÎã§.");
 
 			}
 

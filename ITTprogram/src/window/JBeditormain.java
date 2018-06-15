@@ -40,15 +40,15 @@ public class JBeditormain extends JFrame implements ActionListener {
 	JMenuItem mnulinear, mnusine, mnuRamp, mnutbl2swav, mnuMultiServer, mnuMultiClient, mnuRemoteDesktopServer, mnuRemoteDesktopviewer, mnuTelnet;
 	JMenuItem mnuAbout, mnuEtc1, mnuEtc2;
 
-	// �˾� �޴�
+	// 팝업 메뉴
 	JPopupMenu popup;
 	JMenuItem m_white, m_blue, m_yellow;
 
 	public static String Finalarray = "";
 	public static StringBuffer txtJBeditormainbuffer = new StringBuffer();
 	
-	// ��ü thread�� thread number Ȯ��.
-	//int index = 0; 
+	// 전체 thread의 thread number 확인.
+	//int index = 0;
 
 	public JBeditormain() {
 		super("Intergrated Text Tool");
@@ -71,7 +71,7 @@ public class JBeditormain extends JFrame implements ActionListener {
 		panel.add(btnDel);
 		getContentPane().add("South", panel);
 		getContentPane().add("Center", txtJBeditormain);
-		txtJBeditormain.setFont(new Font("�ü�ü", Font.PLAIN, 13));
+		txtJBeditormain.setFont(new Font("궁서체", Font.PLAIN, 13));
 		txtJBeditormain.setWrapStyleWord(true);
 		txtJBeditormain.setLineWrap(false);
 
@@ -236,7 +236,7 @@ public class JBeditormain extends JFrame implements ActionListener {
 			@Override
 			public void mousePressed(MouseEvent e) {
 
-				if (e.getModifiers() == MouseEvent.BUTTON3_MASK) { // ������ 1 ����� 2 �������� 3 BUTTON3_MASK - ������ ��ư
+				if (e.getModifiers() == MouseEvent.BUTTON3_MASK) { // 왼쪽이 1 가운데가 2 오른쪽이 3 BUTTON3_MASK - 오른쪽 버튼
 
 					popup.show(txtJBeditormain, e.getX(), e.getY());
 				}
@@ -255,7 +255,7 @@ public class JBeditormain extends JFrame implements ActionListener {
 	 * 
 	 * Random r = new Random(System.currentTimeMillis());
 	 * 
-	 * long s = r.nextInt(1000); // 3�ʳ��� ������.
+	 * long s = r.nextInt(1000); // 3초내로 끝내자.
 	 * 
 	 * new MAPwindow();
 	 * 
@@ -290,7 +290,7 @@ public class JBeditormain extends JFrame implements ActionListener {
 		} else if (e.getSource() == btnDel || e.getSource() == mnuDel) {
 			int start = txtJBeditormain.getSelectionStart();
 			int end = txtJBeditormain.getSelectionEnd();
-			txtJBeditormain.replaceRange("", start, end); // �������� ġȯ�ϴ� �� replaceRange("", ������ġ, ����ġ)
+			txtJBeditormain.replaceRange("", start, end); //공백으로 치환하는 법 replaceRange("", 시작위치, 끝위치)
 
 		} else if (e.getSource() == mnuSbinedit) {
 
@@ -495,14 +495,14 @@ public class JBeditormain extends JFrame implements ActionListener {
 
 			// System.out.println("Start main method.");
 
-			// Runnable r = new Map2BackRunable(); // ���� ������ Runnable �������̽�
-			// ArrayList<Thread> threadList = new ArrayList<Thread>(); // ��������� ���� ��ü
+			// Runnable r = new Map2BackRunable(); // 실제 구현한 Runnable 인터페이스
+			// ArrayList<Thread> threadList = new ArrayList<Thread>(); // 쓰레드들을 담을 객체
 
-			// Runnable �������̽��� ����� ���ο� �����带 ����ϴ�.
+			// Runnable 인터페이스를 사용해 새로운 쓰레드를 만듭니다.
 			// Thread test = new Thread(r);
 
-			// test.start(); // �� �޼ҵ带 �����ϸ� Thread ���� run()�� �����Ѵ�.
-			// threadList.add(test); ������ �����带 ����Ʈ�� ����
+			// test.start(); // 이 메소드를 실행하면 Thread 내의 run()을 수행한다.
+			// threadList.add(test); 생성한 쓰레드를 리스트에 삽입
 
 			// for(Thread t : threadList){ try {
 
@@ -510,11 +510,11 @@ public class JBeditormain extends JFrame implements ActionListener {
 
 			// } catch (InterruptedException e1) {
 
-			// e1.printStackTrace(); } // �������� ó���� ���������� ��ٸ��ϴ�. }
+			// e1.printStackTrace(); } // 쓰레드의 처리가 끝날때까지 기다립니다. }
 			// }
 			// System.out.println("End main method.");
 
-			// Swing ������ �Ϲ����� thread�� �������� �ʴ´�. ������ eventqueue�� invoker�� ���ؼ� thread�� ������ dispatch thread�� �����ȴ�.
+			// Swing 에서는 일반적인 thread가 구성되지 않는다. 오로지 eventqueue의 invoker에 의해서 thread가 숨겨진 dispatch thread로 생성된다.
 			EventQueue.invokeLater(new Runnable() {
 				public synchronized void run() {
 					// this will run in swings thread
@@ -727,12 +727,12 @@ public class JBeditormain extends JFrame implements ActionListener {
 
 			}
 
-			// ��Ŭ���ÿ� ��Ÿ���� �˾��޴��� ���� ����
-		} else if (e.getSource() == m_white) { // �˾��޴�
+			// 우클릭시에 나타나는 팝업메뉴에 대한 설정
+		} else if (e.getSource() == m_white) {  // 팝업메뉴
 			txtJBeditormain.setBackground(Color.WHITE);
-		} else if (e.getSource() == m_blue) { // �˾��޴�
+		} else if (e.getSource() == m_blue) { // 팝업메뉴
 			txtJBeditormain.setBackground(Color.BLUE);
-		} else if (e.getSource() == m_yellow) { // �˾��޴�
+		} else if (e.getSource() == m_yellow) {  // 팝업메뉴
 			txtJBeditormain.setBackground(Color.YELLOW);
 		}
 		txtJBeditormain.requestFocus();

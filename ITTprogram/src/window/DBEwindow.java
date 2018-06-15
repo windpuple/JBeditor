@@ -68,7 +68,7 @@ public class DBEwindow extends JFrame {
 
 		}
 
-		// bin char Ãß
+		// bin char ì¶”ê°€
 		int tailindex = JBeditormain.Finalarray.indexOf("SoftBIN");
 		String taillinebuf = JBeditormain.Finalarray.substring(tailindex);
 		String[] tailline = taillinebuf.split("\n");
@@ -168,7 +168,7 @@ public class DBEwindow extends JFrame {
 
 		}
 
-		// Map ¸¶´Ù char¸¦ Âï´Â °¹¼öÀÇ »óÀÌÇÔÀ» º¸»ó.
+		// Map ë§ˆë‹¤ charë¥¼ ì°ëŠ” ê°¯ìˆ˜ì˜ ìƒì´í•¨ì„ ë³´ìƒ.
 		if (binsize == 2) {
 
 			binsize = binsize - 1;

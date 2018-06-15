@@ -26,9 +26,9 @@ import java.awt.Toolkit;
 
 public class sinewindow extends JDialog implements ActionListener {
 
-	JButton btn = new JButton("\uC0DD\uC131");
-	JButton btncancel = new JButton("\uCDE8\uC18C");
-	JButton nbtn = new JButton("M\uACC4\uC0B0");
+	JButton btn = new JButton("Confirm");
+	JButton btncancel = new JButton("Cancel");
+	JButton nbtn = new JButton("M Calculate");
 
 	JLabel notice = new JLabel("");
 	public static JSlider SineScaleSlider = new JSlider(JSlider.HORIZONTAL, 0, 100, 100);
@@ -120,7 +120,7 @@ public class sinewindow extends JDialog implements ActionListener {
 
 		JLabel lblIfUWant = new JLabel(
 				"M\uAC12\uB9CC\uC744 \uC774\uC6A9\uD574\uC11C Sine vector\uB97C \uC0DD\uC131\uD558\uACE0\uC790 \uD55C\uB2E4\uBA74,");
-		lblIfUWant.setFont(new Font("±¼¸²", Font.PLAIN, 12));
+		lblIfUWant.setFont(new Font("ï¿½ï¿½ï¿½ï¿½", Font.PLAIN, 12));
 		lblIfUWant.setBounds(79, 152, 293, 29);
 		getContentPane().add(lblIfUWant);
 
@@ -143,7 +143,7 @@ public class sinewindow extends JDialog implements ActionListener {
 		getContentPane().add(SineScaleSlider);
 
 		JLabel SlideLabel = new JLabel("Scale Adjust");
-		SlideLabel.setFont(new Font("±¼¸²", Font.BOLD, 12));
+		SlideLabel.setFont(new Font("êµ´ë¦¼", Font.BOLD, 12));
 		SlideLabel.setForeground(SystemColor.textHighlight);
 		SlideLabel.setBounds(105, 225, 98, 15);
 		getContentPane().add(SlideLabel);
@@ -160,7 +160,7 @@ public class sinewindow extends JDialog implements ActionListener {
 
 			if (sampletext.getText().isEmpty() || pintext.getText().isEmpty() || Mcycletext.getText().isEmpty()) {
 				notice.setText("");
-				notice.setText("pin,sample,M °ªÀÌ ¾ø½À´Ï´Ù.");
+				notice.setText("pin,sample,M ê°’ì´ ì—†ìŠµë‹ˆë‹¤.");
 
 			} else {
 
@@ -188,7 +188,7 @@ public class sinewindow extends JDialog implements ActionListener {
 							(int) ((double) ((Math.sin(Mvalue * 2 * Math.PI * i / (sinebuffer.length)) + 1)
 									* ((sinebuffer.length-1) / 2)))); j++) {
 
-						sinebuffer[i] += "0"; // 0À» ºóÀÚ¸® °³¼ö¸¸Å­ ¸¸µé¾î ÀüÁø ¹èÄ¡
+						sinebuffer[i] += "0";  // 0ì„ ë¹ˆìë¦¬ ê°œìˆ˜ë§Œí¼ ë§Œë“¤ì–´ ì „ì§„ ë°°ì¹˜
 
 					}
 
@@ -234,7 +234,7 @@ public class sinewindow extends JDialog implements ActionListener {
 
 			if (Fttext.getText().isEmpty() || Fstext.getText().isEmpty() || sampletext.getText().isEmpty()) {
 				notice.setText("");
-				notice.setText("Ft,Fs,sample °ªÀÌ ¾ø½À´Ï´Ù.");
+				notice.setText("Ft,Fs,sample ê°’ì´ ì—†ìŠµë‹ˆë‹¤.");
 
 			} else {
 

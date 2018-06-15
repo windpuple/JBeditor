@@ -20,8 +20,8 @@ import java.awt.Toolkit;
 
 public class AcceptRemoteServerIP extends JDialog implements ActionListener {
 
-	JButton btn = new JButton("»Æ¿Œ");
-	JButton btncancel = new JButton("\uCDE8\uC18C");
+	JButton btn = new JButton("Confirm");
+	JButton btncancel = new JButton("Cancel");
 
 	private JTextField AddressTest;
 

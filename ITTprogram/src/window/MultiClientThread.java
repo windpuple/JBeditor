@@ -52,14 +52,14 @@ public class MultiClientThread extends Thread{
 					}
                 }else{
                     mc.getJta().append(
-                    receivedMsg[0] +"´ÔÀÌ Á¾·á ÇÏ¼Ì½À´Ï´Ù."+
+                    receivedMsg[0] +"ë‹˜ì´ ì¢…ë£Œ í•˜ì…¨ìŠµë‹ˆë‹¤."+
                     System.getProperty("line.separator"));
                     mc.getJta().setCaretPosition(
                     mc.getJta().getDocument().getLength());
                 }
             }else if(receivedMsg[1].equals("change")){               
                 mc.changepower=true;
-                mc.getJta().append("¹Ù²Ü ¾ÆÀÌµğ¸¦ ÀÔ·ÂÇÏ¼¼¿ä"+ System.getProperty("line.separator"));
+                mc.getJta().append("ë°”ê¿€ ì•„ì´ë””ë¥¼ ì…ë ¥í•˜ì„¸ìš”"+ System.getProperty("line.separator"));
                 String name = receivedMsg[1];
                 mc.SetName(name);
             }else if(receivedMsg[1].equals("clear")){               
@@ -74,7 +74,7 @@ public class MultiClientThread extends Thread{
             }else if(receivedMsg[0].equals("list")){            	
             	int len =receivedMsg.length-1;
             	String numStr2 = String.valueOf(len);
-            	mc.getJta().append("ÇöÀçÁ¢¼ÓÀÎ¿ø :"+numStr2+System.getProperty("line.separator"));
+            	mc.getJta().append("í˜„ì¬ì ‘ì†ì¸ì› :"+numStr2+System.getProperty("line.separator"));
             	for(int i=0;i<receivedMsg.length;i++){
             		mc.getJta().append(receivedMsg[i]+System.getProperty("line.separator"));
             	}       

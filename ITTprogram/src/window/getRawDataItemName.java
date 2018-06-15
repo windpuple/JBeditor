@@ -52,7 +52,7 @@ public class getRawDataItemName {
 					ignore = 1;
 
 					// NO value do nothing insert Charcomponet.
-					// System.out.println("Null ���� Ȯ��");
+					// System.out.println("Null 실행확인");
 
 				} else {
 

@@ -23,28 +23,28 @@ public class CallTelenetJar {
 		Channel channel = null;
 		Channel channelsftp = null;
 
-		// 2. ¼¼¼Ç °´Ã¼¸¦ »ý¼ºÇÑ´Ù (»ç¿ëÀÚ ÀÌ¸§, Á¢¼ÓÇÒ È£½ºÆ®, Æ÷Æ®¸¦ ÀÎÀÚ·Î ÁØ´Ù.)
+		// 2. ì„¸ì…˜ ê°ì²´ë¥¼ ìƒì„±í•œë‹¤ (ì‚¬ìš©ìž ì´ë¦„, ì ‘ì†í•  í˜¸ìŠ¤íŠ¸, í¬íŠ¸ë¥¼ ì¸ìžë¡œ ì¤€ë‹¤.)
 		try {
-			// 1. JSch °´Ã¼¸¦ »ý¼ºÇÑ´Ù.
+			// 1. JSch ê°ì²´ë¥¼ ìƒì„±í•œë‹¤.
 			JSch jsch = new JSch();
 			session = jsch.getSession(username, host, port);
 
-			// 3. ÆÐ½º¿öµå¸¦ ¼³Á¤ÇÑ´Ù.
+			// 3. íŒ¨ìŠ¤ì›Œë“œë¥¼ ì„¤ì •í•œë‹¤.
 			session.setPassword(password);
 
-			// 4. ¼¼¼Ç°ú °ü·ÃµÈ Á¤º¸¸¦ ¼³Á¤ÇÑ´Ù.
+			// 4. ì„¸ì…˜ê³¼ ê´€ë ¨ëœ ì •ë³´ë¥¼ ì„¤ì •í•œë‹¤.
 			java.util.Properties config = new java.util.Properties();
-			// 4-1. È£½ºÆ® Á¤º¸¸¦ °Ë»çÇÏÁö ¾Ê´Â´Ù.
+			// 4-1. í˜¸ìŠ¤íŠ¸ ì •ë³´ë¥¼ ê²€ì‚¬í•˜ì§€ ì•ŠëŠ”ë‹¤.
 			config.put("StrictHostKeyChecking", "no");
 			session.setConfig(config);
 
-			// 5. Á¢¼ÓÇÑ´Ù.
+			// 5. ì ‘ì†í•œë‹¤.
 			session.connect();
 
-			// 6. sftp Ã¤³ÎÀ» ¿¬´Ù.
+			// 6. sftp ì±„ë„ì„ ì—°ë‹¤.
 			channel = session.openChannel("exec");
 
-			// 8. Ã¤³ÎÀ» SSH¿ë Ã¤³Î °´Ã¼·Î Ä³½ºÆÃÇÑ´Ù
+			// 8. ì±„ë„ì„ SSHìš© ì±„ë„ ê°ì²´ë¡œ ìºìŠ¤íŒ…í•œë‹¤
 			ChannelExec channelExec = (ChannelExec) channel;
 
 			System.out.println("==> Connected to" + host);

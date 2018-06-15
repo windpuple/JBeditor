@@ -15,8 +15,8 @@ import java.awt.Toolkit;
 
 public class TDLderiveWindow extends JDialog implements ActionListener {
 
-	JButton btn = new JButton("È®ÀÎ");
-	JButton btncancel = new JButton("\uCDE8\uC18C");
+	JButton btn = new JButton("Confirm");
+	JButton btncancel = new JButton("Cancel");
 	JLabel notice = new JLabel("");
 
 	String ATEbuffer;
@@ -101,7 +101,7 @@ public class TDLderiveWindow extends JDialog implements ActionListener {
 			} else {
 
 				notice.setText("");
-				notice.setText("ATE¸¦ ¼±ÅÃÇÏÁö ¾Ê¾Ò½À´Ï´Ù.");
+				notice.setText("ATEë¥¼ ì„ íƒí•˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.");
 
 			}
 			

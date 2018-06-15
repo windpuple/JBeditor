@@ -87,7 +87,7 @@ public class MAPwindow extends JFrame {
 
 		}
 
-		// body¿¡ °¢°¢¿¡ À§Ä¡¿¡ µéÀº °ªÈ®ÀÎ.
+		// bodyì— ê°ê°ì— ìœ„ì¹˜ì— ë“¤ì€ ê°’í™•ì¸.
 		// for (int i = 4800; i < bodycnt; i++) {
 
 		// System.out.println("xposition "+i+":"+xposition[i]);
@@ -155,7 +155,7 @@ public class MAPwindow extends JFrame {
 			Ycountlength = 4;
 		}
 
-		// x,y ÃàÀÇ ÃÖ´ë°ª, softbinÀÇ ÃÖ´ë°ª, softbinÀÇ ÃÖ´ë ±ÛÀÚ¼ö.
+		// x,y ì¶•ì˜ ìµœëŒ€ê°’, softbinì˜ ìµœëŒ€ê°’, softbinì˜ ìµœëŒ€ ê¸€ììˆ˜.
 		// System.out.println("Xmax :" + Xmax);
 		// System.out.println("Ymax :" + Ymax);
 		// System.out.println("Softmax :" + Softmax);
@@ -224,7 +224,7 @@ public class MAPwindow extends JFrame {
 
 						}
 
-						// ÁÂÇ¥¿Í soft binÀÌ ÀÏÄ¡ÇÏ´Â È®ÀÎ.
+						// ì¢Œí‘œì™€ soft binì´ ì¼ì¹˜í•˜ëŠ” í™•ì¸.
 						// System.out.println("Softbin "+i+":"+j+":"+x+" :"+Softbin[x]);
 						// System.out.println("chip component :"+ChipPosition[i][j]);
 
@@ -241,7 +241,7 @@ public class MAPwindow extends JFrame {
 
 			for (int j = 0; j < Xmax; j++) {
 
-				// chip ÁÂÇ¥ÀÇ ¹æ³»¿ë º¸±â
+				// chip ì¢Œí‘œì˜ ë°©ë‚´ìš© ë³´ê¸°
 				// System.out.print(ChipPosition[i][j]);
 				// System.out.println("map chip component : "+i+":"+j+":"+ChipPosition[i][j]);
 
@@ -253,7 +253,7 @@ public class MAPwindow extends JFrame {
 
 		}
 
-		// head ³»¿ë º¸±â
+		// head ë‚´ìš© ë³´ê¸°
 		// for(int i = 0; i < headelement.length; i++) {
 
 		// for(int j =0; j < headelement[i].length; j++) {
@@ -263,7 +263,7 @@ public class MAPwindow extends JFrame {
 		// }
 		// }
 
-		// tail ³»¿ë º¸±â
+		// tail ë‚´ìš© ë³´ê¸°
 		// for (int i = 0; i < tailcnt; i++) {
 
 		// for (int j = 0; j < tailelement[i].length; j++) {
@@ -358,7 +358,7 @@ public class MAPwindow extends JFrame {
 		}
 
 		
-		// numbering xÃà
+		// numbering xì¶•
 
 		for (int i = 0; i < Ycountlength; i++) {
 
@@ -918,7 +918,7 @@ public class MAPwindow extends JFrame {
 
 		Mapbuffer.append(bodybuffer2.toString());
 
-		// numbering xÃà
+		// numbering xì¶•
 
 		for (int i = 0; i < Ycountlength; i++) {
 

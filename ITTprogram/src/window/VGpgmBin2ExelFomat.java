@@ -253,7 +253,7 @@ public class VGpgmBin2ExelFomat extends JDialog {
 
 					RVGhardbin[x] = VGhardbin[i];
 
-					RVGbinName[x] = VGbinName[i];
+					RVGbinName[x] = VGbinName[i]; // MES loading error fixed ' added
 
 					RVGGoodBadFlag[x] = VGGoodBadFlag[i];
 	
@@ -450,7 +450,7 @@ public class VGpgmBin2ExelFomat extends JDialog {
 		File file = new File("./EXEL/ITT_Exel_SetupBin.xls");
 		File path = new File("./EXEL/");
 
-		// ÆÄÀÏÀÌ ¾øÀ» ½Ã ÆÄÀÏ »ı¼º
+		// íŒŒì¼ì´ ì—†ì„ ì‹œ íŒŒì¼ ìƒì„±
 		if (!file.exists()) {
 
 			path.mkdirs();
@@ -459,27 +459,27 @@ public class VGpgmBin2ExelFomat extends JDialog {
 
 		}
 
-		// ¿¢¼¿ °´Ã¼ »ı¼º
+		// ì—‘ì…€ ê°ì²´ ìƒì„±
 		WritableWorkbook workbook = Workbook.createWorkbook(file);
 
-		// ½¬Æ® »ı¼º ( ½¬Æ®¸í, ÀÎµ¦½º)
+		// ì‰¬íŠ¸ ìƒì„± ( ì‰¬íŠ¸ëª…, ì¸ë±ìŠ¤)
 		WritableSheet sheet = workbook.createSheet("ITT_Exel_SetupBin", 0);
 
 		WritableCellFormat cellformat1 = new WritableCellFormat();
 		cellformat1.setBorder(Border.ALL, BorderLineStyle.THIN);  
-		// º¸´õ¿Í º¸´õ¶óÀÎ½ºÅ¸ÀÏ ¼³Á¤
+		// ë³´ë”ì™€ ë³´ë”ë¼ì¸ìŠ¤íƒ€ì¼ ì„¤ì •
 		
 		WritableCellFormat cellformat2 = new WritableCellFormat();
 		cellformat2.setBorder(Border.ALL, BorderLineStyle.THIN);
 		cellformat2.setBackground(Colour.ICE_BLUE);                    
-		// ¹è°æ»ö ¼³Á¤
+		// ë°°ê²½ìƒ‰ ì„¤ì •
 		
-		// ¼¿(Label) »ı¼º
+		// ì…€(Label) ìƒì„±
 		Label label;
 		
 		label = new Label(0, 0, "Bin No",cellformat2);
 		sheet.addCell(label);
-		label = new Label(1, 0, "HNin No",cellformat2);
+		label = new Label(1, 0, "HBin No",cellformat2);
 		sheet.addCell(label);
 		label = new Label(2, 0, "Bin Name",cellformat2);
 		sheet.addCell(label);
@@ -493,7 +493,7 @@ public class VGpgmBin2ExelFomat extends JDialog {
 		sheet.addCell(label);
 		label = new Label(7, 0, "Down Flag",cellformat2);
 		sheet.addCell(label);
-		label = new Label(10, 0, "HbinNo",cellformat2);
+		label = new Label(10, 0, "HBinNo",cellformat2);
 		sheet.addCell(label);
 		label = new Label(11, 0, "HBin Name",cellformat2);
 		sheet.addCell(label);
@@ -511,10 +511,13 @@ public class VGpgmBin2ExelFomat extends JDialog {
 		sheet.addCell(label);
 		label = new Label(18, 0, "No Retest Nth",cellformat2);
 		sheet.addCell(label);
+	
+		RVGGoodBadFlag[0] =""; //MES is not accepted Y character. so temporary disabled
+		RGoodFlag[0] ="";  //MES is not accepted Y character. so temporary disabled
 		
 		for (int j = 0; j < 8; j++) {
 			for (int i = 0; i < RVGhardbin.length; i++) {
-				// Label ¹æ½ÄÀ¸·Î »ı¼ºÇÏ¿© Add ÇÏ¿©¾ß ÇÑ´Ù.
+				// Label ë°©ì‹ìœ¼ë¡œ ìƒì„±í•˜ì—¬ Add í•˜ì—¬ì•¼ í•œë‹¤.
 				label = null;
 
 				if (j == 0) {
@@ -533,7 +536,7 @@ public class VGpgmBin2ExelFomat extends JDialog {
 					sheet.addCell(label);
 
 				} else if (j == 3) {
-
+					
 					label = new Label(j, i+1, RVGGoodBadFlag[i],cellformat1);
 					sheet.addCell(label);
 
@@ -564,7 +567,7 @@ public class VGpgmBin2ExelFomat extends JDialog {
 		
 		for (int j = 10; j < 19; j++) {
 			for (int i = 0; i < RHBinNo.length; i++) {
-				// Label ¹æ½ÄÀ¸·Î »ı¼ºÇÏ¿© Add ÇÏ¿©¾ß ÇÑ´Ù.
+				// Label ë°©ì‹ìœ¼ë¡œ ìƒì„±í•˜ì—¬ Add í•˜ì—¬ì•¼ í•œë‹¤.
 				
 				if (j == 10) {
 
@@ -615,7 +618,7 @@ public class VGpgmBin2ExelFomat extends JDialog {
 			}
 		}
 		
-		// ÀúÀå ¹× ´İ±â
+		// ì €ì¥ ë° ë‹«ê¸°
 		workbook.write();
 		workbook.close();
 

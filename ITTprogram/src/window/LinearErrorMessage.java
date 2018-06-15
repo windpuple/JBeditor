@@ -19,9 +19,9 @@ public class LinearErrorMessage extends JDialog implements ActionListener {
   setTitle("linear error");
   setModal(true);    
   
-  JLabel lbl = new JLabel("   PinÀÇ ¼ö°¡ SampleÀÇ °æ¿ìÀÇ ¼ö º¸´Ù Àû½À´Ï´Ù. »ı¼ºÇÒ ¼ö ¾ø½À´Ï´Ù.");
-  lbl.setFont(new Font("±¼¸²", Font.BOLD, 12));
-  JButton btn = new JButton("È®ÀÎ");
+  JLabel lbl = new JLabel("   Pinì˜ ìˆ˜ê°€ Sampleì˜ ê²½ìš°ì˜ ìˆ˜ ë³´ë‹¤ ì ìŠµë‹ˆë‹¤. ìƒì„±í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
+  lbl.setFont(new Font("êµ´ë¦¼", Font.BOLD, 12));
+  JButton btn = new JButton("Corfirm");
   btn.addActionListener(this);
   getContentPane().add("Center", lbl);    // BordLayout
   getContentPane().add("South", btn);
@@ -33,6 +33,6 @@ public class LinearErrorMessage extends JDialog implements ActionListener {
  
  @Override
  public void actionPerformed(ActionEvent e) {
-  dispose();  // dialog ´İ±â
+  dispose();  // dialog  ë‹«ê¸°
  }
 }

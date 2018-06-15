@@ -64,7 +64,7 @@ public class TDLderive extends JDialog {
 
 		}
 
-		// OEN pin Á¦°ÅÇÑ data È®ÀÎ.
+		// OEN pin ì œê±°í•œ data í™•ì¸.
 		//for (int i = 0; i < bodyline.length; i++) {
 
 		//	for (int j = 0; j < bodyline[i].length; j++) {

@@ -26,8 +26,8 @@ import java.awt.Toolkit;
 
 public class RampWindow extends JDialog implements ActionListener {
 
-	JButton btn = new JButton("»Æ¿Œ");
-	JButton btncancel = new JButton("\uCDE8\uC18C");
+	JButton btn = new JButton("Confirm");
+	JButton btncancel = new JButton("Cancel");
 	JLabel notice = new JLabel("");
 
 	public static String Rampfinalbuffer;
@@ -89,7 +89,7 @@ public class RampWindow extends JDialog implements ActionListener {
 		getContentPane().add(Rampslider);
 
 		RampsliderLabel.setForeground(SystemColor.textHighlight);
-		RampsliderLabel.setFont(new Font("±º∏≤", Font.BOLD, 12));
+		RampsliderLabel.setFont(new Font("Íµ¥Î¶º", Font.BOLD, 12));
 		RampsliderLabel.setBounds(85, 152, 97, 15);
 
 		getContentPane().add(RampsliderLabel);
@@ -106,7 +106,7 @@ public class RampWindow extends JDialog implements ActionListener {
 
 			if (sampletext.getText().isEmpty() || pintext.getText().isEmpty()) {
 				notice.setText("");
-				notice.setText("pin,sample ∞™¿Ã æ¯Ω¿¥œ¥Ÿ.");
+				notice.setText("pin,sample Í∞íÏù¥ ÏóÜÏäµÎãàÎã§.");
 
 			} else {
 
@@ -135,7 +135,7 @@ public class RampWindow extends JDialog implements ActionListener {
 
 					for (int j = 0; j < Integer.numberOfLeadingZeros(i); j++) {
 
-						RampbufferRising[i] += "0"; // 0¿ª ∫Û¿⁄∏Æ ∞≥ºˆ∏∏≈≠ ∏∏µÈæÓ ¿¸¡¯ πËƒ°
+						RampbufferRising[i] += "0"; // 0ÏùÑ ÎπàÏûêÎ¶¨ Í∞úÏàòÎßåÌÅº ÎßåÎì§Ïñ¥ Ï†ÑÏßÑ Î∞∞Ïπò
 
 					}
 
@@ -168,7 +168,7 @@ public class RampWindow extends JDialog implements ActionListener {
 
 						//System.out.println("f value:"+f);
 						
-						RampbufferFalling[f] += "0"; // 0¿ª ∫Û¿⁄∏Æ ∞≥ºˆ∏∏≈≠ ∏∏µÈæÓ ¿¸¡¯ πËƒ°
+						RampbufferFalling[f] += "0"; // 0ÏùÑ ÎπàÏûêÎ¶¨ Í∞úÏàòÎßåÌÅº ÎßåÎì§Ïñ¥ Ï†ÑÏßÑ Î∞∞Ïπò
 
 						//System.out.println("i:"+i+"-RampbufferFalling"+f+":"+RampbufferFalling[f]);
 						

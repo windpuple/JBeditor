@@ -15,8 +15,8 @@ import java.awt.Toolkit;
 
 public class ChartWindow extends JDialog implements ActionListener {
 
-	JButton btn = new JButton("È®ÀÎ");
-	JButton btncancel = new JButton("\uCDE8\uC18C");
+	JButton btn = new JButton("Confirm");
+	JButton btncancel = new JButton("Cancel");
 	JLabel notice = new JLabel("");
 
 	String Chartbuffer;
@@ -92,7 +92,7 @@ public class ChartWindow extends JDialog implements ActionListener {
 			} else {
 
 				notice.setText("");
-				notice.setText("Chart¸¦ ¼±ÅÃÇÏÁö ¾Ê¾Ò½À´Ï´Ù.");
+				notice.setText("Chartë¥¼ ì„ íƒí•˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.");
 
 			}
 			

@@ -22,8 +22,8 @@ public class Sbinwindow extends JDialog implements ActionListener {
 	private JTextField bh_textfield;
 	private JTextField af_textfiled;
 
-	JButton btn = new JButton("»Æ¿Œ");
-	JButton btncancel = new JButton("\uCDE8\uC18C");
+	JButton btn = new JButton("Confirm");
+	JButton btncancel = new JButton("Cancel");
 
 	JLabel notice = new JLabel("");
 
@@ -74,12 +74,12 @@ public class Sbinwindow extends JDialog implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// dispose(); // dialog ¥›±‚
+		
 		if (e.getSource() == btn) {
 
 			if (bh_textfield.getText().isEmpty() || af_textfiled.getText().isEmpty()) {
 				notice.setText("");
-				notice.setText("pin,sample ∞™¿Ã æ¯Ω¿¥œ¥Ÿ.");
+				notice.setText("pin,sample Í∞íÏù¥ ÏóÜÏäµÎãàÎã§.");
 
 			} else {
 

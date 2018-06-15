@@ -21,11 +21,11 @@ import jxl.write.biff.RowsExceededException;
 
 public class ExelExport {
 	public ExelExport() throws IOException, RowsExceededException, WriteException {
-		// ¿¢¼¿ ÆÄÀÏ ÁöÁ¤
+		// ì—‘ì…€ íŒŒì¼ ì§€ì •
 		File file = new File("./EXEL/ITT_Exel.xls");
 		File path = new File("./EXEL/");
 
-		// ÆÄÀÏÀÌ ¾øÀ» ½Ã ÆÄÀÏ »ı¼º
+		// íŒŒì¼ì´ ì—†ì„ ì‹œ íŒŒì¼ ìƒì„±
 		if (!file.exists()) {
 
 			path.mkdirs();
@@ -36,39 +36,38 @@ public class ExelExport {
 
 		String[] ExelLine = JBeditormain.Finalarray.split("\n");
 		String[][] ExelRowCol = new String[ExelLine.length][];
-		
-		for(int i = 0; i < ExelLine.length; i++) {
-			
+
+		for (int i = 0; i < ExelLine.length; i++) {
+
 			ExelRowCol[i] = ExelLine[i].split("[,\\s]");
-		
+
 		}
-		
-		
-		// ¿¢¼¿ °´Ã¼ »ı¼º
+
+		// ì—‘ì…€ ê°ì²´ ìƒì„±
 		WritableWorkbook workbook = Workbook.createWorkbook(file);
 
-		// ½¬Æ® »ı¼º ( ½¬Æ®¸í, ÀÎµ¦½º)
+		// ì‰¬íŠ¸ ìƒì„± ( ì‰¬íŠ¸ëª…, ì¸ë±ìŠ¤)
 		WritableSheet sheet = workbook.createSheet("ITT_Exel_Export", 0);
 
-		// ¼¿(Label) »ı¼º
+		// ì…€(Label) ìƒì„±
 		Label label;
 		for (int i = 0; i < ExelRowCol.length; i++) {
 			for (int j = 0; j < ExelRowCol[i].length; j++) {
-				// Label ¹æ½ÄÀ¸·Î »ı¼ºÇÏ¿© Add ÇÏ¿©¾ß ÇÑ´Ù.
+				// Label ë°©ì‹ìœ¼ë¡œ ìƒì„±í•˜ì—¬ Add í•˜ì—¬ì•¼ í•œë‹¤.
 				label = null;
 				label = new Label(j, i, ExelRowCol[i][j]);
 				sheet.addCell(label);
 			}
 		}
 
-		// ÀúÀå ¹× ´İ±â
+		// ì €ì¥ ë° ë‹«ê¸°
 		workbook.write();
 		workbook.close();
 
-		// folder ±ÇÇÑ ¼³Á¤.
+		// folder ê¶Œí•œ ì„¤ì •.
 		// String cmd = "chmod 750 -R " + path;
-		// 750, 770µî ±ÇÇÑÀ» ºÎ¿©ÇÏ°í -R¿É¼ÇÀº ÇÏÀ§ µğ·ºÅä¸® »ı¼º½Ã °°Àº ±ÇÇÑ ºÎ¿© ¿É¼ÇÀ¸·Î
-		// »ç¿ëÇÏ¸é ÇÏÀ§ µğ·ºÅä¸® »ı¼º½Ã °°Àº ±ÇÇÑÀ¸·Î °è¼Ó »ı¼º
+		// 750, 770ë“± ê¶Œí•œì„ ë¶€ì—¬í•˜ê³  -Rì˜µì…˜ì€ í•˜ìœ„ ë””ë ‰í† ë¦¬ ìƒì„±ì‹œ ê°™ì€ ê¶Œí•œ ë¶€ì—¬ ì˜µì…˜ìœ¼ë¡œ
+		// ì‚¬ìš©í•˜ë©´ í•˜ìœ„ ë””ë ‰í† ë¦¬ ìƒì„±ì‹œ ê°™ì€ ê¶Œí•œìœ¼ë¡œ ê³„ì† ìƒì„±
 		// Runtime rt = Runtime.getRuntime();
 		// Process prc = rt.exec(cmd);
 

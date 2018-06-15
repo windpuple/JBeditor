@@ -25,8 +25,8 @@ public class JBeditorabout extends JDialog implements ActionListener {
   setTitle("ITT infomation");
   setModal(true);    // true : Modal, false : Modeless
   
-  JLabel lbl = new JLabel("   ITT ver 0.6 made by JB.Jeon");
-  JButton btn = new JButton("»Æ¿Œ");
+  JLabel lbl = new JLabel("   ITT ver 11.1 made by JB.Jeon");
+  JButton btn = new JButton("ÌôïÏù∏");
   btn.addActionListener(this);
   getContentPane().add("Center", lbl);    // BordLayout
   getContentPane().add("South", btn);
@@ -38,6 +38,6 @@ public class JBeditorabout extends JDialog implements ActionListener {
  
  @Override
  public void actionPerformed(ActionEvent e) {
-  dispose();  // dialog ¥›±‚
+  dispose();  // dialog  Îã´Í∏∞
  }
 }

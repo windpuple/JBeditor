@@ -10,14 +10,14 @@ public class MultiClient extends JFrame implements ActionListener {
 	static Socket clientsocket;
 
 	private ObjectOutputStream oos;
-	private JFrame jframe, login1; // Ã¢
-	private JTextField jtf, idc, pass;// Àü¼Û,¾ÆÀÌµğ,ºñ¹øÃ¢
-	private JTextArea jta, jlo;// Å°Æ¼¹è°æÃ¢,·Î±×ÀÎÃ¢ Å¸ÀÚ
-	private JLabel jlb1, jlb2, jID, jPW;// Å°Æ¼Ã¢¿¡¼­ À¯Àú¾ÆÀÌµğ¶û ¾ÆÀÌÇÇÁÖ¼Ò¸¦³ªÅ¸³»´Â ¶óº§
-	private JPanel jp1, jp2, jp3, jp4;// ¹öÆ°µîµî ´ã¾Æ¼­ ÇÁ·¹ÀÓ¿¡ ºÙÀÌ´Â ¹Ù±¸´Ï
-	public String ip;// ·Î±×ÀÎÇÒ¼öÀÖ´Â ¾ÆÀÌÇÇ
-	private String id;// ·Î±×ÀÎÇÒ¼öÀÖ´Â ¾ÆÀÌµğ
-	private JButton jbtn, jbtn1, jexit;// Àü¼Û¹öÆ°ÀÌ¶û ·Î±×ÀÎ Á¾·á ¹öÆ°ÀÌ¿¡¿ä
+	private JFrame jframe, login1; 
+	private JTextField jtf, idc, pass;
+	private JTextArea jta, jlo;
+	private JLabel jlb1, jlb2, jID, jPW;
+	private JPanel jp1, jp2, jp3, jp4;
+	public String ip;
+	private String id;
+	private JButton jbtn, jbtn1, jexit;
 	public boolean changepower = false;
 
 	Image img = new ImageIcon("./Image/kittychat.jpg").getImage();
@@ -32,7 +32,7 @@ public class MultiClient extends JFrame implements ActionListener {
 		// progressBar.setIndeterminate(true);
 		// progressBar.setBounds(32, 303, 195, 14);
 
-		jtf = new JTextField(20); // chatting ±ÛÀÌ½áÁö´Â field
+		jtf = new JTextField(20); // chatting ê¸€ì´ì¨ì§€ëŠ” field
 		// idc = new JPasswordField(20); // IP field passwordfield is showing *****
 		idc = new JTextField(20);
 		pass = new JTextField(20); // ID text field
@@ -53,19 +53,19 @@ public class MultiClient extends JFrame implements ActionListener {
 		jlb1 = new JLabel();
 		jlb2 = new JLabel();
 
-		jID = new JLabel("IP"); // ID ¶óº§
-		jPW = new JLabel("name"); // ÆĞ½º¿öµå ¶óº§
-		jbtn = new JButton("Enter"); // Ã¤ÆÃÀü¼Û ¹öÆ°
-		jbtn1 = new JButton("Login"); // ·Î±×ÀÎ ¹öÆ°
-		jexit = new JButton("exit"); // Á¾·á ¹öÆ°
-		jp1 = new JPanel(); // ¹Ù±¸´Ï
+		jID = new JLabel("IP"); // ID ë¼ë²¨
+		jPW = new JLabel("name"); // íŒ¨ìŠ¤ì›Œë“œ ë¼ë²¨
+		jbtn = new JButton("Enter"); // ì±„íŒ…ì „ì†¡ ë²„íŠ¼
+		jbtn1 = new JButton("Login");  // ë¡œê·¸ì¸ ë²„íŠ¼
+		jexit = new JButton("exit");  // ì¢…ë£Œ ë²„íŠ¼
+		jp1 = new JPanel();  // ë°”êµ¬ë‹ˆ
 		jp2 = new JPanel();
-		jp3 = new JPanel(); // ·Î±×ÀÎ È­¸é
+		jp3 = new JPanel();  // ë¡œê·¸ì¸ í™”ë©´
 		jp4 = new JPanel();
 
-		jID.setFont(new Font("HY¿±¼­L", Font.PLAIN, (int) 12));
+		jID.setFont(new Font("HYì—½ì„œL", Font.PLAIN, (int) 12));
 		jID.setHorizontalAlignment(jID.CENTER);
-		jPW.setFont(new Font("HY¿±¼­L", Font.PLAIN, (int) 12));
+		jPW.setFont(new Font("HYì—½ì„œL", Font.PLAIN, (int) 12));
 		jPW.setHorizontalAlignment(jPW.CENTER);
 
 		jp1.setLayout(new BorderLayout());
@@ -214,7 +214,7 @@ public class MultiClient extends JFrame implements ActionListener {
 		if (obj == jtf && changepower == true) {
 			changepower = false;
 			if (msg == null || msg.length() == 0) {
-				JOptionPane.showMessageDialog(jframe, "±ÛÀ»¾²¼¼¿ä", "°æ°í", JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(jframe, "ê¸€ì„ì“°ì„¸ìš”", "ê²½ê³ ", JOptionPane.WARNING_MESSAGE);
 			} else {
 				id = jtf.getText();
 				jtf.setText("");
@@ -305,7 +305,7 @@ public class MultiClient extends JFrame implements ActionListener {
 	}
 
 	public void Clear() {
-		jta.setText(""); // ÃÊ±âÈ­µÇ°í
+		jta.setText(""); // ì´ˆê¸°í™”
 		jtf.requestFocus();
 	}
 

@@ -26,8 +26,8 @@ import java.awt.Toolkit;
 
 public class linearwindow extends JDialog implements ActionListener {
 
-	JButton btn = new JButton("È®ÀÎ");
-	JButton btncancel = new JButton("\uCDE8\uC18C");
+	JButton btn = new JButton("Confirm");
+	JButton btncancel = new JButton("Cancel");
 	JLabel notice = new JLabel("");
 
 	public static String linearfinalbuffer;
@@ -89,7 +89,7 @@ public class linearwindow extends JDialog implements ActionListener {
 		getContentPane().add(Linearslider);
 
 		linearsliderLabel.setForeground(SystemColor.textHighlight);
-		linearsliderLabel.setFont(new Font("±¼¸²", Font.BOLD, 12));
+		linearsliderLabel.setFont(new Font("ï¿½ï¿½ï¿½ï¿½", Font.BOLD, 12));
 		linearsliderLabel.setBounds(85, 152, 97, 15);
 
 		getContentPane().add(linearsliderLabel);
@@ -106,7 +106,7 @@ public class linearwindow extends JDialog implements ActionListener {
 
 			if (sampletext.getText().isEmpty() || pintext.getText().isEmpty()) {
 				notice.setText("");
-				notice.setText("pin,sample °ªÀÌ ¾ø½À´Ï´Ù.");
+				notice.setText("pin,sample ê°’ì´ ì—†ìŠµë‹ˆë‹¤.");
 
 			} else {
 
@@ -129,7 +129,7 @@ public class linearwindow extends JDialog implements ActionListener {
 
 					for (int j = 0; j < Integer.numberOfLeadingZeros(i); j++) {
 
-						linearbuffer[i] += "0"; // 0À» ºóÀÚ¸® °³¼ö¸¸Å­ ¸¸µé¾î ÀüÁø ¹èÄ¡
+						linearbuffer[i] += "0"; // 0ì„ ë¹ˆìë¦¬ ê°œìˆ˜ë§Œí¼ ë§Œë“¤ì–´ ì „ì§„ ë°°ì¹˜
 
 					}
 

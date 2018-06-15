@@ -36,7 +36,7 @@ public class rotation90 {
 			rotationbuffer[i] = ' ';
 		}
 
-		// ÆÄÀÏ·Î ÀĞ¾îµå¸°, mapÀ» char ÀüÃ¼ mapÀÎ read¿Í map ºÎºĞÀÎ rotationbuffer ¹è¿­·Î ºĞ¸® .
+		// íŒŒì¼ë¡œ ì½ì–´ë“œë¦°, mapì„ char ì „ì²´ mapì¸ readì™€ map ë¶€ë¶„ì¸ rotationbuffer ë°°ì—´ë¡œ ë¶„ë¦¬ .
 
 		for (int j = 0; j < JBeditormain.Finalarray.length(); j++) {
 
@@ -96,12 +96,12 @@ public class rotation90 {
 
 		}
 
-		// ÀĞ¾î¿Â charÀ» string totalbuffer·Î º¯È¯.
+		// ì½ì–´ì˜¨ charì„ string totalbufferë¡œ ë³€í™˜.
 		for (int i = 0; i < read.length; i++) {
 			totalbuffer += Character.toString(read[i]);
 		}
 
-		// bin char Ãß
+		// bin char ì¶”ê°€
 		int tailindex = JBeditormain.Finalarray.indexOf("SoftBIN");
 		String taillinebuf = JBeditormain.Finalarray.substring(tailindex);
 		String[] tailline = taillinebuf.split("\n");
@@ -139,7 +139,7 @@ public class rotation90 {
 		
 		
 
-		// totalbuffer¿¡¼­ ÇÊ¿äÇÑ head ºÎºĞ¸¸ header¿Í tail·Î string ÀúÀå.
+		// totalbufferì—ì„œ í•„ìš”í•œ head ë¶€ë¶„ë§Œ headerì™€ tailë¡œ string ì €ì¥.
 		int p1 = totalbuffer.indexOf("**********  WAFER MAP");
 		String sub1 = totalbuffer.substring(0, p1 - 1);
 		header = sub1;
@@ -148,7 +148,7 @@ public class rotation90 {
 		String sub2 = totalbuffer.substring(p2);
 		tail = sub2;
 
-		// rotationbufferÀÇ x,y±æÀÌ¸¦ ÃøÁ¤.
+		// rotationbufferì˜ x,yê¸¸ì´ë¥¼ ì¸¡ì •.
 
 		for (int i = 0; i < rotationbuffer.length; i++) {
 
@@ -183,7 +183,7 @@ public class rotation90 {
 
 		}
 
-		// Map ¸¶´Ù char¸¦ Âï´Â °¹¼öÀÇ »óÀÌÇÔÀ» º¸»ó.
+		// Map ë§ˆë‹¤ charë¥¼ ì°ëŠ” ê°¯ìˆ˜ì˜ ìƒì´í•¨ì„ ë³´ìƒ.
 		if (Rbinchars == 2) {
 
 			Rbinchars = Rbinchars - 1;
@@ -214,7 +214,7 @@ public class rotation90 {
 		String[][] rotationarray = new String[sylength][sxlength];
 		String[][] rotationarray90 = new String[ylength90][xlength90];
 
-		// body string¿¡ µé¾î°¥ ÀÌÂ÷¿ø ¹è¿­ µÎ°³¸¦ ÃÊ±âÈ­.
+		// body stringì— ë“¤ì–´ê°ˆ ì´ì°¨ì› ë°°ì—´ ë‘ê°œë¥¼ ì´ˆê¸°í™”.
 
 		for (int i = 0; i < sylength; i++) {
 
@@ -236,7 +236,7 @@ public class rotation90 {
 
 		}
 
-		// char rotationbuffer¸¦ string rotationarray 3ÀÚ¸® ÀÌÂ÷¿ø ¹è¿­¿¡ Á¤·Ä.
+		// char rotationbufferë¥¼ string rotationarray 3ìë¦¬ ì´ì°¨ì› ë°°ì—´ì— ì •ë ¬.
 
 		for (int x = 0, h = 0; x < sylength; x++) {
 
@@ -263,7 +263,7 @@ public class rotation90 {
 
 		}
 
-		// mapÀ» ½Ã°è¹æÇâÀ¸·Î µ¹·Á, rotation90 string 2Â÷¿ø ¹è¿­¿¡ ÀúÀå.
+		// mapì„ ì‹œê³„ë°©í–¥ìœ¼ë¡œ ëŒë ¤, rotation90 string 2ì°¨ì› ë°°ì—´ì— ì €ì¥.
 
 
 
@@ -287,7 +287,7 @@ public class rotation90 {
 
 
 
-		// 90µµ µ¹¾Æ°£ mapÀ» body string¿¡ ÀúÀå
+			// 90ë„ ëŒì•„ê°„ mapì„ body stringì— ì €ì¥
 		for (int i = 0; i < ylength90; i++) {
 
 			for (int j = 0; j < xlength90; j++) {
@@ -316,12 +316,12 @@ public class rotation90 {
 
 		}
 
-		// resultbuffer string¿¡ header string »ğÀÔ.
+		// resultbuffer stringì— header string ì‚½ì….
 
 		resultbuffer = header;
 		resultbuffer += "\n**********  WAFER MAP  **********\n\n";
 
-		// numbering xÃà
+		// numbering xì¶•
 
 		for (int i = 0; i < Ycountlenght; i++) {
 
@@ -785,7 +785,7 @@ public class rotation90 {
 
 		}
 
-		// body string¿¡¼­ bodybuffer·Î ¿Å±â¾î y ÁÂÇ¥ »ğÀÔ
+		// body stringì—ì„œ bodybufferë¡œ ì˜®ê¸°ì–´ y ì¢Œí‘œ ì‚½ì…
 
 		StringBuffer bodybuffer = new StringBuffer(body);
 
@@ -881,13 +881,13 @@ public class rotation90 {
 
 		}
 
-		// bodybuffer ¸¦ body stringÀ¸·Î
+		// bodybuffer ë¥¼ body stringìœ¼ë¡œ
 
 		body = bodybuffer.toString();
 
 		resultbuffer += body;
 
-		// numbering xÃà
+		// numbering xì¶•
 
 		for (int i = 0; i < Ycountlenght; i++) {
 
@@ -1351,7 +1351,7 @@ public class rotation90 {
 
 		}
 
-		// °á°ú Ãâ·Â
+		// ê²°ê³¼ ì¶œë ¥
 
 		resultbuffer += "\n\n";
 		resultbuffer += tail;

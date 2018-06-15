@@ -44,7 +44,7 @@ public class CallPolylineBarChart {
 
 		int Colum = getRawDataColum.get();
 		
-		System.out.println("ÄÃ·³°ª:"+Colum);
+		System.out.println("ì»¬ëŸ¼ê°’:"+Colum);
 		
 		for(int i = 0; i < Colum; i++) {
 		
@@ -72,7 +72,7 @@ public class CallPolylineBarChart {
 	
 	public JFreeChart getChart(int y) {
 
-		System.out.println("µé¾î¿Ô´ÂÁö È®ÀÎ ÄÃ·³°ª:"+y);
+		System.out.println("ë“¤ì–´ì™”ëŠ”ì§€ í™•ì¸ ì»¬ëŸ¼ê°’:"+y);
 		
 		// RawData Gathering. 
 		
@@ -115,7 +115,7 @@ public class CallPolylineBarChart {
 					ignore = 1;
 					
 				   // NO value do nothing insert Charcomponet.
-				   // System.out.println("Null ½ÇÇà È®ÀÎ");
+				   // System.out.println("Null ì‹¤í–‰ í™•ì¸");
 					
 				} else {
 					
@@ -224,13 +224,13 @@ public class CallPolylineBarChart {
 			}
 			
 			
-		// µ¥ÀÌÅÍ »ý¼º
+			// ë°ì´í„° ìƒì„±
 
 			DefaultCategoryDataset dataset1 = new DefaultCategoryDataset(); 
 		
-		// µ¥ÀÌÅÍ ÀÔ·Â ( °ª, ¹ü·Ê, Ä«Å×°í¸® )
+			// ë°ì´í„° ìž…ë ¥ ( ê°’, ë²”ë¡€, ì¹´í…Œê³ ë¦¬ )
 
-		// ±×·¡ÇÁ 1
+			// ê·¸ëž˜í”„ 1
 			
 		for(int i = 0; i < 100; i++) {
 		
@@ -243,15 +243,15 @@ public class CallPolylineBarChart {
 		}
 	
 
-		// ·»´õ¸µ »ý¼º ¹× ¼¼ÆÃ
+		// ë Œë”ë§ ìƒì„± ë° ì„¸íŒ…
 
-		// ·»´õ¸µ »ý¼º
+		// ë Œë”ë§ ìƒì„±
 
 		final BarRenderer renderer = new BarRenderer();
 
 		//final LineAndShapeRenderer renderer2 = new LineAndShapeRenderer();
 
-		// °øÅë ¿É¼Ç Á¤ÀÇ
+		// ê³µí†µ ì˜µì…˜ ì •ì˜
 
 		final CategoryItemLabelGenerator generator = new StandardCategoryItemLabelGenerator();
 
@@ -271,9 +271,9 @@ public class CallPolylineBarChart {
 
 		Font axisF = new Font("Gulim", Font.PLAIN, 14);
 
-		// ·»´õ¸µ ¼¼ÆÃ
+		// ë Œë”ë§ ì„¸íŒ…
 
-		// ±×·¡ÇÁ 1
+		// ê·¸ëž˜í”„ 1
 
 		renderer.setBaseItemLabelGenerator(generator);
 
@@ -293,7 +293,7 @@ public class CallPolylineBarChart {
 		renderer.setSeriesPaint(0, new Color(0, 162, 255));
 
 
-		// ±×·¡ÇÁ 3 line chart
+		// ê·¸ëž˜í”„ 3 line chart
 
 		//renderer2.setBaseItemLabelGenerator(generator);
 		//renderer2.setBaseItemLabelsVisible(true);
@@ -311,56 +311,56 @@ public class CallPolylineBarChart {
 		//		3.0f)
 		//);
 
-		// plot »ý¼º
+		// plot ìƒì„±
 
 		final CategoryPlot plot = new CategoryPlot();
 
-		// plot ¿¡ µ¥ÀÌÅÍ ÀûÀç
+		// plot ì— ë°ì´í„° ì ìž¬
 
 		plot.setDataset(dataset1);
 
 		plot.setRenderer(renderer);
 
 
-		// plot ±âº» ¼³Á¤
+		// plot ê¸°ë³¸ ì„¤ì •
 
-		plot.setOrientation(PlotOrientation.VERTICAL); // ±×·¡ÇÁ Ç¥½Ã ¹æÇâ
+		plot.setOrientation(PlotOrientation.VERTICAL);  // ê·¸ëž˜í”„ í‘œì‹œ ë°©í–¥
 
-		plot.setRangeGridlinesVisible(true); // XÃà °¡ÀÌµå ¶óÀÎ Ç¥½Ã¿©ºÎ
+		plot.setRangeGridlinesVisible(true); // Xì¶• ê°€ì´ë“œ ë¼ì¸ í‘œì‹œì—¬ë¶€
 
-		plot.setDomainGridlinesVisible(true); // YÃà °¡ÀÌµå ¶óÀÎ Ç¥½Ã¿©ºÎ
+		plot.setDomainGridlinesVisible(true); // Yì¶• ê°€ì´ë“œ ë¼ì¸ í‘œì‹œì—¬ë¶€
 
-		// ·»´õ¸µ ¼ø¼­ Á¤ÀÇ : dataset µî·Ï ¼ø¼­´ë·Î ·»´õ¸µ ( Áï, ¸ÕÀú µî·ÏÇÑ°Ô ¾Æ·¡·Î ±ò¸² )
+		// ë Œë”ë§ ìˆœì„œ ì •ì˜ : dataset ë“±ë¡ ìˆœì„œëŒ€ë¡œ ë Œë”ë§ ( ì¦‰, ë¨¼ì € ë“±ë¡í•œê²Œ ì•„ëž˜ë¡œ ê¹”ë¦¼ )
 
 		plot.setDatasetRenderingOrder(DatasetRenderingOrder.FORWARD);
 
-		// XÃà ¼¼ÆÃ
+		// Xì¶• ì„¸íŒ…
 
-		plot.setDomainAxis(new CategoryAxis()); // XÃà Á¾·ù ¼³Á¤
+		plot.setDomainAxis(new CategoryAxis()); // Xì¶• ì¢…ë¥˜ ì„¤ì •
 
-		plot.getDomainAxis().setTickLabelFont(axisF); // XÃà ´«±Ý¶óº§ ÆùÆ® Á¶Á¤
+		plot.getDomainAxis().setTickLabelFont(axisF);  // Xì¶• ëˆˆê¸ˆë¼ë²¨ í°íŠ¸ ì¡°ì •
 
-		plot.getDomainAxis().setCategoryLabelPositions(CategoryLabelPositions.STANDARD); // Ä«Å×°í¸® ¶óº§ À§Ä¡ Á¶Á¤
+		plot.getDomainAxis().setCategoryLabelPositions(CategoryLabelPositions.STANDARD); // ì¹´í…Œê³ ë¦¬ ë¼ë²¨ ìœ„ì¹˜ ì¡°ì •
 
-		// YÃà ¼¼ÆÃ
+		// Yì¶• ì„¸íŒ…
 
-		plot.setRangeAxis(new NumberAxis()); // YÃà Á¾·ù ¼³Á¤
+		plot.setRangeAxis(new NumberAxis()); // Yì¶• ì¢…ë¥˜ ì„¤ì •
 
-		plot.getRangeAxis().setTickLabelFont(axisF); // YÃà ´«±Ý¶óº§ ÆùÆ® Á¶Á¤
+		plot.getRangeAxis().setTickLabelFont(axisF); // Yì¶• ëˆˆê¸ˆë¼ë²¨ í°íŠ¸ ì¡°ì •
 
-		// ¼¼ÆÃµÈ plotÀ» ¹ÙÅÁÀ¸·Î chart »ý¼º
+		// ì„¸íŒ…ëœ plotì„ ë°”íƒ•ìœ¼ë¡œ chart ìƒì„±
 
 		final JFreeChart chart = new JFreeChart(plot);
 
 		
-		// chart.setTitle("Overlaid Bar Chart"); // Â÷Æ® Å¸ÀÌÆ²
+		// chart.setTitle("Overlaid Bar Chart"); // ì°¨íŠ¸ íƒ€ì´í‹€
 
 		// TextTitle copyright = new TextTitle("JFreeChart WaferMapPlot", new
 		// Font("SansSerif", Font.PLAIN, 9));
 
 		// copyright.setHorizontalAlignment(HorizontalAlignment.RIGHT);
 
-		// chart.addSubtitle(copyright); // Â÷Æ® ¼­ºê Å¸ÀÌÆ²
+		// chart.addSubtitle(copyright);  // ì°¨íŠ¸ ì„œë¸Œ íƒ€ì´í‹€
 	
 
 		return chart;

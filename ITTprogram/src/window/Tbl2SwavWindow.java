@@ -118,7 +118,7 @@ public class Tbl2SwavWindow extends JDialog implements ActionListener {
 			dialog.setVisible(true);
 			if (dialog.getFile() == null)
 				return;
-			String dfName = dialog.getDirectory() + dialog.getFile(); // °æ·Î¸í ÆÄÀÏ¸í
+			String dfName = dialog.getDirectory() + dialog.getFile();  // ê²½ë¡œëª… íŒŒì¼ëª…
 
 			File f = new File(dfName);
 
@@ -221,7 +221,7 @@ public class Tbl2SwavWindow extends JDialog implements ActionListener {
 			if (dTBLfName.isEmpty() || pininputbuffer.isEmpty()) {
 
 				fileEmpty.setText("");
-				fileEmpty.setText("   pin È¤Àº TBL fileÀÌ ¾ø½À´Ï´Ù.");
+				fileEmpty.setText("   pin í˜¹ì€ TBL fileì´ ì—†ìŠµë‹ˆë‹¤.");
 
 			} else {
 
@@ -253,7 +253,7 @@ public class Tbl2SwavWindow extends JDialog implements ActionListener {
 
 				pininputbuffer.replace("\\s", "");
 				pininputbuffer.replace(",", "");
-				tblpinlist = pininputbuffer.split("\r\n"); // \n¸¸À» »ç¿ëÇÏ¿© splitÇÏ¸é, \rÀ» Áö¿ï¼ö°¡ ¾ø´Â ¿À·ù°¡ ÀÖ´Ù.
+				tblpinlist = pininputbuffer.split("\r\n"); // \në§Œì„ ì‚¬ìš©í•˜ì—¬ splití•˜ë©´, \rì„ ì§€ìš¸ìˆ˜ê°€ ì—†ëŠ” ì˜¤ë¥˜ê°€ ìˆë‹¤.
 
 				swavheader += "/* signal information */\n";
 				swavheader += "version state 0 2 0;\n";
