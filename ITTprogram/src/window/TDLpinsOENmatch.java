@@ -32,7 +32,8 @@ public class TDLpinsOENmatch {
 
 			for (int j = 0; j < TDLpinsLine[i].length; j++) {
 
-				if (TDLpinsLine[i][j].contains("OEN") || TDLpinsLine[i][j].contains("oen")) {
+				if (TDLpinsLine[i][j].contains("OEN") || TDLpinsLine[i][j].contains("oen")
+						|| TDLpinsLine[i][j].contains("DIR") || TDLpinsLine[i][j].contains("dir")) {
 
 					cnt++;
 
@@ -48,7 +49,8 @@ public class TDLpinsOENmatch {
 
 			for (int j = 0; j < TDLpinsLine[i].length; j++) {
 
-				if (TDLpinsLine[i][j].contains("OEN") || TDLpinsLine[i][j].contains("oen")) {
+				if (TDLpinsLine[i][j].contains("OEN") || TDLpinsLine[i][j].contains("oen")
+						|| TDLpinsLine[i][j].contains("DIR") || TDLpinsLine[i][j].contains("dir")) {
 
 					TDLoenPins[k] = "\"in:" + TDLpinsLine[i][j].replace("\"", "") + "=1X,out:"
 							+ TDLpinsLine[i][j].replace("\"", "") + "=0\"";
@@ -104,41 +106,38 @@ public class TDLpinsOENmatch {
 		}
 
 		String[] TDLpinsLinebuffer = new String[TDLpinsLine.length];
-		
+
 		for (int i = 0; i < TDLpinsLine.length; i++) {
-			
+
 			TDLpinsLinebuffer[i] = TDLpinsLine[i][0].replace("\"", "");
 			TDLpinsLinebuffer[i] = TDLpinsLinebuffer[i].replaceAll("[a-z]", "");
-			
-		
-			
-			if(i > -1 && i < 4) {
-				
+
+			if (i > -1 && i < 4) {
+
 				TDLpinsLinebuffer[i] = "No match pattern";
-				
-			} else if(i == TDLpinsLine.length-1) {
-				
+
+			} else if (i == TDLpinsLine.length - 1) {
+
 				TDLpinsLinebuffer[i] = "No match pattern";
 			}
-			
-			//System.out.println(TDLpinsLinebuffer[i]);
-			
+
+			// System.out.println(TDLpinsLinebuffer[i]);
+
 		}
-		
-		
-		
-		
+
 		for (int i = 0; i < TDLpinsLine.length; i++) {
 
 			for (int j = 0; j < TDLoenPins.length; j++) {
 
-				if (changeOENnumber[j].contains(TDLpinsLinebuffer[i])
-						&& TDLpinsLinebuffer[i].contains("OEN") == false && TDLpinsLinebuffer[i].contains("oen") == false) {
+				if (changeOENnumber[j].contains(TDLpinsLinebuffer[i]) && TDLpinsLinebuffer[i].contains("OEN") == false
+						&& TDLpinsLinebuffer[i].contains("oen") == false
+						&& TDLpinsLinebuffer[i].contains("DIR") == false
+						&& TDLpinsLinebuffer[i].contains("dir") == false) {
 
 					TDLpinsLine[i][1] = "inout";
 					TDLpinsLine[i][2] = TDLoenPins[j];
 
-					//System.out.println("+TDLoenPins[j] "+j+":"+TDLoenPins[j]);
+					// System.out.println("+TDLoenPins[j] "+j+":"+TDLoenPins[j]);
 
 				}
 
@@ -159,7 +158,9 @@ public class TDLpinsOENmatch {
 					}
 
 					if (name > 1 && TDLpinsLinebuffer[i].contains("OEN") == false
-							&& TDLpinsLinebuffer[i].contains("oen") == false) {
+							&& TDLpinsLinebuffer[i].contains("oen") == false
+							&& TDLpinsLinebuffer[i].contains("DIR") == false
+							&& TDLpinsLinebuffer[i].contains("dir") == false) {
 
 						TDLpinsLine[i][1] = "inout";
 						TDLpinsLine[i][2] = TDLoenPins[j];

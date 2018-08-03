@@ -231,12 +231,14 @@ public class VGpgmBin2ExelFomat extends JDialog {
 		
 		String[] RVGsoftbin = new String[sortingcnt+1];
 		String[] RVGhardbin = new String[sortingcnt+1];
+		String[] RVGSPCbinNO = new String[sortingcnt+1];
 		String[] RVGbinName = new String[sortingcnt+1];
 		String[] RVGGoodBadFlag = new String[sortingcnt+1];
 		String[] RLotYld = new String[sortingcnt+1];
 		String[] RWFYld = new String[sortingcnt+1];
 		String[] RYldChgDesc = new String[sortingcnt+1];
 		String[] RDownFlag = new String[sortingcnt+1];
+		String[] RVGAlarmLimit = new String[sortingcnt+1];
 		
 		int x = 0;
 		
@@ -252,6 +254,8 @@ public class VGpgmBin2ExelFomat extends JDialog {
 					RVGsoftbin[x] = VGsoftbin[i];
 
 					RVGhardbin[x] = VGhardbin[i];
+					
+					RVGSPCbinNO[x] = " ";
 
 					RVGbinName[x] = VGbinName[i]; // MES loading error fixed ' added
 
@@ -264,6 +268,10 @@ public class VGpgmBin2ExelFomat extends JDialog {
 					RYldChgDesc[x] = YldChgDesc[i];
 	
 					RDownFlag[x] = DownFlag[i];
+					
+					RVGAlarmLimit[x] = " ";
+					
+					
 					
 					//System.out.println("RVGsoftbin[x]"+x+":"+RVGsoftbin[x]);
 					
@@ -278,12 +286,14 @@ public class VGpgmBin2ExelFomat extends JDialog {
 		
 		RVGsoftbin[RVGsoftbin.length-1] = "99";
 		RVGhardbin[RVGsoftbin.length-1] = "6";
+		RVGSPCbinNO[RVGsoftbin.length-1] = " ";
 		RVGbinName[RVGsoftbin.length-1] = "UNTESTED";
 		RVGGoodBadFlag[RVGsoftbin.length-1] = "bad";
 		RLotYld[RVGsoftbin.length-1] = "0";
 		RWFYld[RVGsoftbin.length-1] = "0";
 		RYldChgDesc[RVGsoftbin.length-1] = "initial";
 		RDownFlag[RVGsoftbin.length-1] = " ";
+		RVGAlarmLimit[RVGsoftbin.length-1] = " ";
 
 		for (int i = 0; i < RVGsoftbin.length; i++) {
 
@@ -481,35 +491,39 @@ public class VGpgmBin2ExelFomat extends JDialog {
 		sheet.addCell(label);
 		label = new Label(1, 0, "HBin No",cellformat2);
 		sheet.addCell(label);
-		label = new Label(2, 0, "Bin Name",cellformat2);
+		label = new Label(2, 0, "SPC Bin No",cellformat2);
+		sheet.addCell(label);		
+		label = new Label(3, 0, "Bin Name",cellformat2);
 		sheet.addCell(label);
-		label = new Label(3, 0, "Good Flag",cellformat2);
+		label = new Label(4, 0, "Good Flag",cellformat2);
 		sheet.addCell(label);
-		label = new Label(4, 0, "Lot Yield",cellformat2);
+		label = new Label(5, 0, "Lot Yield",cellformat2);
 		sheet.addCell(label);
-		label = new Label(5, 0, "WF Yield",cellformat2);
+		label = new Label(6, 0, "WF Yield",cellformat2);
 		sheet.addCell(label);
-		label = new Label(6, 0, "Yld Chg Desc",cellformat2);
+		label = new Label(7, 0, "Yld Chg Desc",cellformat2);
 		sheet.addCell(label);
-		label = new Label(7, 0, "Down Flag",cellformat2);
+		label = new Label(8, 0, "Down Flag",cellformat2);
 		sheet.addCell(label);
-		label = new Label(10, 0, "HBinNo",cellformat2);
+		label = new Label(9, 0, "Alarm Limit(ITEK)",cellformat2);
 		sheet.addCell(label);
-		label = new Label(11, 0, "HBin Name",cellformat2);
+		label = new Label(11, 0, "HBinNo",cellformat2);
 		sheet.addCell(label);
-		label = new Label(12, 0, "Good Flag",cellformat2);
+		label = new Label(12, 0, "HBin Name",cellformat2);
 		sheet.addCell(label);
-		label = new Label(13, 0, "Lot Yield",cellformat2);
+		label = new Label(13, 0, "Good Flag",cellformat2);
 		sheet.addCell(label);
-		label = new Label(14, 0, "WF Yield",cellformat2);
+		label = new Label(14, 0, "Lot Yield",cellformat2);
 		sheet.addCell(label);
-		label = new Label(15, 0, "Yld Chg Desc",cellformat2);
+		label = new Label(15, 0, "WF Yield",cellformat2);
 		sheet.addCell(label);
-		label = new Label(16, 0, "Down Flag",cellformat2);
+		label = new Label(16, 0, "Yld Chg Desc",cellformat2);
 		sheet.addCell(label);
-		label = new Label(17, 0, "No Retest(All)",cellformat2);
+		label = new Label(17, 0, "Down Flag",cellformat2);
 		sheet.addCell(label);
-		label = new Label(18, 0, "No Retest Nth",cellformat2);
+		label = new Label(18, 0, "No Retest(All)",cellformat2);
+		sheet.addCell(label);
+		label = new Label(19, 0, "No Retest Nth",cellformat2);
 		sheet.addCell(label);
 	
 		RVGGoodBadFlag[0] =""; //MES is not accepted Y character. so temporary disabled
@@ -532,32 +546,42 @@ public class VGpgmBin2ExelFomat extends JDialog {
 
 				} else if (j == 2) {
 
-					label = new Label(j, i+1, RVGbinName[i],cellformat1);
+					label = new Label(j, i+1, RVGSPCbinNO[i],cellformat1);
 					sheet.addCell(label);
 
 				} else if (j == 3) {
+
+					label = new Label(j, i+1, RVGbinName[i],cellformat1);
+					sheet.addCell(label);
+
+				} else if (j == 4) {
 					
 					label = new Label(j, i+1, RVGGoodBadFlag[i],cellformat1);
 					sheet.addCell(label);
 
-				} else if (j == 4) {
+				} else if (j == 5) {
 
 					label = new Label(j, i+1, RLotYld[i],cellformat1);
 					sheet.addCell(label);
 
-				} else if (j == 5) {
+				} else if (j == 6) {
 
 					label = new Label(j, i+1, RWFYld[i],cellformat1);
 					sheet.addCell(label);
 
-				} else if (j == 6) {
+				} else if (j == 7) {
 
 					label = new Label(j, i+1, RYldChgDesc[i],cellformat1);
 					sheet.addCell(label);
 
-				} else if (j == 7) {
+				} else if (j == 8) {
 
 					label = new Label(j, i+1, RDownFlag[i],cellformat1);
+					sheet.addCell(label);
+
+				} else if (j == 9) {
+
+					label = new Label(j, i+1, RVGSPCbinNO[i],cellformat1);
 					sheet.addCell(label);
 
 				}
@@ -565,51 +589,51 @@ public class VGpgmBin2ExelFomat extends JDialog {
 		}
 
 		
-		for (int j = 10; j < 19; j++) {
+		for (int j = 11; j < 20; j++) {
 			for (int i = 0; i < RHBinNo.length; i++) {
 				// Label 방식으로 생성하여 Add 하여야 한다.
 				
-				if (j == 10) {
+				if (j == 11) {
 
 					label = new Label(j, i+1, RHBinNo[i],cellformat1);
 					sheet.addCell(label);
 
-				} else if (j == 11) {
+				} else if (j == 12) {
 
 					label = new Label(j, i+1, RHBinName[i],cellformat1);
 					sheet.addCell(label);
 
-				} else if (j == 12) {
+				} else if (j == 13) {
 
 					label = new Label(j, i+1, RGoodFlag[i],cellformat1);
 					sheet.addCell(label);
 
-				} else if (j == 13) {
+				} else if (j == 14) {
 
 					label = new Label(j, i+1, RLotYieldSum[i],cellformat1);
 					sheet.addCell(label);
 
-				} else if (j == 14) {
+				} else if (j == 15) {
 
 					label = new Label(j, i+1, RWFYieldSum[i],cellformat1);
 					sheet.addCell(label);
 
-				} else if (j == 15) {
+				} else if (j == 16) {
 
 					label = new Label(j, i+1, RYldChgDescSum[i],cellformat1);
 					sheet.addCell(label);
 
-				} else if (j == 16) {
+				} else if (j == 17) {
 
 					label = new Label(j, i+1, RDownFlagSum[i],cellformat1);
 					sheet.addCell(label);
 
-				} else if (j == 17) {
+				} else if (j == 18) {
 
 					label = new Label(j, i+1, RNoRetestAll[i],cellformat1);
 					sheet.addCell(label);
 
-				} else if (j == 18) {
+				} else if (j == 19) {
 
 					label = new Label(j, i+1, RNoRetestNth[i],cellformat1);
 					sheet.addCell(label);

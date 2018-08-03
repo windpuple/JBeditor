@@ -34,7 +34,7 @@ public class TDLderiveQuartet extends JDialog {
 
 			for (int i = 4; i < backline.length; i++) {
 
-				if (backline[i].contains("OEN") || backline[i].contains("oen")) {
+				if (backline[i].contains("OEN") || backline[i].contains("oen") || backline[i].contains("DIR") || backline[i].contains("dir") ) {
 
 					// do nothing
 
@@ -51,7 +51,7 @@ public class TDLderiveQuartet extends JDialog {
 
 			for (int i = 4; i < backline.length; i++) {
 
-				if (backline[i].contains("OEN") || backline[i].contains("oen")) {
+				if (backline[i].contains("OEN") || backline[i].contains("oen") || backline[i].contains("DIR") || backline[i].contains("dir") ) {
 
 					// do nothing
 
@@ -82,6 +82,10 @@ public class TDLderiveQuartet extends JDialog {
 
 				String sub1 = bodyline[i][0].replace("\"", "'");
 				String sub2 = bodyline[i][0].replace("\"", "'");
+				sub2 = sub2.replace("PB_", "");
+				sub2 = sub2.replace("MAIN_ASIC0.", "");
+				sub2 = sub2.replace("EN781.", "");
+				sub2 = sub2.replace("MAIN_ASIC.", "");
 				sub2 = sub2.replaceAll("[^\\uAC00-\\uD7A3xfe0-9a-zA-Z\\\\s]", "");
 				sub2 = sub2.replaceAll("[a-z]", "");
 
