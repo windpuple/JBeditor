@@ -37,7 +37,8 @@ public class JBeditormain extends JFrame implements ActionListener {
 
 	JMenuItem mnuNew, mnuSave, mnuOpen, mnuExportExel, mnuDBE, mnuMAP, mnuExit;
 	JMenuItem mnuCopy, mnuPaste, mnuCut, mnuDel, mnuSbinedit, mnurotation, mnuTdlOenMatch, mnuTdlderive, mnuVGpgmBin2Exel, mnuEagleMakeGrp, mnuBack2Histogram;
-	JMenuItem mnulinear, mnusine, mnuRamp, mnutbl2swav, mnuMultiServer, mnuMultiClient, mnuRemoteDesktopServer, mnuRemoteDesktopviewer, mnuTelnet;
+	JMenuItem mnulinear, mnusine, mnuRamp, mnutbl2swav, mnuMultiServer, mnuMultiClient, mnuRemoteDesktopServer, mnuRemoteDesktopviewer, mnuTelnet, mnutxt2csv;
+	JMenuItem mnuI2CW, mnuI2CR;
 	JMenuItem mnuAbout, mnuEtc1, mnuEtc2;
 
 	// 팝업 메뉴
@@ -141,15 +142,21 @@ public class JBeditormain extends JFrame implements ActionListener {
 		mnulinear = new JMenuItem("Linear");
 		mnuRamp = new JMenuItem("Ramp");
 		mnusine = new JMenuItem("Sine");
+		mnuI2CW = new JMenuItem("I2C_Write(IFlex)");
+		mnuI2CR = new JMenuItem("I2C_Read(IFlex)");
 
 		mnuGeneration.add(mnulinear);
 		mnuGeneration.add(mnuRamp);
 		mnuGeneration.add(mnusine);
+		mnuGeneration.add(mnuI2CW);
+		mnuGeneration.add(mnuI2CR);
 
 		JMenu mnuconversion = new JMenu("Conversion");
 		mnutbl2swav = new JMenuItem("tbl2swav");
+		mnutxt2csv = new JMenuItem("txt2csv(IFLEX)");
 
 		mnuconversion.add(mnutbl2swav);
+		mnuconversion.add(mnutxt2csv);
 		
 		JMenu mnuNetwork = new JMenu("Network");
 		mnuMultiServer= new JMenuItem("MultiChatServer");
@@ -207,7 +214,10 @@ public class JBeditormain extends JFrame implements ActionListener {
 		mnulinear.addActionListener(this);
 		mnuRamp.addActionListener(this);
 		mnusine.addActionListener(this);
+		mnuI2CW.addActionListener(this);
+		mnuI2CR.addActionListener(this);
 		mnutbl2swav.addActionListener(this);
+		mnutxt2csv.addActionListener(this);
 		mnuMultiServer.addActionListener(this);
 		mnuMultiClient.addActionListener(this);
 		mnuRemoteDesktopServer.addActionListener(this);
@@ -601,6 +611,46 @@ public class JBeditormain extends JFrame implements ActionListener {
 			});
 			
 		
+		}else if (e.getSource() == mnuI2CW) {
+
+			EventQueue.invokeLater(new Runnable() {
+				public synchronized void run() {
+					// this will run in swings thread
+									
+					new I2Cwindow();
+
+					txtJBeditormain.setText("");
+					txtJBeditormain.setText(I2Cwindow.TXTloadbuffer.toString());
+
+					Finalarray = "";
+					Finalarray = I2Cwindow.TXTloadbuffer.toString();
+					I2Cwindow.TXTloadbuffer.setLength(0);
+
+				
+				}
+			});
+			
+		
+		} else if (e.getSource() == mnuI2CR) {
+
+			EventQueue.invokeLater(new Runnable() {
+				public synchronized void run() {
+					// this will run in swings thread
+									
+					new I2CRwindow();
+
+					txtJBeditormain.setText("");
+					txtJBeditormain.setText(I2CRwindow.TXTloadbuffer.toString());
+
+					Finalarray = "";
+					Finalarray = I2CRwindow.TXTloadbuffer.toString();
+					I2CRwindow.TXTloadbuffer.setLength(0);
+
+				
+				}
+			});
+			
+		
 		} else if (e.getSource() == mnutbl2swav) {
 
 			EventQueue.invokeLater(new Runnable() {
@@ -611,7 +661,17 @@ public class JBeditormain extends JFrame implements ActionListener {
 						
 				}
 			});
-			
+		
+		} else if (e.getSource() == mnutxt2csv) {
+
+				EventQueue.invokeLater(new Runnable() {
+					public synchronized void run() {
+						// this will run in swings thread
+									
+						new txt2csvWindow();
+							
+					}
+				});
 			
 
 		} else if (e.getSource() == mnuMultiServer) {

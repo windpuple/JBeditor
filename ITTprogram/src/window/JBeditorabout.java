@@ -16,6 +16,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import java.awt.Toolkit;
+import javax.swing.SwingConstants;
 
 public class JBeditorabout extends JDialog implements ActionListener {
 
@@ -23,16 +24,27 @@ public class JBeditorabout extends JDialog implements ActionListener {
   super(frame);
   setIconImage(Toolkit.getDefaultToolkit().getImage(JBeditorabout.class.getResource("/javax/swing/plaf/metal/icons/sortDown.png")));
   setTitle("ITT infomation");
-  setModal(true);    // true : Modal, false : Modeless
-  
-  JLabel lbl = new JLabel("   ITT ver 11.1 made by JB.Jeon");
+  setModal(true);
   JButton btn = new JButton("확인");
+  btn.setBounds(0, 102, 205, 23);
   btn.addActionListener(this);
-  getContentPane().add("Center", lbl);    // BordLayout
-  getContentPane().add("South", btn);
+  getContentPane().setLayout(null);
+  getContentPane().add(btn);
+  
+  JLabel lblNewLabel = new JLabel("ITT Ver 15.0");
+  lblNewLabel.setBounds(12, 10, 130, 23);
+  getContentPane().add(lblNewLabel);
+  
+  JLabel lblLeadDeveloperJb = new JLabel("Lead Developer: JB. Jeon");
+  lblLeadDeveloperJb.setBounds(12, 35, 181, 23);
+  getContentPane().add(lblLeadDeveloperJb);
+  
+  JLabel lblDevelopersJhJo = new JLabel("Developers: JH. JO, Yang Qin");
+  lblDevelopersJhJo.setBounds(12, 62, 181, 23);
+  getContentPane().add(lblDevelopersJhJo);
   
   setBackground(Color.LIGHT_GRAY);
-  setBounds(350, 250, 200, 150);
+  setBounds(350, 250, 221, 164);
   setVisible(true);
  }
  
