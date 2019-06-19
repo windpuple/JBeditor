@@ -110,6 +110,9 @@ public class I2CRwindow extends JDialog implements ActionListener {
 		String[] Chip_ID_hexa = new String[4];
 		String[] Adress_hexa = new String[4];
 
+		int Chip_ID_input_length = 0;
+		int Adress_input_length = 0;
+
 
 		Chip_ID_input = ChipID_Text_Field.getText();
 		Adress_input = Address_Text_Field.getText();
@@ -117,6 +120,9 @@ public class I2CRwindow extends JDialog implements ActionListener {
 
 		Chip_ID_input = Chip_ID_input.replaceAll("0x", "");
 		Adress_input = Adress_input.replaceAll("0x", "");
+
+		Chip_ID_input_length = Chip_ID_input.length() * 4;
+		Adress_input_length = Adress_input.length() * 4;
 
 
 		if (e.getSource() == btn) {
@@ -449,7 +455,7 @@ public class I2CRwindow extends JDialog implements ActionListener {
 								}
 								
 								
-								TXTloadbuffer.append("   > TS1    " + Chip_ID_hexa[j].charAt(k) + "     1    ; //"+(7-count)+"\n");
+								TXTloadbuffer.append("   > TS1    " + Chip_ID_hexa[j].charAt(k) + "     1    ; //"+((Chip_ID_input_length-1)-count)+"\n");
 								TXTloadbuffer.append("   > TS1    " + Chip_ID_hexa[j].charAt(k) + "     0    ; \n");
 								
 								count = count + 1;
@@ -491,7 +497,7 @@ public class I2CRwindow extends JDialog implements ActionListener {
 								}
 								
 								
-								TXTloadbuffer.append("   > TS1    " + Adress_hexa[j].charAt(k) + "     1    ; //"+(15-count)+"\n");
+								TXTloadbuffer.append("   > TS1    " + Adress_hexa[j].charAt(k) + "     1    ; //"+((Adress_input_length-1)-count)+"\n");
 								TXTloadbuffer.append("   > TS1    " + Adress_hexa[j].charAt(k) + "     0    ; \n");
 								
 				
@@ -515,7 +521,7 @@ public class I2CRwindow extends JDialog implements ActionListener {
 
 
 								TXTloadbuffer.append("   > TS1    " + Adress_hexa[j].charAt(k) + "     0    ;\n");
-								TXTloadbuffer.append("   > TS1    " + Adress_hexa[j].charAt(k) + "     1    ; //"+(15-count)+"\n");
+								TXTloadbuffer.append("   > TS1    " + Adress_hexa[j].charAt(k) + "     1    ; //"+((Adress_input_length-1)-count)+"\n");
 								TXTloadbuffer.append("   > TS1    " + Adress_hexa[j].charAt(k) + "     0    ; \n");
 								
 								count = count + 1;
@@ -526,11 +532,15 @@ public class I2CRwindow extends JDialog implements ActionListener {
 				}
 			    
 				count = 0;
-			    
-			    TXTloadbuffer.append("   > TS1    X     0    ;\n");
-			    TXTloadbuffer.append("   > TS1    L     1    ; //ack\n");
-			    TXTloadbuffer.append("   > TS1    X     0    ;\n");
+	
+				if(Adress_hexa[2] != null) {
+				
+					TXTloadbuffer.append("   > TS1    X     0    ;\n");
+					TXTloadbuffer.append("   > TS1    L     1    ; //ack\n");
+					TXTloadbuffer.append("   > TS1    X     0    ;\n");
 
+				}
+				
 			    TXTloadbuffer.append("   > TS1    0     1    ;\n");
 			    TXTloadbuffer.append("   > TS1    0     1    ;\n");
 			    TXTloadbuffer.append("   > TS1    0     1    ;\n");

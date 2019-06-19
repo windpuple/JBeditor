@@ -37,7 +37,7 @@ public class JBeditormain extends JFrame implements ActionListener {
 
 	JMenuItem mnuNew, mnuSave, mnuOpen, mnuExportExel, mnuDBE, mnuMAP, mnuExit;
 	JMenuItem mnuCopy, mnuPaste, mnuCut, mnuDel, mnuSbinedit, mnurotation, mnuTdlOenMatch, mnuTdlderive, mnuVGpgmBin2Exel, mnuEagleMakeGrp, mnuBack2Histogram;
-	JMenuItem mnulinear, mnusine, mnuRamp, mnutbl2swav, mnuMultiServer, mnuMultiClient, mnuRemoteDesktopServer, mnuRemoteDesktopviewer, mnuTelnet, mnutxt2csv;
+	JMenuItem mnulinear, mnusine, mnuRamp, mnutbl2swav, mnuMultiServer, mnuMultiClient, mnuRemoteDesktopServer, mnuRemoteDesktopviewer, mnuTelnet, mnutxt2csv, mnuIFlexdataedit;
 	JMenuItem mnuI2CW, mnuI2CR;
 	JMenuItem mnuAbout, mnuEtc1, mnuEtc2;
 
@@ -118,6 +118,7 @@ public class JBeditormain extends JFrame implements ActionListener {
 		mnuTdlderive = new JMenuItem("TDLpinDerive");
 		mnuVGpgmBin2Exel = new JMenuItem("VGpgmbin2Exel");
 		mnuEagleMakeGrp = new JMenuItem("EagleMakeGrp");
+		mnuIFlexdataedit = new JMenuItem("IFlexdataedit");
 		mnuEdit.add(mnuCopy);
 		mnuEdit.add(mnuPaste);
 		mnuEdit.add(mnuCut);
@@ -132,6 +133,7 @@ public class JBeditormain extends JFrame implements ActionListener {
 		mnuEdit.add(mnuVGpgmBin2Exel);
 		mnuEdit.addSeparator();
 		mnuEdit.add(mnuEagleMakeGrp);
+		mnuEdit.add(mnuIFlexdataedit);
 
 		JMenu mnuChart = new JMenu("Chart");
 		mnuBack2Histogram = new JMenuItem("Back2Histogram");
@@ -210,6 +212,7 @@ public class JBeditormain extends JFrame implements ActionListener {
 		mnuTdlderive.addActionListener(this);
 		mnuVGpgmBin2Exel.addActionListener(this);
 		mnuEagleMakeGrp.addActionListener(this);
+		mnuIFlexdataedit.addActionListener(this);
 		mnuBack2Histogram.addActionListener(this);
 		mnulinear.addActionListener(this);
 		mnuRamp.addActionListener(this);
@@ -419,6 +422,18 @@ public class JBeditormain extends JFrame implements ActionListener {
 					Finalarray = "";
 					Finalarray = EagleMakeGrp.EagleGrpbuffer.toString();
 					EagleMakeGrp.EagleGrpbuffer.setLength(0);;				
+				
+				}
+			});
+				
+
+		} else if (e.getSource() == mnuIFlexdataedit) {
+
+			EventQueue.invokeLater(new Runnable() {
+				public synchronized void run() {
+					// this will run in swings thread
+																
+					new Iflexdatalogedit();			
 				
 				}
 			});

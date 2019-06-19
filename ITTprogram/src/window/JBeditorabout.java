@@ -31,15 +31,15 @@ public class JBeditorabout extends JDialog implements ActionListener {
   getContentPane().setLayout(null);
   getContentPane().add(btn);
   
-  JLabel lblNewLabel = new JLabel("ITT Ver 15.0");
+  JLabel lblNewLabel = new JLabel("ITT Ver 18.0");
   lblNewLabel.setBounds(12, 10, 130, 23);
   getContentPane().add(lblNewLabel);
   
-  JLabel lblLeadDeveloperJb = new JLabel("Lead Developer: JB. Jeon");
+  JLabel lblLeadDeveloperJb = new JLabel("Lead Dev: JB. Jeon");
   lblLeadDeveloperJb.setBounds(12, 35, 181, 23);
   getContentPane().add(lblLeadDeveloperJb);
   
-  JLabel lblDevelopersJhJo = new JLabel("Developers: JH. JO, Yang Qin");
+  JLabel lblDevelopersJhJo = new JLabel("Sub Devs: JH. JO, Yang Qin, JH Kang");
   lblDevelopersJhJo.setBounds(12, 62, 181, 23);
   getContentPane().add(lblDevelopersJhJo);
   

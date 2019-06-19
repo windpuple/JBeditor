@@ -538,8 +538,17 @@ public class txt2csvWindow extends JDialog implements ActionListener {
 								} else {
 									// System.out.println("IS THIS RUN I?");
 									if (i == 0) {
-										// System.out.println("IS THIS RUN J?");
-										writer.append("," + body_data[i][10]);
+										
+										if(body_data[i][10].equals("(F)")) {
+											
+											writer.append("," + body_data[i][11]);
+											
+										} else {
+											
+											// System.out.println("IS THIS RUN J?");
+											writer.append("," + body_data[i][10]);
+										}
+
 
 									} else {
 										// System.out.println("IS THIS RUN K?");
@@ -573,8 +582,17 @@ public class txt2csvWindow extends JDialog implements ActionListener {
 
 												} else {
 
-													// System.out.println("IS THIS RUN -1?");
-													writer.append("," + body_data[i][7]);
+													if(body_data[i][7].equals("(F)")) {
+														
+														writer.append("," + body_data[i][8]);
+														
+													} else {
+														
+														// System.out.println("IS THIS RUN -1?");
+														writer.append("," + body_data[i][7]);
+														
+													}
+
 
 												}
 
@@ -598,8 +616,16 @@ public class txt2csvWindow extends JDialog implements ActionListener {
 
 												} else {
 
-													// System.out.println("IS THIS RUN N/A?");
-													writer.append("," + body_data[i][9]);
+													if(body_data[i][9].equals("(F)")) {
+														
+														writer.append("," + body_data[i][10]);
+														
+													} else {
+														
+														// System.out.println("IS THIS RUN N/A?");
+														writer.append("," + body_data[i][9]);
+													}
+
 
 												}
 
@@ -623,8 +649,18 @@ public class txt2csvWindow extends JDialog implements ActionListener {
 
 												} else {
 
-													// System.out.println("IS THIS RUN B?");
-													writer.append("," + body_data[i][10]);
+													if(body_data[i][10].equals("(F)")) {
+														
+														writer.append("," + body_data[i][11]);
+														
+													} else {
+														
+														// System.out.println("IS THIS RUN B?");
+														writer.append("," + body_data[i][10]);
+														
+													}
+													
+
 
 												}
 
@@ -654,8 +690,16 @@ public class txt2csvWindow extends JDialog implements ActionListener {
 
 											} else {
 
-												// System.out.println("IS THIS RUN -1?");
-												writer.append("," + body_data[i][7]);
+												if(body_data[i][7].equals("(F)")) {
+													
+													writer.append("," + body_data[i][8]);
+													
+												} else {
+													
+													// System.out.println("IS THIS RUN -1?");
+													writer.append("," + body_data[i][7]);
+													
+												}
 
 											}
 
@@ -679,9 +723,17 @@ public class txt2csvWindow extends JDialog implements ActionListener {
 
 											} else {
 
-												// System.out.println("IS THIS RUN N/A?");
-												writer.append("," + body_data[i][9]);
-
+												if(body_data[i][9].equals("(F)")) {
+													
+													writer.append("," + body_data[i][10]);
+													
+												} else {
+												
+													// System.out.println("IS THIS RUN N/A?");
+													writer.append("," + body_data[i][9]);
+													
+												}
+												
 											}
 
 										} else {
@@ -704,9 +756,16 @@ public class txt2csvWindow extends JDialog implements ActionListener {
 
 											} else {
 
-												// System.out.println("IS THIS RUN N?");
-												writer.append("," + body_data[i][10]);
-
+												if(body_data[i][10].equals("(F)")) {
+													
+													writer.append("," + body_data[i][11]);
+													
+												} else {
+												
+													// System.out.println("IS THIS RUN N?");
+													writer.append("," + body_data[i][10]);
+												}
+												
 											}
 
 										}
@@ -1344,22 +1403,31 @@ public class txt2csvWindow extends JDialog implements ActionListener {
 
 											if (body_data[x][4].equals("-1")) {
 
-												// System.out.println("IS THIS RUN C6?");
-												writer.append("," + body_data[x][6]);
-
+												if(body_data[x][6].equals("m") || body_data[x][6].equals("mA") || body_data[x][6].equals("mV") || body_data[x][6].equals("V") || body_data[x][6].equals("A") || body_data[x][6].equals("uA") || body_data[x][6].equals("uV") || body_data[x][6].equals("nA") || body_data[x][6].equals("nV")) {
+													
+													writer.append("," + body_data[x][7]);
+													
+												} else {
+												
+													// System.out.println("IS THIS RUN C6?");
+													writer.append("," + body_data[x][6]);
+													
+												}
+												
 											} else if (body_data[x][6].equals("N/A")) {
 
-												if (body_data[x][9].equals("(A)") || body_data[x][9].equals("(F)")) {
+												//if (body_data[x][9].equals("(A)") || body_data[x][9].equals("(F)")) {
 
 													// System.out.println("IS THIS RUN C6");
+													//writer.append("," + body_data[x][7]);
 													// do nothing
 
-												} else {
+												//} else {
 
 													// System.out.println("IS THIS RUN C7?");
-													writer.append("," + body_data[x][9]);
+													writer.append("," + body_data[x][7]);
 
-												}
+												//}
 
 											} else {
 
@@ -1501,8 +1569,8 @@ public class txt2csvWindow extends JDialog implements ActionListener {
 								} else {
 									// System.out.println("IS THIS RUN I?");
 
-									 System.out.println("body_data[i][0]:"+i+":"+body_data[i][0]);
-									 System.out.println("body_data[i][3]:"+i+":"+body_data[i][3]);
+									 //System.out.println("body_data[i][0]:"+i+":"+body_data[i][0]);
+									 //System.out.println("body_data[i][3]:"+i+":"+body_data[i][3]);
 
 									if (body_data[i][0].equals("BARCODE") && !body_data[i][3].equals("0")) {
 										 //System.out.println("IS THIS RUN J?");
@@ -1692,22 +1760,32 @@ public class txt2csvWindow extends JDialog implements ActionListener {
 
 											if (body_data[x][4].equals("-1")) {
 
-												// System.out.println("IS THIS RUN SC6?");
-												writer.append("," + body_data[x][6]);
+												if(body_data[x][6].equals("m") || body_data[x][6].equals("mA") || body_data[x][6].equals("mV") || body_data[x][6].equals("V") || body_data[x][6].equals("A") || body_data[x][6].equals("uA") || body_data[x][6].equals("uV") || body_data[x][6].equals("nA") || body_data[x][6].equals("nV")) {
+													
+													writer.append("," + body_data[x][7]);
+													
+												} else {
+												
+													// System.out.println("IS THIS RUN C6?");
+													writer.append("," + body_data[x][6]);
+													
+												}
+												
 
 											} else if (body_data[x][6].equals("N/A")) {
 
-												if (body_data[x][9].equals("(A)") || body_data[x][9].equals("(F)")) {
+												//if (body_data[x][9].equals("(A)") || body_data[x][9].equals("(F)")) {
 
 													// System.out.println("IS THIS RUN SC6");
+													//writer.append("," + body_data[x][7]);
 													// do nothing
 
-												} else {
+												//} else {
 
 													// System.out.println("IS THIS RUN SC7?");
-													writer.append("," + body_data[x][9]);
+													writer.append("," + body_data[x][7]);
 
-												}
+												//}
 
 											} else {
 
