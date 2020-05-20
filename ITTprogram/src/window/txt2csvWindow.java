@@ -15,10 +15,12 @@ import java.io.InputStreamReader;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 
@@ -41,19 +43,30 @@ public class txt2csvWindow extends JDialog implements ActionListener {
 
 	static int p = 0;
 
-	static String dTXTfName;
-	static String dTXTfdirectory;
-	static String dTXTffile;
-	static String dTXTSavefName;
+	static String[] dTXTfName = new String[256];
+	static String[] dTXTfdirectory = new String[256];
+	static String[] dTXTffile = new String[256];
+	static String[] dTXTSavefName = new String[256];
+	static String[][] dTXTSavefName_split = new String[256][];
 	static String swavheader;
+
+	File[] select_multi_files;
 
 	public txt2csvWindow() {
 
-		dTXTfName = "";
-		dTXTfdirectory = "";
-		dTXTffile = "";
+		int jb;
+
+		for (jb = 0; jb < 256; jb++) {
+
+			dTXTfName[jb] = "";
+			dTXTfdirectory[jb] = "";
+			dTXTffile[jb] = "";
+			dTXTSavefName[jb] = "";
+
+		}
+
 		swavheader = "";
-		dTXTSavefName = "";
+
 		TXTloadbuffer.setLength(0);
 
 		setTitle("txt to csv converter");
@@ -94,32 +107,63 @@ public class txt2csvWindow extends JDialog implements ActionListener {
 
 		if (e.getSource() == TXTload) {
 
-			dTXTfName = "";
-			dTXTfdirectory = "";
-			dTXTffile = "";
+			int jb;
+
+			for (jb = 0; jb < 256; jb++) {
+
+				dTXTfName[jb] = "";
+				dTXTfdirectory[jb] = "";
+				dTXTffile[jb] = "";
+				dTXTSavefName[jb] = "";
+
+			}
 
 			try {
+
+				// System.out.println("multi select is this work?");
 				FileDialog dialog = new FileDialog(this, "open", FileDialog.LOAD);
+
 				dialog.setDirectory(".");
+				dialog.setMultipleMode(true);
 				dialog.setVisible(true);
-				if (dialog.getFile() == null)
-					return;
 
-				dTXTfdirectory = dialog.getDirectory();
-				dTXTffile = dialog.getFile();
-				dTXTfName = dialog.getDirectory() + dialog.getFile();
+				// if (dialog.getFile() == null)
+				// return;
 
-				if (dTXTfName.isEmpty()) {
+				String directory = dialog.getDirectory();
+				// println("multifile is",dialog.isMultipleMode());
+				// System.out.println("multifile is "+dialog.isMultipleMode());
+				select_multi_files = dialog.getFiles();
 
-					noticeTXT.setText("");
-					noticeTXT.setText("        not loaded TXT File");
+				if (select_multi_files != null && select_multi_files.length > 0) {
 
-				} else {
+					int i;
 
-					noticeTXT.setText("");
-					noticeTXT.setText("            loaded TXT File");
+					for (i = 0; i < select_multi_files.length; i++) {
 
+						// System.out.println(select_multi_files[i]);
+
+						dTXTfdirectory[i] = directory;
+						dTXTffile[i] = select_multi_files[i].getName();
+						dTXTfName[i] = dTXTfdirectory[i] + dTXTffile[i];
+
+
+						if (dTXTfName[i].isEmpty()) {
+
+							noticeTXT.setText("");
+							noticeTXT.setText("        not loaded TXT File");
+
+						} else {
+
+							noticeTXT.setText("");
+							noticeTXT.setText("            loaded TXT File");
+
+						}
+
+					}
 				}
+
+
 
 			} catch (Exception e2) {
 
@@ -137,436 +181,371 @@ public class txt2csvWindow extends JDialog implements ActionListener {
 
 		} else if (e.getSource() == btn) {
 
-			dTXTSavefName = "";
-			swavheader = "";
-			TXTloadbuffer.setLength(0);
+			int j;
 
-			int cnt = 0;
+			for (j = 0; j < select_multi_files.length; j++) {
 
-			if (dTXTfName.isEmpty()) {
+				dTXTSavefName[j] = "";
+				swavheader = "";
+				TXTloadbuffer.setLength(0);
 
-				fileEmpty.setText("");
-				fileEmpty.setText("   TXT file이 없습니다.");
+				int cnt = 0;
 
-			} else {
+				if (dTXTfName[j].isEmpty()) {
 
-				fileEmpty.setText("");
-				fileEmpty.setText("   processing..............");
+					fileEmpty.setText("");
+					fileEmpty.setText("   TXT file is empty.");
 
-				FileDialog dialog = new FileDialog(this, "Save", FileDialog.SAVE);
-				dialog.setDirectory(".");
-				dialog.setVisible(true);
-				if (dialog.getFile() == null)
-					return;
-				dTXTSavefName = dialog.getDirectory() + dialog.getFile();
+				} else {
 
-				setTitle(dialog.getFile() + " - TXT save..");
+					fileEmpty.setText("");
+					fileEmpty.setText("   processing..............");
 
-				try {
-					FileInputStream ftstream = new FileInputStream(dTXTfName);
-					BufferedReader reader = new BufferedReader(new InputStreamReader(ftstream));
+//					FileDialog dialog = new FileDialog(this, "Save", FileDialog.SAVE);
+//					dialog.setDirectory(".");
+//					dialog.setVisible(true);
+//					if (dialog.getFile() == null)
+//						return;
 
-					// BufferedReader reader = new BufferedReader(new FileReader(dfName));
-					// FileReader reader = new FileReader(dTXTfName);
+					//System.out.println(dTXTfdirectory[j] + dTXTffile[j]);
+					dTXTSavefName[j] = dTXTfdirectory[j] + dTXTffile[j];
 
-					String line;
-					String line_sub_replace;
+					setTitle(dTXTffile[j] + " - TXT save..");
 
-					int rows = 0;
+					try {
+						FileInputStream ftstream = new FileInputStream(dTXTfName[j]);
+						BufferedReader reader = new BufferedReader(new InputStreamReader(ftstream));
 
-					int head_flag = 0;
-					int loopcount = 1;
-					int linesplit_count = 0;
-					int head_end_count = 0;
-					int body_end_count = 0;
-					int ex_body_end_count = 0;
-					int body_loop_count = 0;
-					int mainbody_end_count = 0;
-					int engage_main_body = 0;
-					int bin_engage = 0;
-					int ignore_item = 0;
-					int bining_end_count = 0;
-					int line_done = 0;
-					int block_end = 0;
-					int data_align = 0;
-					int first_data_en = 0;
+						// BufferedReader reader = new BufferedReader(new FileReader(dfName));
+						// FileReader reader = new FileReader(dTXTfName);
 
-					String hadler_id;
-					String ATE_id;
-					String date_data;
-					String Lot_id;
+						String line;
+						String line_sub_replace;
 
-					Lot_id = "";
-					date_data = "";
-					hadler_id = "";
-					ATE_id = "";
+						int rows = 0;
 
-					int isite = 0;
-					int[] site_counter = new int[64];
+						int head_flag = 0;
+						int loopcount = 1;
+						int linesplit_count = 0;
+						int head_end_count = 0;
+						int body_end_count = 0;
+						int ex_body_end_count = 0;
+						int body_loop_count = 0;
+						int mainbody_end_count = 0;
+						int engage_main_body = 0;
+						int bin_engage = 0;
+						int ignore_item = 0;
+						int bining_end_count = 0;
+						int line_done = 0;
+						int block_end = 0;
+						int data_align = 0;
+						int first_data_en = 0;
 
-					for (int i = 0; i < site_counter.length; i++) {
+						String hadler_id;
+						String ATE_id;
+						String date_data;
+						String Lot_id;
 
-						site_counter[i] = 999;
+						Lot_id = "";
+						date_data = "";
+						hadler_id = "";
+						ATE_id = "";
 
-					}
+						int isite = 0;
+						int[] site_counter = new int[32];
+						String[] SITE32_array = new String[32];
+						int[] first_head_information = new int[32];
 
-					int bin_isite = 0;
-					String[] site_Hbin_counter = new String[64];
-
-					for (int i = 0; i < site_Hbin_counter.length; i++) {
-
-						site_Hbin_counter[i] = null;
-
-					}
-
-					String[] site_Sbin_counter = new String[64];
-
-					for (int i = 0; i < site_Sbin_counter.length; i++) {
-
-						site_Sbin_counter[i] = null;
-
-					}
-
-					String[] site_PF_counter = new String[64];
-
-					for (int i = 0; i < site_PF_counter.length; i++) {
-
-						site_PF_counter[i] = null;
-
-					}
-
-					long diff = 0;
-					long sec = 0;
-
-					SimpleDateFormat f = new SimpleDateFormat("HH:mm:ss");
-					Date d1 = null;
-					Date d2 = null;
-
-					Date[] time = null;
-					time = new Date[172032];
-
-					String[][] head_data = null;
-					head_data = new String[100][1024];
-
-					String[][] body_data = null;
-					body_data = new String[172032][1024];
-
-					String[][] main_body_data = null;
-					main_body_data = new String[172032][1024];
-
-					int time_count = 0;
-
-					BufferedWriter writer = new BufferedWriter(new FileWriter(dTXTSavefName + ".csv"));
-
-					while ((line = reader.readLine()) != null) {
-
-						// System.out.println("rows:"+rows);
-
-						line_sub_replace = line;
-
-						if (line_sub_replace.contains("BARCODE")) {
-
-							head_flag = 1;
-
-							if (head_end_count == 0) {
-								head_end_count = rows;
-							}
-
-						}
-
-						// System.out.println("WHERE ERROR 1?");
-
-						if (line_sub_replace.contains("Date:") && line_sub_replace.contains("Time:")) {
-
-							// System.out.println("line_done_activate");
-							line_done = 1;
-							engage_main_body = engage_main_body + 1;
-							data_align = 1;
-							ex_body_end_count = body_end_count;
-							body_loop_count = rows - ex_body_end_count;
-							body_end_count = rows;
+						for(int i = 0; i < SITE32_array.length; i++) {
 							
-							//System.out.println("body_end_count,rows:" + body_end_count + ":" + rows);
+							SITE32_array[i] = String.valueOf(i);
+							
+						}
+						
+						for (int i = 0; i < site_counter.length; i++) {
+
+							site_counter[i] = 999;
+							first_head_information[i] = 0;
 						}
 
-						// System.out.println("WHERE ERROR 2?");
+						int bin_isite = 0;
+						String[] site_Hbin_counter = new String[64];
 
-						for (int i = 0; i < line.length(); i++) {
+						for (int i = 0; i < site_Hbin_counter.length; i++) {
 
-							if (line_sub_replace.contains("  ")) {
+							site_Hbin_counter[i] = null;
 
-								line_sub_replace = line_sub_replace.replace("  ", " ");
-								// System.out.println("line_sub_replace_process:"+i+":"+line_sub_replace);
+						}
 
-							} else {
+						String[] site_Sbin_counter = new String[64];
 
-								// System.out.println("line_sub_replace_final:"+i+":"+line_sub_replace);
+						for (int i = 0; i < site_Sbin_counter.length; i++) {
 
-								break;
+							site_Sbin_counter[i] = null;
+
+						}
+
+						String[] site_PF_counter = new String[64];
+
+						for (int i = 0; i < site_PF_counter.length; i++) {
+
+							site_PF_counter[i] = null;
+
+						}
+
+						long diff = 0;
+						long sec = 0;
+
+						SimpleDateFormat f = new SimpleDateFormat("HH:mm:ss");
+						Date d1 = null;
+						Date d2 = null;
+
+						Date[] time = null;
+						time = new Date[172032];
+
+						String[][] head_data = null;
+						head_data = new String[100][1024];
+
+						String[][] body_data = null;
+						body_data = new String[172032][1024];
+
+						String[][] main_body_data = null;
+						main_body_data = new String[172032][1024];
+
+						int time_count = 0;
+
+						BufferedWriter writer = new BufferedWriter(new FileWriter(dTXTSavefName[j] + ".csv"));
+
+						while ((line = reader.readLine()) != null) {
+
+							// System.out.println("rows:"+rows);
+
+							line_sub_replace = line;
+
+							if (line_sub_replace.contains("Device#")) {
+								head_flag = 1;
+
+								if (head_end_count == 0) {
+									head_end_count = rows;
+								}
 
 							}
 
-						}
 
-						// System.out.println("WHERE ERROR 3?");
+							if (line_sub_replace.contains("Date:") && line_sub_replace.contains("Time:")) {
 
-						for (int i = 0; i < line_sub_replace.length(); i++) {
-							if (line_sub_replace.charAt(i) == ' ' || line_sub_replace.charAt(i) == ',')
+								// System.out.println("line_done_activate");
+								line_done = 1;
+								engage_main_body = engage_main_body + 1;
+								data_align = 1;
+								ex_body_end_count = body_end_count;
+								body_loop_count = rows - ex_body_end_count;
+								body_end_count = rows;
 
-								linesplit_count = linesplit_count + 1;
+								// System.out.println("body_end_count,rows:" + body_end_count + ":" + rows);
+							}
 
-						}
 
-						String[] linesplit = new String[linesplit_count];
+							for (int i = 0; i < line.length(); i++) {
 
-						linesplit = line_sub_replace.split("\\s|,");
+								if (line_sub_replace.contains("  ")) {
 
-						 //System.out.println("body_end_count,rows:"+body_end_count+":"+rows);
-						 //System.out.println("engage_main_body:"+engage_main_body);
-						 //System.out.println("line_done:"+line_done);
-
-							//if(engage_main_body == 2) {
-								
-							//	System.out.println("engage_main_body?"+engage_main_body+" row:"+rows);
-								
-							//}
-						 
-							//if(engage_main_body == 3) {
-								
-							//	System.out.println("engage_main_body?"+engage_main_body+" row:"+rows);
-								
-							//}
-						 
-						for (int y = 0; y < linesplit.length; y++) {
-
-							// System.out.println("line_spilit?");
-							 //System.out.println("linsplit:" + y + ":" + linesplit[y]);
-
-							if (head_flag == 0) {
-
-								// System.out.println("IS THIS RUN A?");
-								head_data[rows][y] = linesplit[y];
-								// System.out.println("head_data[rows][y]:" + rows + ":" + y + ":" +
-								// head_data[rows][y]);
-
-							} else {
-
-								if (engage_main_body >= 1) {
-
-									if (first_data_en == 0) {
-
-										//System.out.println("final enagage?");
-										body_data[rows - head_end_count][y] = linesplit[y];
-										//System.out.println("rows - head_end_count:" + (rows - (head_end_count)));
-										//System.out
-										//		.println("body_data[rows-head_end_count][y]:" + (rows - head_end_count)
-										//				+ ":" + y + ":" + body_data[rows - head_end_count][y]);
-
-										
-
-									} else {
-
-										//System.out.println("main_enagage?");
-										//System.out.println("data_align?"+data_align);
-										
-										//if(data_align == 1) {
-											
-										//	System.out.println("data_align?"+data_align);
-										//	System.out.println("engage_main_body?"+engage_main_body);
-										//	System.out.println("line_done?"+line_done);
-										//	System.out.println("rows?"+rows);
-										//	System.out.println("body_end_count?"+body_end_count);
-										//	System.out.println("ex_body_end_count?"+ex_body_end_count);
-										//}
-										
-										if (data_align == 1) {
-
-											//System.out
-											//		.println("rows - ex_body_end_count:" + (rows - ex_body_end_count));
-											//System.out.println("body_data[rows - ex_body_end_count][y]:"
-											//		+ (rows - ex_body_end_count) + ":" + y + ":"
-											//		+ body_data[rows - (ex_body_end_count)][y]);
-											body_data[rows - ex_body_end_count][y] = linesplit[y];
-											//System.out.println("body_data[rows - ex_body_end_count][y]:"
-											//		+ (rows - ex_body_end_count) + ":" + y + ":"
-											//		+ body_data[rows - ex_body_end_count][y]);
-
-											
-
-										} else {
-
-											//System.out.println("rows - body_end_count:" + (rows - (body_end_count)));
-											//System.out.println(
-											//		"body_data[rows - body_end_count][y]:" + (rows - (body_end_count))
-											//				+ ":" + y + ":" + body_data[rows - (body_end_count)][y]);
-
-											body_data[rows - body_end_count][y] = linesplit[y];
-											//System.out.println(
-											//		"body_data[rows - body_end_count][y]:" + (rows - (body_end_count))
-											//				+ ":" + y + ":" + body_data[rows - (body_end_count)][y]);
-
-										}
-
-									}
+									line_sub_replace = line_sub_replace.replace("  ", " ");
+									// System.out.println("line_sub_replace_process:"+i+":"+line_sub_replace);
 
 								} else {
 
-									//System.out.println("enagage?");
-									body_data[rows - head_end_count][y] = linesplit[y];
-									//System.out.println("rows - head_end_count:" + (rows - (head_end_count)));
-									//System.out.println("body_data[rows-head_end_count][y]:" + (rows - head_end_count)
-									//		+ ":" + y + ":" + body_data[rows - head_end_count][y]);
+									// System.out.println("line_sub_replace_final:"+i+":"+line_sub_replace);
+
+									break;
 
 								}
 
 							}
 
-				
-							
-						}
 
+							for (int i = 0; i < line_sub_replace.length(); i++) {
+								if (line_sub_replace.charAt(i) == ' ' || line_sub_replace.charAt(i) == ',')
 
-						// TXTloadbuffer.append(line_sub_replace);
-						// TXTloadbuffer.append('\n');
+									linesplit_count = linesplit_count + 1;
 
-						// System.out.println("IS THIS RUN START? row:"+rows);
-						
-						//if(engage_main_body == 3) {
-							
-						//	System.out.println("engage_main_body?"+engage_main_body+" row:"+rows);
-							
-						//}
+							}
 
-						if (rows != 0 && rows == head_end_count) {
+							String[] linesplit = new String[linesplit_count];
 
-							writer.append("PGM Name" + "," + head_data[2][3] + "\n");
+							linesplit = line_sub_replace.split("\\s|,");
 
-						} else if (rows != 0 && rows == body_loop_count && engage_main_body == 1 && line_done == 1) {
+							// System.out.println("body_end_count,rows:"+body_end_count+":"+rows);
+							// System.out.println("engage_main_body:"+engage_main_body);
+							// System.out.println("line_done:"+line_done);
 
-							System.out.println("first loop");
+							// if(engage_main_body == 2) {
 
-							writer.append("SerialNumber" + "," + "Test Pass/Fail Status" + "," + "HBIN" + "," + "SBIN"
-									+ "," + "Site" + "," + "TesterID" + "," + "HanderID" + "," + "StartTime" + ","
-									+ "EndTime" + "," + "TestTime" + "," + "LotNumber");
+							// System.out.println("engage_main_body?"+engage_main_body+" row:"+rows);
 
-							for (int i = 0; i < body_loop_count + 1; i++) {
-								// for(int i = 0; i < 100; i++) {
+							// }
 
-								if (body_data[i][3] == null || body_data[i][3].isEmpty()
-										|| body_data[i][0].equals("BARCODE") || body_data[i][3].equals("Test")
-										|| body_data[i][3].equals("alarm") || body_data[i][3].equals("GPIB_Echo")
-										|| body_data[i][3].equals("Barcode") || body_data[i][3].equals("[Pin")) {
-									// System.out.println("body_data[i][3]"+":"+i+":"+body_data[i][3]);
-									// do nothing
+							// if(engage_main_body == 3) {
 
-								} else if (body_data[i][3].equals("tests/Executed")) {
-									// System.out.println("body_data[i][3]"+":"+i+":"+body_data[i][3]);
-									writer.append("\n");
-									break;
+							// System.out.println("engage_main_body?"+engage_main_body+" row:"+rows);
+
+							// }
+
+							for (int y = 0; y < linesplit.length; y++) {
+
+								// System.out.println("line_spilit?");
+								// System.out.println("linsplit:" + y + ":" + linesplit[y]);
+
+								if (head_flag == 0) {
+
+									head_data[rows][y] = linesplit[y];
+									// System.out.println("head_data[rows][y]:" + rows + ":" + y + ":" +
+									// head_data[rows][y]);
 
 								} else {
-									// System.out.println("IS THIS RUN D?");
-									if (i == 0) {
-										// System.out.println("IS THIS RUN C?");
-										writer.append("," + body_data[i][3]);
 
-									} else {
-										// System.out.println("IS THIS RUN E?");
-										// System.out.println("int i:"+i);
-										// System.out.println("body_data[i][3]:"+body_data[i][3]);
-										// System.out.println("body_data[i-1][3]:"+body_data[i-1][3]);
-										if (body_data[i - 1][3] == null && !body_data[i][3].isEmpty()) {
-											// System.out.println("IS THIS RUN C?");
-											writer.append("," + body_data[i][3]);
+									if (engage_main_body >= 1) {
 
-										} else if (body_data[i][3].equals(body_data[i - 1][3])) {
-											// System.out.println("IS THIS RUN A?");
-											// Do nothing
+										if (first_data_en == 0) {
+
+											// System.out.println("final enagage?");
+											body_data[rows - head_end_count][y] = linesplit[y];
+											// System.out.println("rows - head_end_count:" + (rows - (head_end_count)));
+											// System.out
+											// .println("body_data[rows-head_end_count][y]:" + (rows - head_end_count)
+											// + ":" + y + ":" + body_data[rows - head_end_count][y]);
 
 										} else {
 
-											for (int x = 0; x < i; x++) {
+											// System.out.println("main_enagage?");
+											// System.out.println("data_align?"+data_align);
 
-												if (body_data[i][3].equals(body_data[x][3])) {
+											// if(data_align == 1) {
 
-													ignore_item = 1;
+											// System.out.println("data_align?"+data_align);
+											// System.out.println("engage_main_body?"+engage_main_body);
+											// System.out.println("line_done?"+line_done);
+											// System.out.println("rows?"+rows);
+											// System.out.println("body_end_count?"+body_end_count);
+											// System.out.println("ex_body_end_count?"+ex_body_end_count);
+											// }
 
-													break;
-												}
+											if (data_align == 1) {
 
-											}
+												// System.out
+												// .println("rows - ex_body_end_count:" + (rows - ex_body_end_count));
+												// System.out.println("body_data[rows - ex_body_end_count][y]:"
+												// + (rows - ex_body_end_count) + ":" + y + ":"
+												// + body_data[rows - (ex_body_end_count)][y]);
 
-											if (ignore_item == 1) {
+												body_data[rows - ex_body_end_count][y] = linesplit[y];
 
-												// do nothing
-												ignore_item = 0;
+												// System.out.println("body_data[rows - ex_body_end_count][y]:"
+												// + (rows - ex_body_end_count) + ":" + y + ":"
+												// + body_data[rows - ex_body_end_count][y]);
 
 											} else {
 
-												// System.out.println("IS THIS RUN B?");
-												writer.append("," + body_data[i][3]);
+												// System.out.println("rows - body_end_count:" + (rows -
+												// (body_end_count)));
+												// System.out.println(
+												// "body_data[rows - body_end_count][y]:" + (rows - (body_end_count))
+												// + ":" + y + ":" + body_data[rows - (body_end_count)][y]);
+
+												body_data[rows - body_end_count][y] = linesplit[y];
+
+												// System.out.println(
+												// "body_data[rows - body_end_count][y]:" + (rows - (body_end_count))
+												// + ":" + y + ":" + body_data[rows - (body_end_count)][y]);
 
 											}
 
 										}
 
+									} else {
+
+										// System.out.println("engage?");
+
+										body_data[rows - head_end_count][y] = linesplit[y];
+
+										// System.out.println("rows - head_end_count:" + (rows - (head_end_count)));
+										// System.out.println("body_data[rows-head_end_count][y]:" + (rows -
+										// head_end_count)
+										// + ":" + y + ":" + body_data[rows - head_end_count][y]);
+
 									}
+
 								}
 
 							}
 
-							// System.out.println("IS THIS RUN START1?");
+							// TXTloadbuffer.append(line_sub_replace);
+							// TXTloadbuffer.append('\n');
 
-							writer.append(
-									"Upper Limit ----->" + "," + "," + "," + "," + "," + "," + "," + "," + "," + ",");
+							// System.out.println("IS THIS RUN START? row:"+rows);
 
-							for (int i = 0; i < body_loop_count + 1; i++) {
-								// for(int i = 0; i < 100; i++) {
+							// if(engage_main_body == 3) {
 
-								if (body_data[i][3] == null || body_data[i][3].isEmpty()
-										|| body_data[i][0].equals("BARCODE") || body_data[i][3].equals("Test")
-										|| body_data[i][3].equals("alarm") || body_data[i][3].equals("GPIB_Echo")
-										|| body_data[i][3].equals("Barcode") || body_data[i][3].equals("[Pin")) {
-									// System.out.println("body_data[i][3]"+":"+i+":"+body_data[i][3]);
-									// do nothing
+							// System.out.println("engage_main_body?"+engage_main_body+" row:"+rows);
 
-								} else if (body_data[i][3].equals("tests/Executed")) {
-									// System.out.println("body_data[i][3]"+":"+i+":"+body_data[i][3]);
-									writer.append("\n");
-									break;
+							// }
 
-								} else {
-									// System.out.println("IS THIS RUN I?");
-									if (i == 0) {
-										
-										if(body_data[i][10].equals("(F)")) {
-											
-											writer.append("," + body_data[i][11]);
-											
-										} else {
-											
-											// System.out.println("IS THIS RUN J?");
-											writer.append("," + body_data[i][10]);
-										}
+							if (rows != 0 && rows == head_end_count) {
 
+								writer.append("PGM Name" + "," + head_data[2][3] + "\n");
+
+							} else if (rows != 0 && rows == body_loop_count && engage_main_body == 1
+									&& line_done == 1) {
+
+								//System.out.println("first loop");
+
+								writer.append("SerialNumber" + "," + "Test Pass/Fail Status" + "," + "HBIN" + ","
+										+ "SBIN" + "," + "Site" + "," + "TesterID" + "," + "HanderID" + ","
+										+ "StartTime" + "," + "EndTime" + "," + "TestTime" + "," + "LotNumber");
+
+								for (int i = 0; i < body_loop_count + 1; i++) {
+									// for(int i = 0; i < 100; i++) {
+
+									if (body_data[i][3] == null || body_data[i][3].isEmpty()
+											|| body_data[i][0].equals("BARCODE") || body_data[i][3].equals("Test")
+											|| body_data[i][3].equals("alarm") || body_data[i][3].equals("GPIB_Echo")
+											|| body_data[i][3].equals("Barcode") || body_data[i][3].equals("[Pin")) {
+										// System.out.println("body_data[i][3]"+":"+i+":"+body_data[i][3]);
+										// do nothing
+
+									} else if (body_data[i][3].equals("tests/Executed")) {
+										// System.out.println("body_data[i][3]"+":"+i+":"+body_data[i][3]);
+										writer.append("\n");
+										break;
 
 									} else {
-										// System.out.println("IS THIS RUN K?");
-										// System.out.println("int i:"+i);
-										// System.out.println("body_data[i][3]:"+body_data[i][3]);
-										// System.out.println("body_data[i-1][3]:"+body_data[i-1][3]);
-										// System.out.println("body_data[i][10]:"+body_data[i][10]);
-										// System.out.println("body_data[i-1][10]:"+body_data[i-1][10]);
-										// System.out.println("body_data[i][4]:"+body_data[i][4]);
 
-										if (body_data[i - 1][3] == null && !body_data[i][3].isEmpty()) {
-											// System.out.println("IS THIS RUN L?");
+										if (i == 0) {
 
-											if (body_data[i][4].equals("-1")) {
+											writer.append("," + body_data[i][3]);
 
-												for (int x = 0; x < i; x++) {
+										} else {
 
-													if (body_data[i][3].equals(body_data[x][3])) {
+											// System.out.println("int i:"+i);
+											// System.out.println("body_data[i][3]:"+body_data[i][3]);
+											// System.out.println("body_data[i-1][3]:"+body_data[i-1][3]);
+											if (body_data[i - 1][3] == null && !body_data[i][3].isEmpty()) {
+												// System.out.println("IS THIS RUN C?");
+												writer.append("," + body_data[i][3] + " " + body_data[i][4]);
+
+											} else if (body_data[i][3].equals(body_data[i - 1][3])
+													&& body_data[i][4].equals(body_data[i - 1][4])) {
+												// System.out.println("IS THIS RUN A?");
+												// System.out.println("body_data[i][4].equals(body_data[i -
+												// 1][4]:"+body_data[i - 1][4]+", "+body_data[i][4]);
+												// Do nothing
+
+											} else {
+
+												for (int x = i - 2; x < i; x++) {
+
+													if (body_data[i][3].equals(body_data[x][3])
+															&& body_data[i][4].equals(body_data[x][4])) {
 
 														ignore_item = 1;
 
@@ -582,25 +561,516 @@ public class txt2csvWindow extends JDialog implements ActionListener {
 
 												} else {
 
-													if(body_data[i][7].equals("(F)")) {
-														
-														writer.append("," + body_data[i][8]);
-														
+													writer.append("," + body_data[i][3] + " " + body_data[i][4]);
+
+												}
+
+											}
+
+										}
+									}
+
+								}
+
+
+								writer.append("Upper Limit ----->" + "," + "," + "," + "," + "," + "," + "," + "," + ","
+										+ ",");
+
+								for (int i = 0; i < body_loop_count + 1; i++) {
+									// for(int i = 0; i < 100; i++) {
+
+									if (body_data[i][3] == null || body_data[i][3].isEmpty()
+											|| body_data[i][0].equals("BARCODE") || body_data[i][3].equals("Test")
+											|| body_data[i][3].equals("alarm") || body_data[i][3].equals("GPIB_Echo")
+											|| body_data[i][3].equals("Barcode") || body_data[i][3].equals("[Pin")) {
+										// System.out.println("body_data[i][3]"+":"+i+":"+body_data[i][3]);
+										// do nothing
+
+									} else if (body_data[i][3].equals("tests/Executed")) {
+										// System.out.println("body_data[i][3]"+":"+i+":"+body_data[i][3]);
+										writer.append("\n");
+										break;
+
+									} else {
+
+										if (i == 0) {
+
+											if (body_data[i][10].equals("(F)")) {
+
+												writer.append("," + body_data[i][11]);
+
+											} else {
+
+
+												writer.append("," + body_data[i][10]);
+											}
+
+										} else {
+
+											// System.out.println("int i:"+i);
+											// System.out.println("body_data[i][3]:"+body_data[i][3]);
+											// System.out.println("body_data[i-1][3]:"+body_data[i-1][3]);
+											// System.out.println("body_data[i][10]:"+body_data[i][10]);
+											// System.out.println("body_data[i-1][10]:"+body_data[i-1][10]);
+											// System.out.println("body_data[i][4]:"+body_data[i][4]);
+
+											if (body_data[i - 1][3] == null && !body_data[i][3].isEmpty()) {
+
+
+												if (body_data[i][3].equals("D1") || body_data[i][3].equals("D2")) { // added
+																													// "
+																													// "
+																													// exeception
+																													// for
+																													// cygnus
+																													// diode
+																													// item
+
+													// System.out.println("ignore_item:"+ignore_item);
+
+													for (int x = i - 2; x < i; x++) {
+														// System.out.println("body_data[i][3]:"+body_data[i][3]);
+														// System.out.println("body_data[i][4]:"+body_data[i][4]);
+														if (body_data[i][3].equals(body_data[x][3])
+																&& body_data[i][4].equals(body_data[x][4])) {
+
+															ignore_item = 1;
+
+															break;
+														}
+
+													}
+
+													if (ignore_item == 1) {
+
+														// do nothing
+														ignore_item = 0;
+
+													} else {
+
+														if (body_data[i][11].equals("(F)")) {
+
+															writer.append("," + body_data[i][12]);
+
+														} else {
+
+
+															// System.out.println("body_data[i][11]:"+body_data[i][11]);
+															// System.out.println("body_data[i-1][11]:"+body_data[i-1][11]);
+															// System.out.println("body_data[i+1][11]:"+body_data[i+1][11]);
+															writer.append("," + body_data[i][11]);
+
+														}
+
+													}
+
+												} else if (body_data[i][4].equals("-1")) {
+
+													//System.out.println("body_data[12]: "+body_data[i][12]);
+													
+													if (body_data[i][12] == null) {
+
+														if (body_data[i][5].equals("N/A")) {
+
+															for (int x = i - 2; x < i; x++) {
+
+																if (body_data[i][3].equals(body_data[x][3])
+																		&& body_data[i][4].equals(body_data[x][4])) {
+
+																	ignore_item = 1;
+
+																	break;
+																}
+
+															}
+
+															if (ignore_item == 1) {
+
+																// do nothing
+																ignore_item = 0;
+
+															} else {
+
+																if (body_data[i][7].equals("(F)")) {
+
+																	writer.append("," + body_data[i][8]);
+
+																} else {
+
+
+																	if((body_data[i][7].contains("u")||body_data[i][7].contains("m")||body_data[i][7].contains("A")||body_data[i][7].contains("V"))&&!body_data[i][7].contains("N/A")) {
+
+																		writer.append("," + body_data[i][8]);		
+																		
+																	} else {
+																	
+
+																		writer.append("," + body_data[i][7]);
+
+																		
+																	}
+																	
+																	
+																}
+
+															}
+
+														} else {
+
+															for (int x = i - 2; x < i; x++) {
+
+																if (body_data[i][3].equals(body_data[x][3])
+																		&& body_data[i][4].equals(body_data[x][4])) {
+
+																	ignore_item = 1;
+
+																	break;
+																}
+
+															}
+
+															if (ignore_item == 1) {
+
+																// do nothing
+																ignore_item = 0;
+
+															} else {
+
+																if (body_data[i][7].equals("(F)")) {
+
+																	writer.append("," + body_data[i][8]);
+
+																} else {
+
+
+																	writer.append("," + body_data[i][7]);
+
+																}
+
+															}
+
+														}
+
 													} else {
 														
-														// System.out.println("IS THIS RUN -1?");
-														writer.append("," + body_data[i][7]);
+														if (body_data[i][5].equals("N/A")) {
+
+															for (int x = i - 2; x < i; x++) {
+
+																if (body_data[i][3].equals(body_data[x][3])
+																		&& body_data[i][4].equals(body_data[x][4])) {
+
+																	ignore_item = 1;
+
+																	break;
+																}
+
+															}
+
+															if (ignore_item == 1) {
+
+																// do nothing
+																ignore_item = 0;
+
+															} else {
+
+																if (body_data[i][8].equals("(F)")) {
+
+																	writer.append("," + body_data[i][9]);
+
+																} else {
+
+																	writer.append("," + body_data[i][8]);
+
+																}
+
+															}
+
+														} else {
+
+															for (int x = i - 2; x < i; x++) {
+
+																if (body_data[i][3].equals(body_data[x][3])
+																		&& body_data[i][4].equals(body_data[x][4])) {
+
+																	ignore_item = 1;
+
+																	break;
+																}
+
+															}
+
+															if (ignore_item == 1) {
+
+																// do nothing
+																ignore_item = 0;
+
+															} else {
+
+																if (body_data[i][7].equals("(F)")) {
+
+																	writer.append("," + body_data[i][10]);
+
+																} else {
+
+
+																	writer.append("," + body_data[i][9]);
+
+																}
+
+															}
+
+														}
+
 														
 													}
 
+												} else if (body_data[i][6].equals("N/A")) {
 
+													for (int x = i - 2; x < i; x++) {
+
+														if (body_data[i][3].equals(body_data[x][3])
+																&& body_data[i][4].equals(body_data[x][4])) {
+
+															ignore_item = 1;
+
+															break;
+														}
+
+													}
+
+													if (ignore_item == 1) {
+
+														// do nothing
+														ignore_item = 0;
+
+													} else {
+
+														if (body_data[i][9].equals("(F)")) {
+
+															writer.append("," + body_data[i][10]);
+
+														} else {
+
+															if(body_data[i][8].equals("N/A")) {
+																
+																writer.append("," + body_data[i][8]);	
+																
+															} else {
+																
+																writer.append("," + body_data[i][9]);																
+																
+															}
+															
+
+														}
+
+													}
+
+												} else {
+
+													for (int x = i - 2; x < i; x++) {
+
+														if (body_data[i][3].equals(body_data[x][3])
+																&& body_data[i][4].equals(body_data[x][4])) {
+
+															ignore_item = 1;
+
+															break;
+														}
+
+													}
+
+													if (ignore_item == 1) {
+
+														// do nothing
+														ignore_item = 0;
+
+													} else {
+
+														if (body_data[i][10].equals("(F)")) {
+
+															writer.append("," + body_data[i][11]);
+
+														} else {
+
+															writer.append("," + body_data[i][10]);
+
+														}
+
+													}
+
+												}
+
+											} else if (body_data[i][3].equals(body_data[i - 1][3])
+													&& body_data[i][4].equals(body_data[i - 1][4])) {
+
+												// Do nothing
+
+											} else if (body_data[i][4].equals("-1")) {
+												
+												if (body_data[i][12] == null) {
+
+													if (body_data[i][5].equals("N/A")) {
+
+														for (int x = i - 2; x < i; x++) {
+
+															if (body_data[i][3].equals(body_data[x][3])
+																	&& body_data[i][4].equals(body_data[x][4])) {
+
+																ignore_item = 1;
+
+																break;
+															}
+
+														}
+
+														if (ignore_item == 1) {
+
+															// do nothing
+															ignore_item = 0;
+
+														} else {
+
+															if (body_data[i][7].equals("(F)")) {
+
+																writer.append("," + body_data[i][8]);
+
+															} else {
+
+
+																if((body_data[i][7].contains("u")||body_data[i][7].contains("m")||body_data[i][7].contains("A")||body_data[i][7].contains("V"))&&!body_data[i][7].contains("N/A")) {
+
+																	writer.append("," + body_data[i][8]);		
+																	
+																} else {
+																
+
+																	writer.append("," + body_data[i][7]);
+
+																	
+																}
+																
+																
+															}
+
+														}
+
+													} else {
+
+														for (int x = i - 2; x < i; x++) {
+
+															if (body_data[i][3].equals(body_data[x][3])
+																	&& body_data[i][4].equals(body_data[x][4])) {
+
+																ignore_item = 1;
+
+																break;
+															}
+
+														}
+
+														if (ignore_item == 1) {
+
+															// do nothing
+															ignore_item = 0;
+
+														} else {
+
+															if (body_data[i][7].equals("(F)")) {
+
+																writer.append("," + body_data[i][8]);
+
+															} else {
+
+
+																writer.append("," + body_data[i][7]);
+
+															}
+
+														}
+
+													}
+
+												} else {
+													
+													if (body_data[i][5].equals("N/A")) {
+
+														for (int x = i - 2; x < i; x++) {
+
+															if (body_data[i][3].equals(body_data[x][3])
+																	&& body_data[i][4].equals(body_data[x][4])) {
+
+																ignore_item = 1;
+
+																break;
+															}
+
+														}
+
+														if (ignore_item == 1) {
+
+															// do nothing
+															ignore_item = 0;
+
+														} else {
+
+															if (body_data[i][8].equals("(F)")) {
+
+																writer.append("," + body_data[i][9]);
+
+															} else {
+
+																writer.append("," + body_data[i][8]);
+
+															}
+
+														}
+
+													} else {
+
+														for (int x = i - 2; x < i; x++) {
+
+															if (body_data[i][3].equals(body_data[x][3])
+																	&& body_data[i][4].equals(body_data[x][4])) {
+
+																ignore_item = 1;
+
+																break;
+															}
+
+														}
+
+														if (ignore_item == 1) {
+
+															// do nothing
+															ignore_item = 0;
+
+														} else {
+
+															if (body_data[i][7].equals("(F)")) {
+
+																writer.append("," + body_data[i][10]);
+
+															} else {
+
+																writer.append("," + body_data[i][9]);
+
+															}
+
+														}
+
+													}
+
+													
 												}
 
 											} else if (body_data[i][6].equals("N/A")) {
 
-												for (int x = 0; x < i; x++) {
+												for (int x = i - 2; x < i; x++) {
 
-													if (body_data[i][3].equals(body_data[x][3])) {
+													if (body_data[i][3].equals(body_data[x][3])
+															&& body_data[i][4].equals(body_data[x][4])) {
 
 														ignore_item = 1;
 
@@ -616,24 +1086,42 @@ public class txt2csvWindow extends JDialog implements ActionListener {
 
 												} else {
 
-													if(body_data[i][9].equals("(F)")) {
-														
+													if (body_data[i][9].equals("(F)")) {
+
 														writer.append("," + body_data[i][10]);
-														
-													} else {
-														
-														// System.out.println("IS THIS RUN N/A?");
-														writer.append("," + body_data[i][9]);
-													}
 
+													} else {
+
+														if(body_data[i][8].equals("N/A")) {
+															
+															writer.append("," + body_data[i][8]);	
+															
+														} else {
+															
+															writer.append("," + body_data[i][9]);																
+															
+														}
+
+													}
 
 												}
 
-											} else {
+											} else if (body_data[i][3].equals("D1") || body_data[i][3].equals("D2")) { // added
+																														// "
+																														// "
+																														// exeception
+																														// for
+																														// cygnus
+																														// diode
+																														// item
 
-												for (int x = 0; x < i; x++) {
+												// System.out.println("ignore_item:"+ignore_item);
 
-													if (body_data[i][3].equals(body_data[x][3])) {
+												for (int x = i - 2; x < i; x++) {
+													// System.out.println("body_data[i][3]:"+body_data[i][3]);
+													// System.out.println("body_data[i][4]:"+body_data[i][4]);
+													if (body_data[i][3].equals(body_data[x][3])
+															&& body_data[i][4].equals(body_data[x][4])) {
 
 														ignore_item = 1;
 
@@ -649,175 +1137,225 @@ public class txt2csvWindow extends JDialog implements ActionListener {
 
 												} else {
 
-													if(body_data[i][10].equals("(F)")) {
-														
+													if (body_data[i][11].equals("(F)")) {
+
+														writer.append("," + body_data[i][12]);
+
+													} else {
+
+														// System.out.println("body_data[i][11]:"+body_data[i][11]);
+														// System.out.println("body_data[i-1][11]:"+body_data[i-1][11]);
+														// System.out.println("body_data[i+1][11]:"+body_data[i+1][11]);
 														writer.append("," + body_data[i][11]);
-														
-													} else {
-														
-														// System.out.println("IS THIS RUN B?");
-														writer.append("," + body_data[i][10]);
-														
+
 													}
-													
-
 
 												}
 
 											}
 
-										} else if (body_data[i][3].equals(body_data[i - 1][3])) {
-											// System.out.println("IS THIS RUN M?");
-											// Do nothing
+											else {
 
-										} else if (body_data[i][4].equals("-1")) {
+												for (int x = i - 2; x < i; x++) {
 
-											for (int x = 0; x < i; x++) {
+													if (body_data[i][3].equals(body_data[x][3])
+															&& body_data[i][4].equals(body_data[x][4])) {
 
-												if (body_data[i][3].equals(body_data[x][3])) {
+														ignore_item = 1;
 
-													ignore_item = 1;
+														break;
+													}
 
-													break;
 												}
 
-											}
+												if (ignore_item == 1) {
 
-											if (ignore_item == 1) {
+													// do nothing
+													ignore_item = 0;
 
-												// do nothing
-												ignore_item = 0;
-
-											} else {
-
-												if(body_data[i][7].equals("(F)")) {
-													
-													writer.append("," + body_data[i][8]);
-													
 												} else {
-													
-													// System.out.println("IS THIS RUN -1?");
-													writer.append("," + body_data[i][7]);
-													
+
+													if (body_data[i][10].equals("(F)")) {
+
+														writer.append("," + body_data[i][11]);
+
+													} else {
+
+														writer.append("," + body_data[i][10]);
+													}
+
 												}
 
-											}
-
-										} else if (body_data[i][6].equals("N/A")) {
-
-											for (int x = 0; x < i; x++) {
-
-												if (body_data[i][3].equals(body_data[x][3])) {
-
-													ignore_item = 1;
-
-													break;
-												}
-
-											}
-
-											if (ignore_item == 1) {
-
-												// do nothing
-												ignore_item = 0;
-
-											} else {
-
-												if(body_data[i][9].equals("(F)")) {
-													
-													writer.append("," + body_data[i][10]);
-													
-												} else {
-												
-													// System.out.println("IS THIS RUN N/A?");
-													writer.append("," + body_data[i][9]);
-													
-												}
-												
-											}
-
-										} else {
-
-											for (int x = 0; x < i; x++) {
-
-												if (body_data[i][3].equals(body_data[x][3])) {
-
-													ignore_item = 1;
-
-													break;
-												}
-
-											}
-
-											if (ignore_item == 1) {
-
-												// do nothing
-												ignore_item = 0;
-
-											} else {
-
-												if(body_data[i][10].equals("(F)")) {
-													
-													writer.append("," + body_data[i][11]);
-													
-												} else {
-												
-													// System.out.println("IS THIS RUN N?");
-													writer.append("," + body_data[i][10]);
-												}
-												
 											}
 
 										}
-
 									}
+
 								}
 
-							}
 
-							// System.out.println("IS THIS RUN START2?");
+								writer.append("Lower Limit ----->" + "," + "," + "," + "," + "," + "," + "," + "," + ","
+										+ ",");
 
-							writer.append(
-									"Lower Limit ----->" + "," + "," + "," + "," + "," + "," + "," + "," + "," + ",");
+								for (int i = 0; i < body_loop_count + 1; i++) {
+									// for(int i = 0; i < 100; i++) {
 
-							for (int i = 0; i < body_loop_count + 1; i++) {
-								// for(int i = 0; i < 100; i++) {
+									if (body_data[i][3] == null || body_data[i][3].isEmpty()
+											|| body_data[i][0].equals("BARCODE") || body_data[i][3].equals("Test")
+											|| body_data[i][3].equals("alarm") || body_data[i][3].equals("GPIB_Echo")
+											|| body_data[i][3].equals("Barcode") || body_data[i][3].equals("[Pin")) {
+										// System.out.println("body_data[i][3]"+":"+i+":"+body_data[i][3]);
+										// do nothing
 
-								if (body_data[i][3] == null || body_data[i][3].isEmpty()
-										|| body_data[i][0].equals("BARCODE") || body_data[i][3].equals("Test")
-										|| body_data[i][3].equals("alarm") || body_data[i][3].equals("GPIB_Echo")
-										|| body_data[i][3].equals("Barcode") || body_data[i][3].equals("[Pin")) {
-									// System.out.println("body_data[i][3]"+":"+i+":"+body_data[i][3]);
-									// do nothing
-
-								} else if (body_data[i][3].equals("tests/Executed")) {
-									// System.out.println("body_data[i][3]"+":"+i+":"+body_data[i][3]);
-									writer.append("\n");
-									break;
-
-								} else {
-									// System.out.println("IS THIS RUN I?");
-									if (i == 0) {
-										// System.out.println("IS THIS RUN J?");
-										writer.append("," + body_data[i][6]);
+									} else if (body_data[i][3].equals("tests/Executed")) {
+										// System.out.println("body_data[i][3]"+":"+i+":"+body_data[i][3]);
+										writer.append("\n");
+										break;
 
 									} else {
-										// System.out.println("IS THIS RUN K?");
-										// System.out.println("int i:"+i);
-										// System.out.println("body_data[i][3]:"+body_data[i][3]);
-										// System.out.println("body_data[i-1][3]:"+body_data[i-1][3]);
-										// System.out.println("body_data[i][6]:"+body_data[i][6]);
-										// System.out.println("body_data[i-1][6]:"+body_data[i-1][6]);
-										// System.out.println("body_data[i][4]:"+body_data[i][4]);
 
-										if (body_data[i - 1][3] == null && !body_data[i][3].isEmpty()) {
-											// System.out.println("IS THIS RUN L?");
+										if (i == 0) {
 
-											if (body_data[i][4].equals("-1")) {
+											writer.append("," + body_data[i][6]);
 
-												for (int x = 0; x < i; x++) {
+										} else {
 
-													if (body_data[i][3].equals(body_data[x][3])) {
+											// System.out.println("int i:"+i);
+											// System.out.println("body_data[i][3]:"+body_data[i][3]);
+											// System.out.println("body_data[i-1][3]:"+body_data[i-1][3]);
+											// System.out.println("body_data[i][6]:"+body_data[i][6]);
+											// System.out.println("body_data[i-1][6]:"+body_data[i-1][6]);
+											// System.out.println("body_data[i][4]:"+body_data[i][4]);
+
+											if (body_data[i - 1][3] == null && !body_data[i][3].isEmpty()) {
+
+												if (body_data[i][3].equals("D1") || body_data[i][3].equals("D2")) { // added
+													// "
+													// "
+													// exeception
+													// for
+													// cygnus
+													// diode
+													// item
+
+													// System.out.println("ignore_item:"+ignore_item);
+
+													for (int x = i - 2; x < i; x++) {
+														// System.out.println("body_data[i][3]:"+body_data[i][3]);
+														// System.out.println("body_data[i][4]:"+body_data[i][4]);
+														if (body_data[i][3].equals(body_data[x][3])
+																&& body_data[i][4].equals(body_data[x][4])) {
+
+															ignore_item = 1;
+
+															break;
+														}
+
+													}
+
+													if (ignore_item == 1) {
+
+														// do nothing
+														ignore_item = 0;
+
+													} else {
+
+														writer.append("," + body_data[i][8]);
+
+													}
+
+												} else if (body_data[i][4].equals("-1")) {
+
+													for (int x = i - 2; x < i; x++) {
+
+														if (body_data[i][3].equals(body_data[x][3])
+																&& body_data[i][4].equals(body_data[x][4])) {
+
+															ignore_item = 1;
+
+															break;
+														}
+
+													}
+
+													if (ignore_item == 1) {
+
+														// do nothing
+														ignore_item = 0;
+
+													} else {
+
+
+														writer.append("," + body_data[i][5]);
+
+													}
+
+												} else if (body_data[i][6].equals("N/A")) {
+
+													for (int x = i - 2; x < i; x++) {
+
+														if (body_data[i][3].equals(body_data[x][3])
+																&& body_data[i][4].equals(body_data[x][4])) {
+
+															ignore_item = 1;
+
+															break;
+														}
+
+													}
+
+													if (ignore_item == 1) {
+
+														// do nothing
+														ignore_item = 0;
+
+													} else {
+
+
+														writer.append("," + body_data[i][6]);
+
+													}
+
+												} else {
+
+													for (int x = i - 2; x < i; x++) {
+
+														if (body_data[i][3].equals(body_data[x][3])
+																&& body_data[i][4].equals(body_data[x][4])) {
+
+															ignore_item = 1;
+
+															break;
+														}
+
+													}
+
+													if (ignore_item == 1) {
+
+														// do nothing
+														ignore_item = 0;
+
+													} else {
+
+
+														writer.append("," + body_data[i][6]);
+
+													}
+
+												}
+
+											} else if (body_data[i][3].equals(body_data[i - 1][3])
+													&& body_data[i][4].equals(body_data[i - 1][4])) {
+
+
+												// Do nothing
+
+											} else if (body_data[i][4].equals("-1")) {
+
+												for (int x = i - 2; x < i; x++) {
+
+													if (body_data[i][3].equals(body_data[x][3])
+															&& body_data[i][4].equals(body_data[x][4])) {
 
 														ignore_item = 1;
 
@@ -833,41 +1371,17 @@ public class txt2csvWindow extends JDialog implements ActionListener {
 
 												} else {
 
-													// System.out.println("IS THIS RUN -1?");
+
 													writer.append("," + body_data[i][5]);
 
 												}
 
 											} else if (body_data[i][6].equals("N/A")) {
 
-												for (int x = 0; x < i; x++) {
+												for (int x = i - 2; x < i; x++) {
 
-													if (body_data[i][3].equals(body_data[x][3])) {
-
-														ignore_item = 1;
-
-														break;
-													}
-
-												}
-
-												if (ignore_item == 1) {
-
-													// do nothing
-													ignore_item = 0;
-
-												} else {
-
-													// System.out.println("IS THIS RUN N/A?");
-													writer.append("," + body_data[i][6]);
-
-												}
-
-											} else {
-
-												for (int x = 0; x < i; x++) {
-
-													if (body_data[i][3].equals(body_data[x][3])) {
+													if (body_data[i][3].equals(body_data[x][3])
+															&& body_data[i][4].equals(body_data[x][4])) {
 
 														ignore_item = 1;
 
@@ -883,143 +1397,283 @@ public class txt2csvWindow extends JDialog implements ActionListener {
 
 												} else {
 
-													// System.out.println("IS THIS RUN N?");
+
+													writer.append("," + body_data[i][6]);
+													;
+
+												}
+
+											} else if (body_data[i][3].equals("D1") || body_data[i][3].equals("D2")) { // added
+												// "
+												// "
+												// exeception
+												// for
+												// cygnus
+												// diode
+												// item
+
+												// System.out.println("ignore_item:"+ignore_item);
+
+												for (int x = i - 2; x < i; x++) {
+													// System.out.println("body_data[i][3]:"+body_data[i][3]);
+													// System.out.println("body_data[i][4]:"+body_data[i][4]);
+													if (body_data[i][3].equals(body_data[x][3])
+															&& body_data[i][4].equals(body_data[x][4])) {
+
+														ignore_item = 1;
+
+														break;
+													}
+
+												}
+
+												if (ignore_item == 1) {
+
+													// do nothing
+													ignore_item = 0;
+
+												} else {
+
+													writer.append("," + body_data[i][8]);
+
+												}
+
+											} else {
+
+												for (int x = i - 2; x < i; x++) {
+
+													if (body_data[i][3].equals(body_data[x][3])
+															&& body_data[i][4].equals(body_data[x][4])) {
+
+														ignore_item = 1;
+
+														break;
+													}
+
+												}
+
+												if (ignore_item == 1) {
+
+													// do nothing
+													ignore_item = 0;
+
+												} else {
+
 													writer.append("," + body_data[i][6]);
 
 												}
-
-											}
-
-										} else if (body_data[i][3].equals(body_data[i - 1][3])) {
-											// System.out.println("IS THIS RUN M?");
-											// Do nothing
-
-										} else if (body_data[i][4].equals("-1")) {
-
-											for (int x = 0; x < i; x++) {
-
-												if (body_data[i][3].equals(body_data[x][3])) {
-
-													ignore_item = 1;
-
-													break;
-												}
-
-											}
-
-											if (ignore_item == 1) {
-
-												// do nothing
-												ignore_item = 0;
-
-											} else {
-
-												// System.out.println("IS THIS RUN -1?");
-												writer.append("," + body_data[i][5]);
-
-											}
-
-										} else if (body_data[i][6].equals("N/A")) {
-
-											for (int x = 0; x < i; x++) {
-
-												if (body_data[i][3].equals(body_data[x][3])) {
-
-													ignore_item = 1;
-
-													break;
-												}
-
-											}
-
-											if (ignore_item == 1) {
-
-												// do nothing
-												ignore_item = 0;
-
-											} else {
-
-												// System.out.println("IS THIS RUN N/A?");
-												writer.append("," + body_data[i][6]);
-												;
-
-											}
-
-										} else {
-
-											for (int x = 0; x < i; x++) {
-
-												if (body_data[i][3].equals(body_data[x][3])) {
-
-													ignore_item = 1;
-
-													break;
-												}
-
-											}
-
-											if (ignore_item == 1) {
-
-												// do nothing
-												ignore_item = 0;
-
-											} else {
-
-												// System.out.println("IS THIS RUN N?");
-												writer.append("," + body_data[i][6]);
 
 											}
 
 										}
-
 									}
+
 								}
 
-							}
 
-							// System.out.println("IS THIS RUN START3?");
+								writer.append("Measurement Limit ----->" + "," + "," + "," + "," + "," + "," + "," + ","
+										+ "," + "sec" + ",");
 
-							writer.append("Measurement Limit ----->" + "," + "," + "," + "," + "," + "," + "," + ","
-									+ "," + "sec" + ",");
+								for (int i = 0; i < body_loop_count + 1; i++) {
 
-							for (int i = 0; i < body_loop_count + 1; i++) {
-								// for(int i = 0; i < 100; i++) {
+									if (body_data[i][3] == null || body_data[i][3].isEmpty()
+											|| body_data[i][0].equals("BARCODE") || body_data[i][3].equals("Test")
+											|| body_data[i][3].equals("alarm") || body_data[i][3].equals("GPIB_Echo")
+											|| body_data[i][3].equals("Barcode") || body_data[i][3].equals("[Pin")) {
+										// System.out.println("body_data[i][3]"+":"+i+":"+body_data[i][3]);
+										// do nothing
 
-								if (body_data[i][3] == null || body_data[i][3].isEmpty()
-										|| body_data[i][0].equals("BARCODE") || body_data[i][3].equals("Test")
-										|| body_data[i][3].equals("alarm") || body_data[i][3].equals("GPIB_Echo")
-										|| body_data[i][3].equals("Barcode") || body_data[i][3].equals("[Pin")) {
-									// System.out.println("body_data[i][3]"+":"+i+":"+body_data[i][3]);
-									// do nothing
-
-								} else if (body_data[i][3].equals("tests/Executed")) {
-									// System.out.println("body_data[i][3]"+":"+i+":"+body_data[i][3]);
-									writer.append("\n");
-									break;
-
-								} else {
-									// System.out.println("IS THIS RUN I?");
-									if (i == 0) {
-										// System.out.println("IS THIS RUN J?");
-										writer.append("," + body_data[i][7]);
+									} else if (body_data[i][3].equals("tests/Executed")) {
+										// System.out.println("body_data[i][3]"+":"+i+":"+body_data[i][3]);
+										writer.append("\n");
+										break;
 
 									} else {
-										// System.out.println("IS THIS RUN K?");
-										// System.out.println("int i:"+i);
-										// System.out.println("body_data[i][3]:"+body_data[i][3]);
-										// System.out.println("body_data[i-1][3]:"+body_data[i-1][3]);
-										// System.out.println("body_data[i][7]:"+body_data[i][7]);
-										// System.out.println("body_data[i-1][7]:"+body_data[i-1][7]);
-										// System.out.println("body_data[i][4]:"+body_data[i][4]);
 
-										if (body_data[i - 1][3] == null && !body_data[i][3].isEmpty()) {
-											// System.out.println("IS THIS RUN L?");
+										if (i == 0) {
+											
+											writer.append("," + body_data[i][7]);
 
-											if (body_data[i][4].equals("-1")) {
+										} else {
 
-												for (int x = 0; x < i; x++) {
+											// System.out.println("int i:"+i);
+											// System.out.println("body_data[i][3]:"+body_data[i][3]);
+											// System.out.println("body_data[i-1][3]:"+body_data[i-1][3]);
+											// System.out.println("body_data[i][7]:"+body_data[i][7]);
+											// System.out.println("body_data[i-1][7]:"+body_data[i-1][7]);
+											// System.out.println("body_data[i][4]:"+body_data[i][4]);
 
-													if (body_data[i][3].equals(body_data[x][3])) {
+											if (body_data[i - 1][3] == null && !body_data[i][3].isEmpty()) {
+
+												if (body_data[i][4].equals("-1")) {
+
+													for (int x = i - 2; x < i; x++) {
+
+														if (body_data[i][3].equals(body_data[x][3])
+																&& body_data[i][4].equals(body_data[x][4])) {
+
+															ignore_item = 1;
+
+															break;
+														}
+
+													}
+
+													if (ignore_item == 1) {
+
+														// do nothing
+														ignore_item = 0;
+
+													} else {
+
+														if(body_data[i][7].equals("N/A") || body_data[i][8].equals("N/A")) {
+															
+															writer.append(",");
+															
+														} else {
+															
+															if(body_data[i][6].equals("ohm")||body_data[i][6].equals("mohm")||body_data[i][6].equals("%")||body_data[i][6].equals("pA")||body_data[i][6].equals("nA")||body_data[i][6].equals("uA")||body_data[i][6].equals("mA")||body_data[i][6].equals("A")||body_data[i][6].equals("pV")||body_data[i][6].equals("nV")||body_data[i][6].equals("uV")||body_data[i][6].equals("mV")||body_data[i][6].equals("V")) {
+																
+																writer.append("," + body_data[i][6]);
+																
+															} else if(body_data[i][9].equals("ohm")||body_data[i][9].equals("mohm")||body_data[i][9].equals("%")||body_data[i][9].equals("pA")||body_data[i][9].equals("nA")||body_data[i][9].equals("uA")||body_data[i][9].equals("mA")||body_data[i][9].equals("A")||body_data[i][9].equals("pV")||body_data[i][9].equals("nV")||body_data[i][9].equals("uV")||body_data[i][9].equals("mV")||body_data[i][9].equals("V")) {
+																
+																writer.append("," + body_data[i][9]);
+																
+															} else {
+																	
+																	// System.out.println("IS THIS RUN -1?");
+																	writer.append(",");
+																	
+															}
+																
+															
+														}
+														
+														
+
+
+													}
+
+												} else if (body_data[i][6].equals("N/A")) {
+
+													for (int x = i - 2; x < i; x++) {
+
+														if (body_data[i][3].equals(body_data[x][3])
+																&& body_data[i][4].equals(body_data[x][4])) {
+
+															ignore_item = 1;
+
+															break;
+														}
+
+													}
+
+													if (ignore_item == 1) {
+
+														// do nothing
+														ignore_item = 0;
+
+													} else {
+														
+														if(body_data[i][8].equals("N/A") || body_data[i][9].equals("N/A")) {
+															
+															writer.append(",");
+															
+														} else {
+															
+															if(body_data[i][6].equals("ohm")||body_data[i][6].equals("mohm")||body_data[i][6].equals("%")||body_data[i][6].equals("pA")||body_data[i][6].equals("nA")||body_data[i][6].equals("uA")||body_data[i][6].equals("mA")||body_data[i][6].equals("A")||body_data[i][6].equals("pV")||body_data[i][6].equals("nV")||body_data[i][6].equals("uV")||body_data[i][6].equals("mV")||body_data[i][6].equals("V")) {
+																
+																writer.append("," + body_data[i][6]);
+																
+															} else if(body_data[i][10].equals("ohm")||body_data[i][10].equals("mohm")||body_data[i][10].equals("%")||body_data[i][10].equals("pA")||body_data[i][10].equals("nA")||body_data[i][10].equals("uA")||body_data[i][10].equals("mA")||body_data[i][10].equals("A")||body_data[i][10].equals("pV")||body_data[i][10].equals("nV")||body_data[i][10].equals("uV")||body_data[i][10].equals("mV")||body_data[i][10].equals("V")) {
+																
+																writer.append("," + body_data[i][10]);
+																
+															} else {
+																	
+																	writer.append(",");
+																	
+															}
+																
+															
+														}
+
+													}
+
+												} else if (body_data[i][3].equals("D1") || body_data[i][3].equals("D2")) { // added
+													// "
+													// "
+													// exeception
+													// for
+													// cygnus
+													// diode
+													// item
+
+													// System.out.println("ignore_item:"+ignore_item);
+
+													for (int x = i - 2; x < i; x++) {
+														// System.out.println("body_data[i][3]:"+body_data[i][3]);
+														// System.out.println("body_data[i][4]:"+body_data[i][4]);
+														if (body_data[i][3].equals(body_data[x][3])
+																&& body_data[i][4].equals(body_data[x][4])) {
+
+															ignore_item = 1;
+
+															break;
+														}
+
+													}
+
+													if (ignore_item == 1) {
+
+														// do nothing
+														ignore_item = 0;
+
+													} else {
+
+														writer.append("," + body_data[i][12]);
+
+													}
+
+												} else {
+
+													for (int x = i - 2; x < i; x++) {
+
+														if (body_data[i][3].equals(body_data[x][3])
+																&& body_data[i][4].equals(body_data[x][4])) {
+
+															ignore_item = 1;
+
+															break;
+														}
+
+													}
+
+													if (ignore_item == 1) {
+
+														// do nothing
+														ignore_item = 0;
+
+													} else {
+
+														writer.append("," + body_data[i][7]);
+
+													}
+
+												}
+
+											} else if (body_data[i][3].equals(body_data[i - 1][3])
+													&& body_data[i][4].equals(body_data[i - 1][4])) {
+
+												// Do nothing
+
+											} else if (body_data[i][4].equals("-1")) {
+
+												for (int x = i - 2; x < i; x++) {
+
+													if (body_data[i][3].equals(body_data[x][3])
+															&& body_data[i][4].equals(body_data[x][4])) {
 
 														ignore_item = 1;
 
@@ -1035,41 +1689,37 @@ public class txt2csvWindow extends JDialog implements ActionListener {
 
 												} else {
 
-													// System.out.println("IS THIS RUN -1?");
-													writer.append(",");
+													if(body_data[i][7].equals("N/A") || body_data[i][8].equals("N/A")) {
+														
+														writer.append(",");
+														
+													} else {
+														
+														if(body_data[i][6].equals("ohm")||body_data[i][6].equals("mohm")||body_data[i][6].equals("%")||body_data[i][6].equals("pA")||body_data[i][6].equals("nA")||body_data[i][6].equals("uA")||body_data[i][6].equals("mA")||body_data[i][6].equals("A")||body_data[i][6].equals("pV")||body_data[i][6].equals("nV")||body_data[i][6].equals("uV")||body_data[i][6].equals("mV")||body_data[i][6].equals("V")) {
+															
+															writer.append("," + body_data[i][6]);
+															
+														} else if(body_data[i][9].equals("ohm")||body_data[i][9].equals("mohm")||body_data[i][9].equals("%")||body_data[i][9].equals("pA")||body_data[i][9].equals("nA")||body_data[i][9].equals("uA")||body_data[i][9].equals("mA")||body_data[i][9].equals("A")||body_data[i][9].equals("pV")||body_data[i][9].equals("nV")||body_data[i][9].equals("uV")||body_data[i][9].equals("mV")||body_data[i][9].equals("V")) {
+															
+															writer.append("," + body_data[i][9]);
+															
+														} else {
+																
+																writer.append(",");
+																
+														}
+															
+														
+													}
 
 												}
 
 											} else if (body_data[i][6].equals("N/A")) {
 
-												for (int x = 0; x < i; x++) {
+												for (int x = i - 2; x < i; x++) {
 
-													if (body_data[i][3].equals(body_data[x][3])) {
-
-														ignore_item = 1;
-
-														break;
-													}
-
-												}
-
-												if (ignore_item == 1) {
-
-													// do nothing
-													ignore_item = 0;
-
-												} else {
-
-													// System.out.println("IS THIS RUN N/A?");
-													writer.append(",");
-
-												}
-
-											} else {
-
-												for (int x = 0; x < i; x++) {
-
-													if (body_data[i][3].equals(body_data[x][3])) {
+													if (body_data[i][3].equals(body_data[x][3])
+															&& body_data[i][4].equals(body_data[x][4])) {
 
 														ignore_item = 1;
 
@@ -1085,833 +1735,1011 @@ public class txt2csvWindow extends JDialog implements ActionListener {
 
 												} else {
 
-													// System.out.println("IS THIS RUN N?");
+													if(body_data[i][8].equals("N/A") || body_data[i][9].equals("N/A")) {
+														
+														writer.append(",");
+														
+													} else {
+														
+														if(body_data[i][6].equals("ohm")||body_data[i][6].equals("mohm")||body_data[i][6].equals("%")||body_data[i][6].equals("pA")||body_data[i][6].equals("nA")||body_data[i][6].equals("uA")||body_data[i][6].equals("mA")||body_data[i][6].equals("A")||body_data[i][6].equals("pV")||body_data[i][6].equals("nV")||body_data[i][6].equals("uV")||body_data[i][6].equals("mV")||body_data[i][6].equals("V")) {
+															
+															writer.append("," + body_data[i][6]);
+															
+														} else if(body_data[i][10].equals("ohm")||body_data[i][10].equals("mohm")||body_data[i][10].equals("%")||body_data[i][10].equals("pA")||body_data[i][10].equals("nA")||body_data[i][10].equals("uA")||body_data[i][10].equals("mA")||body_data[i][10].equals("A")||body_data[i][10].equals("pV")||body_data[i][10].equals("nV")||body_data[i][10].equals("uV")||body_data[i][10].equals("mV")||body_data[i][10].equals("V")) {
+															
+															writer.append("," + body_data[i][10]);
+															
+														} else {
+																
+																writer.append(",");
+																
+														}
+															
+														
+													}
+
+												}
+
+											} else if (body_data[i][3].equals("D1") || body_data[i][3].equals("D2")) { // added
+												// "
+												// "
+												// exeception
+												// for
+												// cygnus
+												// diode
+												// item
+
+												// System.out.println("ignore_item:"+ignore_item);
+
+												for (int x = i - 2; x < i; x++) {
+													// System.out.println("body_data[i][3]:"+body_data[i][3]);
+													// System.out.println("body_data[i][4]:"+body_data[i][4]);
+													if (body_data[i][3].equals(body_data[x][3])
+															&& body_data[i][4].equals(body_data[x][4])) {
+
+														ignore_item = 1;
+
+														break;
+													}
+
+												}
+
+												if (ignore_item == 1) {
+
+													// do nothing
+													ignore_item = 0;
+
+												} else {
+
+													writer.append("," + body_data[i][12]);
+
+												}
+
+											}  else {
+
+												for (int x = i - 2; x < i; x++) {
+
+													if (body_data[i][3].equals(body_data[x][3])
+															&& body_data[i][4].equals(body_data[x][4])) {
+
+														ignore_item = 1;
+
+														break;
+													}
+
+												}
+
+												if (ignore_item == 1) {
+
+													// do nothing
+													ignore_item = 0;
+
+												} else {
+
 													writer.append("," + body_data[i][7]);
 
 												}
 
-											}
-
-										} else if (body_data[i][3].equals(body_data[i - 1][3])) {
-											// System.out.println("IS THIS RUN M?");
-											// Do nothing
-
-										} else if (body_data[i][4].equals("-1")) {
-
-											for (int x = 0; x < i; x++) {
-
-												if (body_data[i][3].equals(body_data[x][3])) {
-
-													ignore_item = 1;
-
-													break;
-												}
 
 											}
-
-											if (ignore_item == 1) {
-
-												// do nothing
-												ignore_item = 0;
-
-											} else {
-
-												// System.out.println("IS THIS RUN -1?");
-												writer.append(",");
-
-											}
-
-										} else if (body_data[i][6].equals("N/A")) {
-
-											for (int x = 0; x < i; x++) {
-
-												if (body_data[i][3].equals(body_data[x][3])) {
-
-													ignore_item = 1;
-
-													break;
-												}
-
-											}
-
-											if (ignore_item == 1) {
-
-												// do nothing
-												ignore_item = 0;
-
-											} else {
-
-												// System.out.println("IS THIS RUN N/A?");
-												writer.append(",");
-
-											}
-
-										} else {
-
-											for (int x = 0; x < i; x++) {
-
-												if (body_data[i][3].equals(body_data[x][3])) {
-
-													ignore_item = 1;
-
-													break;
-												}
-
-											}
-
-											if (ignore_item == 1) {
-
-												// do nothing
-												ignore_item = 0;
-
-											} else {
-
-												// System.out.println("IS THIS RUN N?");
-												writer.append("," + body_data[i][7]);
-
-											}
-
-											// System.out.println("IS THIS RUN N?");
 
 										}
-
 									}
+
 								}
 
-							}
 
-							// System.out.println("IS THIS RUN START4?");
+								System.out.println("NO HEAD A?");								
+								
+								for (int i = 0; i < head_end_count; i++) {
 
-							for (int i = 0; i < head_end_count; i++) {
+									
+									System.out.println("NO HEAD A-1?");	
+									// System.out.println("head_end_count:"+head_end_count+":i:"+i);
+									// System.out.println("head_data[i].length:"+head_data[i].length+":i:"+i);
+									// System.out.println("head_data[i][1]:"+head_data[i][1]);
 
-								// System.out.println("head_end_count:"+head_end_count+":i:"+i);
-								// System.out.println("head_data[i].length:"+head_data[i].length+":i:"+i);
-								// System.out.println("head_data[i][1]:"+head_data[i][1]);
-								// System.out.println("IS THIS RUN A?");
-
-								// System.out.println("body_data[i][0]:"+i+":"+body_data[i][0]);
-								// System.out.println("body_data[i][3]:"+i+":"+body_data[i][3]);
-
-								if (head_data[i][1] == null) {
-
-									// System.out.println("IS THIS RUN A0?");
-									// do nothing
-
-								} else if (head_data[i][0].equals("Datalog") && head_data[i][1].equals("report")) {
-									// System.out.println("IS THIS RUN A1?");
-									d1 = f.parse(head_data[i + 1][1]);
-
-								} else if (head_data[i][1].equals("Lot:")) {
-									// System.out.println("IS THIS RUN A2?");
-									Lot_id = head_data[i][2];
-
-								} else if (head_data[i][1].equals("Node") && head_data[i][2].equals("Name:")) {
-									// System.out.println("IS THIS RUN A3?");
-									ATE_id = head_data[i][3];
-
-								} else if (head_data[i][1].equals("HandID:")) {
-									// System.out.println("IS THIS RUN A4?");
-									hadler_id = head_data[i][2];
-
-								} else {
-
-									// do nothing
-								}
-
-							}
-
-							// System.out.println("IS THIS RUN A5?");
-							// for(int i = 0; i < body_loop_count+1; i++) {
-							for (int i = 0; i < 100; i++) {
-
-								if (body_data[i][3] == null || body_data[i][3].isEmpty()
-										|| body_data[i][3].equals("Test") || body_data[i][3].equals("alarm")
-										|| body_data[i][3].equals("GPIB_Echo") || body_data[i][3].equals("Barcode")
-										|| body_data[i][3].equals("[Pin")) {
-
-									// System.out.println("prebody_data[i][0]:"+i+":"+body_data[i][0]);
-									// System.out.println("prebody_data[i][3]:"+i+":"+body_data[i][3]);
-
-									// do nothing
-
-								} else if (body_data[i][3].equals("tests/Executed")) {
-									// System.out.println("body_data[i][3]"+":"+i+":"+body_data[i][3]);
-									// writer.append("\n");
-									break;
-
-								} else {
-									// System.out.println("IS THIS RUN I?");
 
 									// System.out.println("body_data[i][0]:"+i+":"+body_data[i][0]);
 									// System.out.println("body_data[i][3]:"+i+":"+body_data[i][3]);
 
-									if (body_data[i][0].equals("BARCODE") && !body_data[i][3].equals("0")) {
-										// System.out.println("IS THIS RUN J?");
-										// System.out.println("body_data[i][0]:"+body_data[i][0]);
-										// System.out.println("body_data[i][3]:"+body_data[i][3]);
+									if (head_data[i][1] == null) {
 
-										site_counter[isite] = Integer.parseInt(body_data[i][2]);
-										// writer.append(body_data[i][4]);
+										// do nothing
 
-										isite = isite + 1;
+									} else if (head_data[i][0].equals("Datalog") && head_data[i][1].equals("report")) {
+										
+										d1 = f.parse(head_data[i + 1][1]);
 
+									} else if (head_data[i][1].equals("Lot:")) {
+
+										Lot_id = head_data[i][2];
+
+									} else if (head_data[i][1].equals("Node") && head_data[i][2].equals("Name:")) {
+
+										ATE_id = head_data[i][3];
+
+									} else if (head_data[i][1].equals("HandID:")) {
+
+										hadler_id = head_data[i][2];
+
+									} else {
+
+										// do nothing
 									}
+
 								}
 
-							}
 
-							for (int i = 0; i < body_loop_count + 1; i++) {
-								// System.out.println("IS THIS RUN A6?");
-								// System.out.println("current i:"+i);
-								// System.out.println("body_loop_count:"+body_loop_count);
-								if (body_data[i][3] == null || body_data[i][3].isEmpty()
-										|| body_data[i][3].equals("Test") || body_data[i][3].equals("alarm")
-										|| body_data[i][3].equals("GPIB_Echo") || body_data[i][3].equals("Barcode")
-										|| body_data[i][3].equals("[Pin")) {
-									// System.out.println("IS THIS RUN A7?");
-									// System.out.println("body_data[i][0]:"+i+":"+body_data[i][0]);
-									// System.out.println("body_data[i][1]:"+i+":"+body_data[i][1]);
-									// System.out.println("body_data[i][2]:"+i+":"+body_data[i][2]);
-									// System.out.println("body_data[i][3]:"+i+":"+body_data[i][3]);
+								System.out.println("NO HEAD B?");	
+								
+								for (int i = 0; i < 100; i++) {
 
-									// do nothing
+									System.out.println("NO HEAD B-1?");
+									
+									if (body_data[i][3] == null || body_data[i][3].isEmpty()
+											|| body_data[i][3].equals("Test") || body_data[i][3].equals("alarm")
+											|| body_data[i][3].equals("GPIB_Echo") || body_data[i][3].equals("Barcode")
+											|| body_data[i][3].equals("[Pin")) {
 
-								} else {
-									// System.out.println("IS THIS RUN B?");
+										// System.out.println("prebody_data[i][0]:"+i+":"+body_data[i][0]);
+										// System.out.println("prebody_data[i][3]:"+i+":"+body_data[i][3]);
 
-									// System.out.println("body_data[i][0]:"+i+":"+body_data[i][0]);
-									// System.out.println("body_data[i][1]:"+i+":"+body_data[i][1]);
-									// System.out.println("body_data[i][2]:"+i+":"+body_data[i][2]);
-									// System.out.println("body_data[i][3]:"+i+":"+body_data[i][3]);
+										// do nothing
 
-									if (body_data[i][2].equals("Sort") && body_data[i][3].equals("Bin")) {
+									} else if (body_data[i][3].equals("tests/Executed")) {
+										// System.out.println("body_data[i][3]"+":"+i+":"+body_data[i][3]);
+										// writer.append("\n");
+										break;
 
-										bin_engage = 1;
+									} else {
 
-									} else if (bin_engage == 1
-											&& body_data[i][1].equals(String.valueOf(site_counter[bin_isite]))) {
 
-										site_Hbin_counter[bin_isite] = body_data[i][2];
-										site_Sbin_counter[bin_isite] = body_data[i][3];
+										// System.out.println("body_data[i][0]:"+i+":"+body_data[i][0]);
+										// System.out.println("body_data[i][3]:"+i+":"+body_data[i][3]);
 
-										if (site_Hbin_counter[bin_isite].equals("1")) {
+										if (body_data[i][0].equals("BARCODE") && !body_data[i][3].equals("0")) {
 
-											site_PF_counter[bin_isite] = "PASS";
+											// System.out.println("body_data[i][0]:"+body_data[i][0]);
+											// System.out.println("body_data[i][3]:"+body_data[i][3]);
 
-										} else {
+											site_counter[isite] = Integer.parseInt(body_data[i][2]);
+											// writer.append(body_data[i][4]);
 
-											site_PF_counter[bin_isite] = "FAIL";
+											isite = isite + 1;
 
-										}
-
-										bin_isite = bin_isite + 1;
-
-									} else if (body_data[i][0].equals("Date:") && body_data[i][2].equals("Time:")) {
-										// System.out.println("IS THIS RUN B1?");
-										// System.out.println("body_data[i][0]"+body_data[i][0]);
-										// System.out.println("body_data[i][1]"+body_data[i][1]);
-										// System.out.println("body_data[i][2]"+body_data[i][2]);
-										// System.out.println("body_data[i][3]"+body_data[i][3]);
-										date_data = body_data[i][1];
-
-										d2 = f.parse(body_data[i][3]);
-									}
-								}
-
-								if (i == body_loop_count)
-									bin_engage = 0;
-
-							}
-
-							// System.out.println("IS THIS RUN C?");
-
-							// if(body_loop_count == 54834) {
-
-							// System.out.println("DEBUG POINT");
-
-							// }
-
-							for (int i = 0; i < site_counter.length; i++) {
-
-								if (site_counter[i] == 999) {
-									// System.out.println("IS THIS RUN D?");
-									// writer.append("\n");
-									break;
-
-								} else {
-									// System.out.println("IS THIS RUN E?");
-									for (int x = 0; x < body_loop_count + 1; x++) {
-										// System.out.println("IS THIS RUN C1?");
-										if (body_data[x][3] == null || body_data[x][3].isEmpty()
-												|| body_data[x][3].equals("Test") || body_data[x][3].equals("alarm")
-												|| body_data[x][3].equals("GPIB_Echo")
-												|| body_data[x][3].equals("Barcode")
-												|| body_data[x][3].equals("[Pin")) {
-											// System.out.println("IS THIS RUN C2?");
-											// System.out.println("body_data[x][3]"+":"+i+":"+body_data[x][3]);
-											// do nothing
-
-										} else if (body_data[x][3].equals("tests/Executed")) {
-											// System.out.println("IS THIS RUN C3?");
-											// System.out.println("body_data[x][3]"+":"+i+":"+body_data[x][3]);
-											// writer.append("\n");
-											break;
-
-										} else if (body_data[x][0].equals("BARCODE")
-												&& body_data[x][2].equals(String.valueOf(site_counter[i]))) {
-											// System.out.println("IS THIS RUN C4?");
-											// System.out.println("site_counter[i]"+":"+i+":"+site_counter[i]);
-											// System.out.println("body_data[x][0]"+":"+x+":"+body_data[x][0]);
-											// System.out.println("body_data[x][1]"+":"+x+":"+body_data[x][1]);
-											// System.out.println("body_data[x][2]"+":"+x+":"+body_data[x][2]);
-											// System.out.println("body_data[x][3]"+":"+x+":"+body_data[x][3]);
-											// System.out.println("body_data[x][4]"+":"+x+":"+body_data[x][4]);
-											// System.out.println("body_data[x][5]"+":"+x+":"+body_data[x][5]);
-											// System.out.println("body_data[x][6]"+":"+x+":"+body_data[x][6]);
-											// System.out.println("body_data[x][7]"+":"+x+":"+body_data[x][7]);
-											// System.out.println("body_data[x][8]"+":"+x+":"+body_data[x][8]);
-											// System.out.println("body_data[x][9]"+":"+x+":"+body_data[x][9]);
-
-											// System.out.println("d1:"+f.format(d1));
-											// System.out.println("d2:"+f.format(d2));
-											// System.out.println("d1.getTime():"+d1.getTime());
-											// System.out.println("d2.getTime():"+d2.getTime());
-
-											diff = d1.getTime() - d2.getTime();
-											sec = diff / 1000;
-
-											writer.append(body_data[x][3] + "," + site_PF_counter[i] + ","
-													+ site_Hbin_counter[i] + "," + site_Sbin_counter[i] + ","
-													+ site_counter[i] + "," + ATE_id + "," + hadler_id + "," + date_data
-													+ " " + f.format(d1) + "," + date_data + " " + f.format(d2) + ","
-													+ Math.abs(sec) + "," + Lot_id);
-
-										} else if (body_data[x][2].equals(String.valueOf(site_counter[i]))) {
-
-											// System.out.println("IS THIS RUN C5?");
-											// System.out.println("site_counter[i]"+":"+i+":"+site_counter[i]);
-											// System.out.println("body_data[x][0]"+":"+x+":"+body_data[x][0]);
-											// System.out.println("body_data[x][1]"+":"+x+":"+body_data[x][1]);
-											// System.out.println("body_data[x][2]"+":"+x+":"+body_data[x][2]);
-											// System.out.println("body_data[x][3]"+":"+x+":"+body_data[x][3]);
-											// System.out.println("body_data[x][4]"+":"+x+":"+body_data[x][4]);
-											// System.out.println("body_data[x][5]"+":"+x+":"+body_data[x][5]);
-											// System.out.println("body_data[x][6]"+":"+x+":"+body_data[x][6]);
-											// System.out.println("body_data[x][7]"+":"+x+":"+body_data[x][7]);
-											// System.out.println("body_data[x][8]"+":"+x+":"+body_data[x][8]);
-											// System.out.println("body_data[x][9]"+":"+x+":"+body_data[x][9]);
-
-											if (body_data[x][4].equals("-1")) {
-
-												if(body_data[x][6].equals("m") || body_data[x][6].equals("mA") || body_data[x][6].equals("mV") || body_data[x][6].equals("V") || body_data[x][6].equals("A") || body_data[x][6].equals("uA") || body_data[x][6].equals("uV") || body_data[x][6].equals("nA") || body_data[x][6].equals("nV")) {
-													
-													writer.append("," + body_data[x][7]);
-													
-												} else {
-												
-													// System.out.println("IS THIS RUN C6?");
-													writer.append("," + body_data[x][6]);
-													
-												}
-												
-											} else if (body_data[x][6].equals("N/A")) {
-
-												//if (body_data[x][9].equals("(A)") || body_data[x][9].equals("(F)")) {
-
-													// System.out.println("IS THIS RUN C6");
-													//writer.append("," + body_data[x][7]);
-													// do nothing
-
-												//} else {
-
-													// System.out.println("IS THIS RUN C7?");
-													writer.append("," + body_data[x][7]);
-
-												//}
-
-											} else {
-
-												// System.out.println("IS THIS RUN C8?");
-												writer.append("," + body_data[x][8]);
-
-											}
-
-										}
-
-									}
-									//System.out.println("IS THIS RUN M?");
-									writer.append("\n");
-								}
-
-							}
-
-							// System.out.println("IS THIS RUN NULL?");
-
-							// Arrays.fill(body_data, "");
-							// body_data = new String[172032][1024];
-
-							for (int l = 0; l < body_loop_count + 1; l++) {
-
-								for (int h = 0; h < body_data[l].length; h++) {
-
-									body_data[l][h] = null;
-									// System.out.println("body_data[l][h]:" + l
-									// + ":" + h + ":" +body_data[l][h]);
-								}
-							}
-
-							for (int l = 0; l < site_counter.length; l++) {
-
-								site_counter[l] = 999;
-
-							}
-
-							
-							for (int i = 0; i < site_Hbin_counter.length; i++) {
-
-								site_Hbin_counter[i] = null;
-
-							}
-
-							
-							for (int i = 0; i < site_Sbin_counter.length; i++) {
-
-								site_Sbin_counter[i] = null;
-
-							}
-
-							
-							for (int i = 0; i < site_PF_counter.length; i++) {
-
-								site_PF_counter[i] = null;
-
-							}
-							
-							isite = 0;
-							line_done = 0;
-							first_data_en = 1;
-							data_align = 0;
-							bin_isite = 0;
-							
-							//System.out.println("first data_align?"+data_align);
-							//System.out.println("IS THIS first body pard over?");
-
-						} else if (rows != 0 && engage_main_body > 1 && line_done == 1) {
-
-							//System.out.println("Engage MAIN BODY!!!!!!!");
-							// break;
-
-							// for(int i = body_loop_count-100; i < body_loop_count+1; i++) {
-							// for(int y = 0; y < body_data[i].length; y++) {
-							// System.out.println("body_data[i][y]:"+i+":"+y+":"+body_data[i][y]);
-							// }
-							// }
-
-							for (int i = 0; i < head_end_count; i++) {
-
-								// System.out.println("head_end_count:"+head_end_count+":i:"+i);
-								// System.out.println("head_data[i].length:"+head_data[i].length+":i:"+i);
-								// System.out.println("head_data[i][1]:"+head_data[i][1]);
-								// System.out.println("IS THIS RUN SA?");
-
-								// System.out.println("body_data[i][0]:"+i+":"+body_data[i][0]);
-								// System.out.println("body_data[i][3]:"+i+":"+body_data[i][3]);
-
-								if (head_data[i][1] == null) {
-
-									// System.out.println("IS THIS RUN SA0?");
-									// do nothing
-
-								} else if (head_data[i][0].equals("Datalog") && head_data[i][1].equals("report")) {
-									// System.out.println("IS THIS RUN SA1?");
-									d1 = f.parse(head_data[i + 1][1]);
-
-								} else if (head_data[i][1].equals("Lot:")) {
-									// ystem.out.println("IS THIS RUN SA2?");
-									Lot_id = head_data[i][2];
-
-								} else if (head_data[i][1].equals("Node") && head_data[i][2].equals("Name:")) {
-									// System.out.println("IS THIS RUN SA3?");
-									ATE_id = head_data[i][3];
-
-								} else if (head_data[i][1].equals("HandID:")) {
-									// System.out.println("IS THIS RUN SA4?");
-									hadler_id = head_data[i][2];
-
-								} else {
-
-									// do nothing
-								}
-
-							}
-
-							 //System.out.println("IS THIS RUN SA5?");
-							// for(int i = 0; i < body_loop_count+1; i++) {
-							for (int i = 0; i < 100; i++) {
-								 //System.out.println("body_data[i][0]:"+i+":"+body_data[i][0]);
-								 //System.out.println("body_data[i][3]:"+i+":"+body_data[i][3]);
-
-								if (body_data[i][3] == null || body_data[i][3].isEmpty()
-										|| body_data[i][3].equals("Test") || body_data[i][3].equals("alarm")
-										|| body_data[i][3].equals("GPIB_Echo") || body_data[i][3].equals("Barcode")
-										|| body_data[i][3].equals("[Pin")) {
-
-									// System.out.println("prebody_data[i][0]:"+i+":"+body_data[i][0]);
-									// System.out.println("prebody_data[i][3]:"+i+":"+body_data[i][3]);
-
-									// do nothing
-
-								} else if (body_data[i][3].equals("tests/Executed")) {
-									// System.out.println("body_data[i][3]"+":"+i+":"+body_data[i][3]);
-									// writer.append("\n");
-									break;
-
-								} else {
-									// System.out.println("IS THIS RUN I?");
-
-									 //System.out.println("body_data[i][0]:"+i+":"+body_data[i][0]);
-									 //System.out.println("body_data[i][3]:"+i+":"+body_data[i][3]);
-
-									if (body_data[i][0].equals("BARCODE") && !body_data[i][3].equals("0")) {
-										 //System.out.println("IS THIS RUN J?");
-										 //System.out.println("body_data[i][0]:"+body_data[i][0]);
-										 //System.out.println("body_data[i][3]:"+body_data[i][3]);
-
-										site_counter[isite] = Integer.parseInt(body_data[i][2]);
-										// writer.append(body_data[i][4]);
-
-										isite = isite + 1;
-
-									}
-								}
-
-							}
-
-							for (int i = 0; i < body_loop_count + 1; i++) {
-								// System.out.println("IS THIS RUN SA6?");
-								// System.out.println("current i:"+i);
-								// System.out.println("body_loop_count:"+body_loop_count);
-								if (body_data[i][3] == null || body_data[i][3].isEmpty()
-										|| body_data[i][3].equals("Test") || body_data[i][3].equals("alarm")
-										|| body_data[i][3].equals("GPIB_Echo") || body_data[i][3].equals("Barcode")
-										|| body_data[i][3].equals("[Pin")) {
-									 //System.out.println("IS THIS RUN SA7?");
-									 //System.out.println("body_data[i][0]:"+i+":"+body_data[i][0]);
-									 //System.out.println("body_data[i][1]:"+i+":"+body_data[i][1]);
-									 //System.out.println("body_data[i][2]:"+i+":"+body_data[i][2]);
-									 //System.out.println("body_data[i][3]:"+i+":"+body_data[i][3]);
-
-									// do nothing
-
-								} else {
-									 //System.out.println("IS THIS RUN SB?");
-
-									 //System.out.println("body_data[i][0]:"+i+":"+body_data[i][0]);
-									// System.out.println("body_data[i][1]:"+i+":"+body_data[i][1]);
-									 //System.out.println("body_data[i][2]:"+i+":"+body_data[i][2]);
-									 //System.out.println("body_data[i][3]:"+i+":"+body_data[i][3]);
-
-									if (body_data[i][2].equals("Sort") && body_data[i][3].equals("Bin")) {
-
-										bin_engage = 1;
-
-									} else if (bin_engage == 1
-											&& body_data[i][1].equals(String.valueOf(site_counter[bin_isite]))) {
-
-										site_Hbin_counter[bin_isite] = body_data[i][2];
-										site_Sbin_counter[bin_isite] = body_data[i][3];
-
-										if (site_Hbin_counter[bin_isite].equals("1")) {
-
-											site_PF_counter[bin_isite] = "PASS";
-
-											//System.out.println("site_counter[bin_isite]:"+String.valueOf(site_counter[bin_isite]));
-											//System.out.println("site_PF_counter[bin_isite]:"+site_PF_counter[bin_isite]);
-										} else {
-
-											site_PF_counter[bin_isite] = "FAIL";
-
-											//System.out.println("site_counter[bin_isite]:"+String.valueOf(site_counter[bin_isite]));
-											//System.out.println("site_PF_counter[bin_isite]:"+site_PF_counter[bin_isite]);
-										}
-
-										bin_isite = bin_isite + 1;
-
-									} else if (body_data[i][0].equals("Date:") && body_data[i][2].equals("Time:")) {
-										 //System.out.println("IS THIS RUN SB1?");
-										 //System.out.println("body_data[i][0]"+body_data[i][0]);
-										 //System.out.println("body_data[i][1]"+body_data[i][1]);
-										 //System.out.println("body_data[i][2]"+body_data[i][2]);
-										 //System.out.println("body_data[i][3]"+body_data[i][3]);
-										 //System.out.println("ftime_count:"+time_count);
-										 
-										 date_data = body_data[i][1];
-
-										 time[time_count] = f.parse(body_data[i][3]);
-										 time_count = time_count + 1;
-
-										 //System.out.println("atime_count:"+time_count);
-									}
-								}
-
-								//System.out.println("body_loop_count:"+body_loop_count+":i:"+i);
-								if (i == body_loop_count)
-									bin_engage = 0;
-
-							}
-
-							// System.out.println("IS THIS RUN SC?");
-
-							// if(body_loop_count == 54834) {
-
-							// System.out.println("DEBUG S POINT");
-
-							// }
-
-							for (int i = 0; i < site_counter.length; i++) {
-
-								if (site_counter[i] == 999) {
-									// System.out.println("IS THIS RUN D?");
-									// writer.append("\n");
-									break;
-
-								} else {
-									// System.out.println("IS THIS RUN E?");
-									for (int x = 0; x < body_loop_count + 1; x++) {
-										// System.out.println("IS THIS RUN SC1?");
-										if (body_data[x][3] == null || body_data[x][3].isEmpty()
-												|| body_data[x][3].equals("Test") || body_data[x][3].equals("alarm")
-												|| body_data[x][3].equals("GPIB_Echo")
-												|| body_data[x][3].equals("Barcode")
-												|| body_data[x][3].equals("[Pin")) {
-											// System.out.println("IS THIS RUN SC2?");
-											// System.out.println("body_data[x][3]"+":"+i+":"+body_data[x][3]);
-											// do nothing
-
-										} else if (body_data[x][3].equals("tests/Executed")) {
-											// System.out.println("IS THIS RUN SC3?");
-											// System.out.println("body_data[x][3]"+":"+i+":"+body_data[x][3]);
-											// writer.append("\n");
-											break;
-
-										} else if (body_data[x][0].equals("BARCODE")
-												&& body_data[x][2].equals(String.valueOf(site_counter[i]))) {
-											// System.out.println("IS THIS RUN SC4?");
-											// System.out.println("site_counter[i]"+":"+i+":"+site_counter[i]);
-											// System.out.println("body_data[x][0]"+":"+x+":"+body_data[x][0]);
-											// System.out.println("body_data[x][1]"+":"+x+":"+body_data[x][1]);
-											// System.out.println("body_data[x][2]"+":"+x+":"+body_data[x][2]);
-											// System.out.println("body_data[x][3]"+":"+x+":"+body_data[x][3]);
-											// System.out.println("body_data[x][4]"+":"+x+":"+body_data[x][4]);
-											// System.out.println("body_data[x][5]"+":"+x+":"+body_data[x][5]);
-											// System.out.println("body_data[x][6]"+":"+x+":"+body_data[x][6]);
-											// System.out.println("body_data[x][7]"+":"+x+":"+body_data[x][7]);
-											// System.out.println("body_data[x][8]"+":"+x+":"+body_data[x][8]);
-											// System.out.println("body_data[x][9]"+":"+x+":"+body_data[x][9]);
-
-											 //System.out.println("d1:"+f.format(d1));
-											 //System.out.println("d2:"+f.format(d2));
-											 //System.out.println("time_count:"+(time_count-1));
-											 //System.out.println("time[time_count-1]:"+f.format(time[time_count-1]));
-											 //System.out.println("d1.getTime():"+d1.getTime());
-											 //System.out.println("d2.getTime():"+d2.getTime());
-											 //System.out.println("time[time_count-1].getTime():"+time[time_count-1].getTime());
-
-											if (engage_main_body == 2) {
-
-												diff = d2.getTime() - time[time_count - 1].getTime();
-												sec = diff / 1000;
-
-												writer.append(body_data[x][3] + "," + site_PF_counter[i] + ","
-														+ site_Hbin_counter[i] + "," + site_Sbin_counter[i] + ","
-														+ site_counter[i] + "," + ATE_id + "," + hadler_id + "," + date_data
-														+ " " + f.format(d2) + "," + date_data + " " + f.format(time[time_count - 1]) + ","
-														+ Math.abs(sec) + "," + Lot_id);
-
-												
-											} else {
-
-												diff = time[time_count-2].getTime() - time[time_count - 1].getTime();
-												sec = diff / 1000;
-
-												writer.append(body_data[x][3] + "," + site_PF_counter[i] + ","
-														+ site_Hbin_counter[i] + "," + site_Sbin_counter[i] + ","
-														+ site_counter[i] + "," + ATE_id + "," + hadler_id + "," + date_data
-														+ " " + f.format(time[time_count-2]) + "," + date_data + " " + f.format(time[time_count - 1]) + ","
-														+ Math.abs(sec) + "," + Lot_id);
-												
-											}
-
+										} else { // added for non site information case
 											
-										} else if (body_data[x][2].equals(String.valueOf(site_counter[i]))) {
-
-											// System.out.println("IS THIS RUN SC5?");
-											// System.out.println("site_counter[i]"+":"+i+":"+site_counter[i]);
-											// System.out.println("body_data[x][0]"+":"+x+":"+body_data[x][0]);
-											// System.out.println("body_data[x][1]"+":"+x+":"+body_data[x][1]);
-											// System.out.println("body_data[x][2]"+":"+x+":"+body_data[x][2]);
-											// System.out.println("body_data[x][3]"+":"+x+":"+body_data[x][3]);
-											// System.out.println("body_data[x][4]"+":"+x+":"+body_data[x][4]);
-											// System.out.println("body_data[x][5]"+":"+x+":"+body_data[x][5]);
-											// System.out.println("body_data[x][6]"+":"+x+":"+body_data[x][6]);
-											// System.out.println("body_data[x][7]"+":"+x+":"+body_data[x][7]);
-											// System.out.println("body_data[x][8]"+":"+x+":"+body_data[x][8]);
-											// System.out.println("body_data[x][9]"+":"+x+":"+body_data[x][9]);
-
-											if (body_data[x][4].equals("-1")) {
-
-												if(body_data[x][6].equals("m") || body_data[x][6].equals("mA") || body_data[x][6].equals("mV") || body_data[x][6].equals("V") || body_data[x][6].equals("A") || body_data[x][6].equals("uA") || body_data[x][6].equals("uV") || body_data[x][6].equals("nA") || body_data[x][6].equals("nV")) {
+											for(int z = 0 ; z < site_counter.length; z++) {
+											
+												if (body_data[i][2].equals(SITE32_array[z]) && site_counter[z] == 999) {
 													
-													writer.append("," + body_data[x][7]);
-													
-												} else {
-												
-													// System.out.println("IS THIS RUN C6?");
-													writer.append("," + body_data[x][6]);
+													site_counter[z] = Integer.parseInt(body_data[i][2]);
 													
 												}
 												
+											}
+											
+											
+											
+										}
+									}
 
-											} else if (body_data[x][6].equals("N/A")) {
+								}
 
-												//if (body_data[x][9].equals("(A)") || body_data[x][9].equals("(F)")) {
+								System.out.println("NO HEAD C?");	
+								
+								for (int i = body_loop_count - 50 ; i < body_loop_count + 1; i++) {
 
-													// System.out.println("IS THIS RUN SC6");
-													//writer.append("," + body_data[x][7]);
-													// do nothing
+									System.out.println("NO HEAD C-1?");
+									
+									if(site_counter[bin_isite] == 999){
+										
+										// do nothing
+										bin_isite = bin_isite + 1;
+										
+									}
+									
+									// System.out.println("current i:"+i);
+									// System.out.println("body_loop_count:"+body_loop_count);
+									if (body_data[i][3] == null || body_data[i][3].isEmpty()
+											|| body_data[i][3].equals("Test") || body_data[i][3].equals("alarm")
+											|| body_data[i][3].equals("GPIB_Echo") || body_data[i][3].equals("Barcode")
+											|| body_data[i][3].equals("[Pin")) {
 
-												//} else {
+										// System.out.println("body_data[i][0]:"+i+":"+body_data[i][0]);
+										// System.out.println("body_data[i][1]:"+i+":"+body_data[i][1]);
+										// System.out.println("body_data[i][2]:"+i+":"+body_data[i][2]);
+										// System.out.println("body_data[i][3]:"+i+":"+body_data[i][3]);
 
-													// System.out.println("IS THIS RUN SC7?");
-													writer.append("," + body_data[x][7]);
+										// do nothing
 
-												//}
+									} else {
+
+
+										// System.out.println("body_data[i][0]:"+i+":"+body_data[i][0]);
+										// System.out.println("body_data[i][1]:"+i+":"+body_data[i][1]);
+										// System.out.println("body_data[i][2]:"+i+":"+body_data[i][2]);
+										// System.out.println("body_data[i][3]:"+i+":"+body_data[i][3]);
+
+										if (body_data[i][2].equals("Sort") && body_data[i][3].equals("Bin")) {
+
+											bin_engage = 1;
+
+										}  else if (bin_engage == 1
+												&& body_data[i][1].equals(String.valueOf(site_counter[bin_isite]))) {
+
+											site_Hbin_counter[bin_isite] = body_data[i][2];
+											site_Sbin_counter[bin_isite] = body_data[i][3];
+
+											if (site_Hbin_counter[bin_isite].equals("1")) {
+
+												site_PF_counter[bin_isite] = "PASS";
 
 											} else {
 
-												// System.out.println("IS THIS RUN SC8?");
-												writer.append("," + body_data[x][8]);
+												site_PF_counter[bin_isite] = "FAIL";
 
+											}
+
+											bin_isite = bin_isite + 1;
+
+										} else if (body_data[i][0].equals("Date:") && body_data[i][2].equals("Time:")) {
+
+											// System.out.println("body_data[i][0]"+body_data[i][0]);
+											// System.out.println("body_data[i][1]"+body_data[i][1]);
+											// System.out.println("body_data[i][2]"+body_data[i][2]);
+											// System.out.println("body_data[i][3]"+body_data[i][3]);
+											date_data = body_data[i][1];
+
+											d2 = f.parse(body_data[i][3]);
+										}
+									}
+
+									if (i == body_loop_count)
+										bin_engage = 0;
+
+								}
+
+
+
+								// if(body_loop_count == 54834) {
+
+								// System.out.println("DEBUG POINT");
+
+								// }
+
+								System.out.println("NO HEAD D?");	
+								
+								for (int i = 0; i < site_counter.length; i++) {
+
+									System.out.println("NO HEAD D-1?");
+									
+									if (site_counter[i] == 999) {
+
+										// writer.append("\n");
+										//break;
+
+									} else {
+
+										for (int x = 0; x < body_loop_count + 1; x++) {
+
+											if (body_data[x][3] == null || body_data[x][3].isEmpty()
+													|| body_data[x][3].equals("Test") || body_data[x][3].equals("alarm")
+													|| body_data[x][3].equals("GPIB_Echo")
+													|| body_data[x][3].equals("Barcode")
+													|| body_data[x][3].equals("[Pin")) {
+
+												// System.out.println("body_data[x][3]"+":"+i+":"+body_data[x][3]);
+												// do nothing
+
+											} else if (body_data[x][3].equals("tests/Executed")) {
+	
+												// System.out.println("body_data[x][3]"+":"+i+":"+body_data[x][3]);
+												//writer.append("\n");
+												break;
+
+											} else if (body_data[x][0].equals("BARCODE")
+													&& body_data[x][2].equals(String.valueOf(site_counter[i]))) {
+
+												// System.out.println("site_counter[i]"+":"+i+":"+site_counter[i]);
+												// System.out.println("body_data[x][0]"+":"+x+":"+body_data[x][0]);
+												// System.out.println("body_data[x][1]"+":"+x+":"+body_data[x][1]);
+												// System.out.println("body_data[x][2]"+":"+x+":"+body_data[x][2]);
+												// System.out.println("body_data[x][3]"+":"+x+":"+body_data[x][3]);
+												// System.out.println("body_data[x][4]"+":"+x+":"+body_data[x][4]);
+												// System.out.println("body_data[x][5]"+":"+x+":"+body_data[x][5]);
+												// System.out.println("body_data[x][6]"+":"+x+":"+body_data[x][6]);
+												// System.out.println("body_data[x][7]"+":"+x+":"+body_data[x][7]);
+												// System.out.println("body_data[x][8]"+":"+x+":"+body_data[x][8]);
+												// System.out.println("body_data[x][9]"+":"+x+":"+body_data[x][9]);
+
+												// System.out.println("d1:"+f.format(d1));
+												// System.out.println("d2:"+f.format(d2));
+												// System.out.println("d1.getTime():"+d1.getTime());
+												// System.out.println("d2.getTime():"+d2.getTime());
+
+												diff = d1.getTime() - d2.getTime();
+												sec = diff / 1000;
+
+												writer.append(body_data[x][3] + "," + site_PF_counter[i] + ","
+														+ site_Hbin_counter[i] + "," + site_Sbin_counter[i] + ","
+														+ site_counter[i] + "," + ATE_id + "," + hadler_id + ","
+														+ date_data + " " + f.format(d1) + "," + date_data + " "
+														+ f.format(d2) + "," + Math.abs(sec) + "," + Lot_id);
+												
+	
+											//	System.out.println("x, body_loop_count: "+x+" "+body_loop_count);
+											//	if(x == body_loop_count ) {
+											//		System.out.println("line divider "+x);
+											//		writer.append("\n");
+												
+											//	}
+												
+												
+											} else if (body_data[x][2].equals(String.valueOf(site_counter[i]))) {
+
+
+												if(first_head_information[i] == 0) {
+													
+													writer.append("Unknown" + "," + site_PF_counter[i] + ","
+															+ site_Hbin_counter[i] + "," + site_Sbin_counter[i] + ","
+															+ site_counter[i] + "," + "Unknown" + "," + "Unknown" + ","
+															+ "Unknown" + " " + "Unknown" + "," + "Unknown" + " "
+															+ "Unknown" + "," + "Unknown" + "," + "Unknown");
+													
+													first_head_information[i] = 1;
+												}
+												
+												// System.out.println("site_counter[i]"+":"+i+":"+site_counter[i]);
+												// System.out.println("body_data[x][0]"+":"+x+":"+body_data[x][0]);
+												// System.out.println("body_data[x][1]"+":"+x+":"+body_data[x][1]);
+												// System.out.println("body_data[x][2]"+":"+x+":"+body_data[x][2]);
+												// System.out.println("body_data[x][3]"+":"+x+":"+body_data[x][3]);
+												// System.out.println("body_data[x][4]"+":"+x+":"+body_data[x][4]);
+												// System.out.println("body_data[x][5]"+":"+x+":"+body_data[x][5]);
+												// System.out.println("body_data[x][6]"+":"+x+":"+body_data[x][6]);
+												// System.out.println("body_data[x][7]"+":"+x+":"+body_data[x][7]);
+												// System.out.println("body_data[x][8]"+":"+x+":"+body_data[x][8]);
+												// System.out.println("body_data[x][9]"+":"+x+":"+body_data[x][9]);
+
+												if (body_data[x][4].equals("-1")) {
+
+													if (body_data[x][5].equals("N/A")) {
+
+														writer.append("," + body_data[x][6]);
+
+													} else if (body_data[x][6].equals("mohm") || body_data[x][6].equals("ohm") || body_data[x][6].equals("%") || body_data[x][6].equals("m") || body_data[x][6].equals("mA")
+															|| body_data[x][6].equals("mV")
+															|| body_data[x][6].equals("V")
+															|| body_data[x][6].equals("A")
+															|| body_data[x][6].equals("uA")
+															|| body_data[x][6].equals("uV")
+															|| body_data[x][6].equals("nA")
+															|| body_data[x][6].equals("nV")) {
+
+														writer.append("," + body_data[x][7]);
+
+													} else {
+
+
+														writer.append("," + body_data[x][6]);
+
+													}
+
+												} else if (body_data[x][6].equals("N/A")) {
+
+													// if (body_data[x][9].equals("(A)") ||
+													// body_data[x][9].equals("(F)")) {
+
+
+													// writer.append("," + body_data[x][7]);
+													// do nothing
+
+													// } else {
+
+
+													writer.append("," + body_data[x][7]);
+
+													// }
+
+												} else if (body_data[x][3].equals("D1")||body_data[x][3].equals("D2")) {
+
+		
+													writer.append("," + body_data[x][9]);
+
+
+												} else {
+
+
+													writer.append("," + body_data[x][8]);
+
+												}
+
+											//	System.out.println("x, body_loop_count: "+x+" "+body_loop_count);
+												
+											//	if(x == body_loop_count ) {
+											//		System.out.println("line divider "+x);						
+											//		writer.append("\n");
+												
+											//	}
+												
 											}
 
 										}
 
+									//	if(site_counter[i] == 999) {
+										
+											// do nothing
+											
+									//	} else {
+										
+											writer.append("\n");
+										
+									//	}
+								
 									}
 
-									//System.out.println("IS THIS RUN SM?");
-									writer.append("\n");
 								}
 
-							}
+								System.out.println("NO HEAD E?");
 
-							//System.out.println("IS THIS RUN S NULL?");
+								// Arrays.fill(body_data, "");
+								// body_data = new String[172032][1024];
 
-							// Arrays.fill(body_data, "");
-							// body_data = new String[172032][1024];
+								for (int l = 0; l < body_loop_count + 1; l++) {
 
-							for (int l = 0; l < body_loop_count + 1; l++) {
+									for (int h = 0; h < body_data[l].length; h++) {
 
-								for (int h = 0; h < body_data[l].length; h++) {
-
-									body_data[l][h] = null;
-									// System.out.println("body_data[l][h]:" + l
-									// + ":" + h + ":" +body_data[l][h]);
+										body_data[l][h] = null;
+										// System.out.println("body_data[l][h]:" + l
+										// + ":" + h + ":" +body_data[l][h]);
+									}
 								}
+
+								for (int l = 0; l < site_counter.length; l++) {
+
+									site_counter[l] = 999;
+									first_head_information[l] = 0;
+
+								}
+
+								for (int i = 0; i < site_Hbin_counter.length; i++) {
+
+									site_Hbin_counter[i] = null;
+
+								}
+
+								for (int i = 0; i < site_Sbin_counter.length; i++) {
+
+									site_Sbin_counter[i] = null;
+
+								}
+
+								for (int i = 0; i < site_PF_counter.length; i++) {
+
+									site_PF_counter[i] = null;
+
+								}
+
+								isite = 0;
+								line_done = 0;
+								first_data_en = 1;
+								data_align = 0;
+								bin_isite = 0;
+
+								// System.out.println("first data_align?"+data_align);
+								// System.out.println("IS THIS first body part over?");
+
+							} else if (rows != 0 && engage_main_body > 1 && line_done == 1) {
+
+								// System.out.println("Engage MAIN BODY!!!!!!!");
+								// break;
+
+								// for(int i = body_loop_count-100; i < body_loop_count+1; i++) {
+								// for(int y = 0; y < body_data[i].length; y++) {
+								// System.out.println("body_data[i][y]:"+i+":"+y+":"+body_data[i][y]);
+								// }
+								// }
+
+								System.out.println("NO HEAD F?");
+								
+								for (int i = 0; i < head_end_count; i++) {
+
+									// System.out.println("head_end_count:"+head_end_count+":i:"+i);
+									// System.out.println("head_data[i].length:"+head_data[i].length+":i:"+i);
+									// System.out.println("head_data[i][1]:"+head_data[i][1]);
+
+
+									// System.out.println("body_data[i][0]:"+i+":"+body_data[i][0]);
+									// System.out.println("body_data[i][3]:"+i+":"+body_data[i][3]);
+
+									if (head_data[i][1] == null) {
+
+										// do nothing
+
+									} else if (head_data[i][0].equals("Datalog") && head_data[i][1].equals("report")) {
+
+										d1 = f.parse(head_data[i + 1][1]);
+
+									} else if (head_data[i][1].equals("Lot:")) {
+
+										Lot_id = head_data[i][2];
+
+									} else if (head_data[i][1].equals("Node") && head_data[i][2].equals("Name:")) {
+
+										ATE_id = head_data[i][3];
+
+									} else if (head_data[i][1].equals("HandID:")) {
+
+										hadler_id = head_data[i][2];
+
+									} else {
+
+										// do nothing
+									}
+
+								}
+
+								System.out.println("NO HEAD G?");
+
+								// for(int i = 0; i < body_loop_count+1; i++) {
+								for (int i = 0; i < 100; i++) {
+									// System.out.println("body_data[i][0]:"+i+":"+body_data[i][0]);
+									// System.out.println("body_data[i][3]:"+i+":"+body_data[i][3]);
+
+									if (body_data[i][3] == null || body_data[i][3].isEmpty()
+											|| body_data[i][3].equals("Test") || body_data[i][3].equals("alarm")
+											|| body_data[i][3].equals("GPIB_Echo") || body_data[i][3].equals("Barcode")
+											|| body_data[i][3].equals("[Pin")) {
+
+										// System.out.println("prebody_data[i][0]:"+i+":"+body_data[i][0]);
+										// System.out.println("prebody_data[i][3]:"+i+":"+body_data[i][3]);
+
+										// do nothing
+
+									} else if (body_data[i][3].equals("tests/Executed")) {
+										// System.out.println("body_data[i][3]"+":"+i+":"+body_data[i][3]);
+										// writer.append("\n");
+										break;
+
+									} else {
+
+
+										// System.out.println("body_data[i][0]:"+i+":"+body_data[i][0]);
+										// System.out.println("body_data[i][3]:"+i+":"+body_data[i][3]);
+
+										if (body_data[i][0].equals("BARCODE") && !body_data[i][3].equals("0")) {
+
+											// System.out.println("body_data[i][0]:"+body_data[i][0]);
+											// System.out.println("body_data[i][3]:"+body_data[i][3]);
+
+											site_counter[isite] = Integer.parseInt(body_data[i][2]);
+											// writer.append(body_data[i][4]);
+
+											isite = isite + 1;
+
+										} else { // added for non site information case
+											
+											for(int z = 0 ; z < site_counter.length; z++) {
+												
+												if (body_data[i][2].equals(SITE32_array[z]) && site_counter[z] == 999) {
+													
+													site_counter[z] = Integer.parseInt(body_data[i][2]);
+													
+												}
+												
+											}
+											
+											
+										}
+									}
+
+								}
+
+								System.out.println("NO HEAD H?");
+								
+								for (int i = body_loop_count - 50; i < body_loop_count + 1; i++) {
+									
+									System.out.println("site_counter[bin_isite]: "+bin_isite+" "+site_counter[bin_isite]);
+									
+									
+									if(site_counter[bin_isite] == 999){
+										
+										// do nothing
+										bin_isite = bin_isite + 1;
+										
+									}
+									
+									// System.out.println("current i:"+i);
+									// System.out.println("body_loop_count:"+body_loop_count);
+									if (body_data[i][3] == null || body_data[i][3].isEmpty()
+											|| body_data[i][3].equals("Test") || body_data[i][3].equals("alarm")
+											|| body_data[i][3].equals("GPIB_Echo") || body_data[i][3].equals("Barcode")
+											|| body_data[i][3].equals("[Pin")) {
+
+										// System.out.println("body_data[i][0]:"+i+":"+body_data[i][0]);
+										// System.out.println("body_data[i][1]:"+i+":"+body_data[i][1]);
+										// System.out.println("body_data[i][2]:"+i+":"+body_data[i][2]);
+										// System.out.println("body_data[i][3]:"+i+":"+body_data[i][3]);
+
+										// do nothing
+
+									} else {
+
+
+										// System.out.println("body_data[i][0]:"+i+":"+body_data[i][0]);
+										// System.out.println("body_data[i][1]:"+i+":"+body_data[i][1]);
+										// System.out.println("body_data[i][2]:"+i+":"+body_data[i][2]);
+										// System.out.println("body_data[i][3]:"+i+":"+body_data[i][3]);
+
+										if (body_data[i][2].equals("Sort") && body_data[i][3].equals("Bin")) {
+
+											bin_engage = 1;
+
+										}  else if (bin_engage == 1
+												&& body_data[i][1].equals(String.valueOf(site_counter[bin_isite]))) {
+
+											site_Hbin_counter[bin_isite] = body_data[i][2];
+											site_Sbin_counter[bin_isite] = body_data[i][3];
+
+											if (site_Hbin_counter[bin_isite].equals("1")) {
+
+												site_PF_counter[bin_isite] = "PASS";
+
+												// System.out.println("site_counter[bin_isite]:"+String.valueOf(site_counter[bin_isite]));
+												// System.out.println("site_PF_counter[bin_isite]:"+site_PF_counter[bin_isite]);
+											} else {
+
+												site_PF_counter[bin_isite] = "FAIL";
+
+												// System.out.println("site_counter[bin_isite]:"+String.valueOf(site_counter[bin_isite]));
+												// System.out.println("site_PF_counter[bin_isite]:"+site_PF_counter[bin_isite]);
+											}
+
+											bin_isite = bin_isite + 1;
+
+										} else if (body_data[i][0].equals("Date:") && body_data[i][2].equals("Time:")) {
+
+											// System.out.println("body_data[i][0]"+body_data[i][0]);
+											// System.out.println("body_data[i][1]"+body_data[i][1]);
+											// System.out.println("body_data[i][2]"+body_data[i][2]);
+											// System.out.println("body_data[i][3]"+body_data[i][3]);
+											// System.out.println("ftime_count:"+time_count);
+
+											date_data = body_data[i][1];
+
+											time[time_count] = f.parse(body_data[i][3]);
+											time_count = time_count + 1;
+
+											// System.out.println("atime_count:"+time_count);
+										}
+									}
+
+									// System.out.println("body_loop_count:"+body_loop_count+":i:"+i);
+									if (i == body_loop_count)
+										bin_engage = 0;
+
+								}
+
+
+
+								
+								// if(body_loop_count == 54834) {
+
+								// System.out.println("DEBUG S POINT");
+
+								// }
+
+								System.out.println("NO HEAD I?");
+								//System.out.println("site_counter.length " + site_counter.length);
+								
+								for (int i = 0; i < site_counter.length; i++) {
+										System.out.println("site_counter[i] "+i+" "+site_counter[i]);
+										System.out.println("SITE32_array[i] "+i+" "+SITE32_array[i]);
+									if (site_counter[i] == 999) {
+										
+										// writer.append("\n");
+										//break;
+
+									} else {
+										System.out.println("NO HEAD I-2?");
+										for (int x = 0; x < body_loop_count + 1; x++) {
+											// System.out.println("IS THIS RUN SC1?");
+											if (body_data[x][3] == null || body_data[x][3].isEmpty()
+													|| body_data[x][3].equals("Test") || body_data[x][3].equals("alarm")
+													|| body_data[x][3].equals("GPIB_Echo")
+													|| body_data[x][3].equals("Barcode")
+													|| body_data[x][3].equals("[Pin")) {
+
+												// System.out.println("body_data[x][3]"+":"+i+":"+body_data[x][3]);
+												// do nothing
+
+											} else if (body_data[x][3].equals("tests/Executed")) {
+
+												// System.out.println("body_data[x][3]"+":"+i+":"+body_data[x][3]);
+												// writer.append("\n");
+												break;
+
+											} else if (body_data[x][0].equals("BARCODE")
+													&& body_data[x][2].equals(String.valueOf(site_counter[i]))) {
+
+												// System.out.println("site_counter[i]"+":"+i+":"+site_counter[i]);
+												// System.out.println("body_data[x][0]"+":"+x+":"+body_data[x][0]);
+												// System.out.println("body_data[x][1]"+":"+x+":"+body_data[x][1]);
+												// System.out.println("body_data[x][2]"+":"+x+":"+body_data[x][2]);
+												// System.out.println("body_data[x][3]"+":"+x+":"+body_data[x][3]);
+												// System.out.println("body_data[x][4]"+":"+x+":"+body_data[x][4]);
+												// System.out.println("body_data[x][5]"+":"+x+":"+body_data[x][5]);
+												// System.out.println("body_data[x][6]"+":"+x+":"+body_data[x][6]);
+												// System.out.println("body_data[x][7]"+":"+x+":"+body_data[x][7]);
+												// System.out.println("body_data[x][8]"+":"+x+":"+body_data[x][8]);
+												// System.out.println("body_data[x][9]"+":"+x+":"+body_data[x][9]);
+
+												// System.out.println("d1:"+f.format(d1));
+												// System.out.println("d2:"+f.format(d2));
+												// System.out.println("time_count:"+(time_count-1));
+												// System.out.println("time[time_count-1]:"+f.format(time[time_count-1]));
+												// System.out.println("d1.getTime():"+d1.getTime());
+												// System.out.println("d2.getTime():"+d2.getTime());
+												// System.out.println("time[time_count-1].getTime():"+time[time_count-1].getTime());
+
+												if (engage_main_body == 2) {
+
+													diff = d2.getTime() - time[time_count - 1].getTime();
+													sec = diff / 1000;
+
+													writer.append(body_data[x][3] + "," + site_PF_counter[i] + ","
+															+ site_Hbin_counter[i] + "," + site_Sbin_counter[i] + ","
+															+ site_counter[i] + "," + ATE_id + "," + hadler_id + ","
+															+ date_data + " " + f.format(d2) + "," + date_data + " "
+															+ f.format(time[time_count - 1]) + "," + Math.abs(sec) + ","
+															+ Lot_id);
+
+												} else {
+
+													diff = time[time_count - 2].getTime()
+															- time[time_count - 1].getTime();
+													sec = diff / 1000;
+
+													writer.append(body_data[x][3] + "," + site_PF_counter[i] + ","
+															+ site_Hbin_counter[i] + "," + site_Sbin_counter[i] + ","
+															+ site_counter[i] + "," + ATE_id + "," + hadler_id + ","
+															+ date_data + " " + f.format(time[time_count - 2]) + ","
+															+ date_data + " " + f.format(time[time_count - 1]) + ","
+															+ Math.abs(sec) + "," + Lot_id);
+
+												}
+
+												
+												//if(x == body_loop_count ) {
+													
+												//	writer.append("\n");
+												
+												//}
+												
+											} else if (body_data[x][2].equals(String.valueOf(site_counter[i]))) {
+
+
+												// System.out.println("site_counter[i]"+":"+i+":"+site_counter[i]);
+												// System.out.println("body_data[x][0]"+":"+x+":"+body_data[x][0]);
+												// System.out.println("body_data[x][1]"+":"+x+":"+body_data[x][1]);
+												// System.out.println("body_data[x][2]"+":"+x+":"+body_data[x][2]);
+												// System.out.println("body_data[x][3]"+":"+x+":"+body_data[x][3]);
+												// System.out.println("body_data[x][4]"+":"+x+":"+body_data[x][4]);
+												// System.out.println("body_data[x][5]"+":"+x+":"+body_data[x][5]);
+												// System.out.println("body_data[x][6]"+":"+x+":"+body_data[x][6]);
+												// System.out.println("body_data[x][7]"+":"+x+":"+body_data[x][7]);
+												// System.out.println("body_data[x][8]"+":"+x+":"+body_data[x][8]);
+												// System.out.println("body_data[x][9]"+":"+x+":"+body_data[x][9]);
+
+												if(first_head_information[i] == 0) {
+													
+													writer.append("Unknown" + "," + site_PF_counter[i] + ","
+															+ site_Hbin_counter[i] + "," + site_Sbin_counter[i] + ","
+															+ site_counter[i] + "," + "Unknown" + "," + "Unknown" + ","
+															+ "Unknown" + " " + "Unknown" + "," + "Unknown" + " "
+															+ "Unknown" + "," + "Unknown" + "," + "Unknown");
+													
+													first_head_information[i] = 1;
+												}
+												
+												
+												if (body_data[x][4].equals("-1")) {
+
+													if (body_data[x][5].equals("N/A")) {
+
+														writer.append("," + body_data[x][6]);
+
+													} else if (body_data[x][6].equals("mohm") || body_data[x][6].equals("ohm") || body_data[x][6].equals("%") || body_data[x][6].equals("m") || body_data[x][6].equals("mA")
+															|| body_data[x][6].equals("mV")
+															|| body_data[x][6].equals("V")
+															|| body_data[x][6].equals("A")
+															|| body_data[x][6].equals("uA")
+															|| body_data[x][6].equals("uV")
+															|| body_data[x][6].equals("nA")
+															|| body_data[x][6].equals("nV")) {
+
+														writer.append("," + body_data[x][7]);
+
+													} else {
+
+
+														writer.append("," + body_data[x][6]);
+
+													}
+
+												} else if (body_data[x][6].equals("N/A")) {
+
+													// if (body_data[x][9].equals("(A)") ||
+													// body_data[x][9].equals("(F)")) {
+
+
+													// writer.append("," + body_data[x][7]);
+													// do nothing
+
+													// } else {
+
+
+													writer.append("," + body_data[x][7]);
+
+													// }
+
+												} else if (body_data[x][3].equals("D1")||body_data[x][3].equals("D2")) {
+
+		
+													writer.append("," + body_data[x][9]);
+
+
+												} else {
+
+	
+													writer.append("," + body_data[x][8]);
+
+												}
+
+												//if(x == body_loop_count ) {
+													
+												//	writer.append("\n");
+												
+												//}
+												
+											}
+
+										}
+
+			
+								//		if(site_counter[i] == 999) {
+											
+											// do nothing
+											
+									//	} else {
+										
+											writer.append("\n");
+										
+									//	}
+									}
+
+								}
+
+								System.out.println("NO HEAD J?");
+
+								// Arrays.fill(body_data, "");
+								// body_data = new String[172032][1024];
+
+								for (int l = 0; l < body_loop_count + 1; l++) {
+
+									for (int h = 0; h < body_data[l].length; h++) {
+
+										body_data[l][h] = null;
+										// System.out.println("body_data[l][h]:" + l
+										// + ":" + h + ":" +body_data[l][h]);
+									}
+								}
+
+								for (int l = 0; l < site_counter.length; l++) {
+
+									site_counter[l] = 999;
+									first_head_information[l] = 0;
+
+								}
+
+								for (int i = 0; i < site_Hbin_counter.length; i++) {
+
+									site_Hbin_counter[i] = null;
+
+								}
+
+								for (int i = 0; i < site_Sbin_counter.length; i++) {
+
+									site_Sbin_counter[i] = null;
+
+								}
+
+								for (int i = 0; i < site_PF_counter.length; i++) {
+
+									site_PF_counter[i] = null;
+
+								}
+
+								isite = 0;
+								line_done = 0;
+								first_data_en = 1;
+								data_align = 0;
+								bin_isite = 0;
+
+								// System.out.println("second data_align?"+data_align);
+								//System.out.println("IS THIS Second body part over?");
+
 							}
 
-							for (int l = 0; l < site_counter.length; l++) {
-
-								site_counter[l] = 999;
-
-							}
-
-							for (int i = 0; i < site_Hbin_counter.length; i++) {
-
-								site_Hbin_counter[i] = null;
-
-							}
+							rows = rows + 1;
 
 							
-							for (int i = 0; i < site_Sbin_counter.length; i++) {
+							//System.out.println("NO HEAD K?");
+							// if(rows == 100) break;
 
-								site_Sbin_counter[i] = null;
+							// writer.append(TXTloadbuffer.toString());
 
-							}
-
-							
-							for (int i = 0; i < site_PF_counter.length; i++) {
-
-								site_PF_counter[i] = null;
-
-							}
-							
-							isite = 0;
-							line_done = 0;
-							first_data_en = 1;
-							data_align = 0;
-							bin_isite = 0;
-							
-							//System.out.println("second data_align?"+data_align);
-							//System.out.println("IS THIS Second body pard over?");
+							// TXTloadbuffer.setLength(0);
 
 						}
 
-						rows = rows + 1;
+						// System.out.println("head_data.length:" + head_data.length);
+						// System.out.println("head_data[x].length:" + head_data[1].length);
 
-						// if(rows == 100) break;
+						/*
+						 * for (int x = 0; x < head_data.length; x++) {
+						 * 
+						 * for (int y = 0; y < head_data[x].length; y++) {
+						 * 
+						 * System.out.println("IS THIS RUN?");
+						 * 
+						 * if (head_data[x][y] == "") {
+						 * 
+						 * break;
+						 * 
+						 * } else {
+						 * 
+						 * 
+						 * System.out.println("head_data[x][y]:" + x + ":" + y + ":" + head_data[x][y]);
+						 * 
+						 * }
+						 * 
+						 * }
+						 * 
+						 * }
+						 */
+						// writer.append("this is massive file read and write test");
 
-						// writer.append(TXTloadbuffer.toString());
+						System.out.println("NO HEAD L?");						
+						
+						fileEmpty.setText("");
+						fileEmpty.setText("   processing..........done");
 
-						// TXTloadbuffer.setLength(0);
+						reader.close();
+						writer.close();
+
+					} catch (Exception e2) {
+
+						JOptionPane.showMessageDialog(this, "Open Error");
 
 					}
-
-					// System.out.println("head_data.length:" + head_data.length);
-					// System.out.println("head_data[x].length:" + head_data[1].length);
-
-					/*
-					 * for (int x = 0; x < head_data.length; x++) {
-					 * 
-					 * for (int y = 0; y < head_data[x].length; y++) {
-					 * 
-					 * System.out.println("IS THIS RUN?");
-					 * 
-					 * if (head_data[x][y] == "") {
-					 * 
-					 * break;
-					 * 
-					 * } else {
-					 * 
-					 * 
-					 * System.out.println("head_data[x][y]:" + x + ":" + y + ":" + head_data[x][y]);
-					 * 
-					 * }
-					 * 
-					 * }
-					 * 
-					 * }
-					 */
-					// writer.append("this is massive file read and write test");
-
-					fileEmpty.setText("");
-					fileEmpty.setText("   processing..........done");
-
-					reader.close();
-					writer.close();
-
-				} catch (Exception e2) {
-
-					JOptionPane.showMessageDialog(this, "Open Error");
-
 				}
-			}
 
-			// dispose(); // do not close for checking result.
+				// dispose(); // do not close for checking result.
+
+			}
 
 		} else if (e.getSource() == btncancel) {
 			dispose();
 
 		}
 
+	}
+
+	private String cstr(File file) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
